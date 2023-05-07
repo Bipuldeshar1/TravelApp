@@ -19,7 +19,14 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
       drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('home'),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut().then((value) => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Login())));
+              },
+              icon: Icon(Icons.logout))
+        ],
       ),
     );
   }
