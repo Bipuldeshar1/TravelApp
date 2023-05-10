@@ -2,6 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
+import 'package:project_3/screens/splashscreen/splashScreen.dart';
 
 
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: (FirebaseAuth.instance.currentUser != null) ? HomeScreen() : Login());
-      home: AdminHomescreen(),
+      home: SplashScreen(),
     );
   }
 }
