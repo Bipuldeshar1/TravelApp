@@ -1,10 +1,9 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
+import 'package:project_3/screens/Home/home.dart';
+import 'package:project_3/screens/Home/nav.dart';
 import 'package:project_3/screens/splashscreen/splashScreen.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,

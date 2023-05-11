@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
 
 import 'package:project_3/screens/Home/home.dart';
+import 'package:project_3/screens/Home/nav.dart';
 
 import '../../reusableComponent/CustomButton.dart';
 import 'package:project_3/screens/auth/register.dart';
@@ -203,7 +204,7 @@ class _LoginState extends State<Login> {
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         } else {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context, MaterialPageRoute(builder: (context) => BottomNav()));
           final snackbar = SnackBar(content: Text('successful  loggedin'));
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         }

@@ -4,7 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
-import 'package:project_3/screens/Admin/des.dart';
+import 'package:project_3/reusableComponent/customCard.dart';
+import 'package:project_3/reusableComponent/des.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
 class DashboardProduct extends StatefulWidget {
@@ -56,58 +57,111 @@ class _DashboardProductState extends State<DashboardProduct> {
                                 builder: (context) => Des(package: package)));
                       });
                     },
-                    child: ListTile(
-                      title: Text(package.title),
-                      trailing: IconButton(
-                        icon: Icon(Icons.menu),
-                        onPressed: () {
+                    child: CustomCard(
+                        img: package.img,
+                        price: package.price,
+                        title: package.title,
+                        des: package.description,
+                        onpresss: () {
                           showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('update or delete'),
-                                  content: Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: Column(
-                                      children: [
-                                        CustomButton(
-                                          text: 'delete',
-                                          onPress: () {
-                                            setState(() {
-                                              delete(package.pId);
-                                              Navigator.pop(context);
-                                            });
-                                          },
-                                          color: Colors.white,
-                                          height: 50,
-                                          width: 50,
-                                        ),
-                                        CustomButton(
-                                          text: 'update',
-                                          onPress: () {
-                                            setState(() {
-                                              showMyDialog(
-                                                package.pId,
-                                                package.title,
-                                                package.description,
-                                                package.price,
-                                                package.img,
-                                              );
-                                            });
-                                          },
-                                          color: Colors.white,
-                                          height: 50,
-                                          width: 50,
-                                        ),
-                                      ],
-                                    ),
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('update or delete'),
+                                content: Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: Column(
+                                    children: [
+                                      CustomButton(
+                                        text: 'delete',
+                                        onPress: () {
+                                          setState(() {
+                                            delete(package.pId);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        color: Colors.white,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                      CustomButton(
+                                        text: 'update',
+                                        onPress: () {
+                                          setState(() {
+                                            showMyDialog(
+                                              package.pId,
+                                              package.title,
+                                              package.description,
+                                              package.price,
+                                              package.img,
+                                            );
+                                          });
+                                        },
+                                        color: Colors.white,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    ],
                                   ),
-                                );
-                              });
-                        },
-                      ),
-                    ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        // ListTile(
+                        //   title: Text(package.title),
+                        //   trailing: IconButton(
+                        //     icon: Icon(Icons.menu),
+                        //     onPressed: () {
+                        //       showDialog(
+                        //           context: context,
+                        //           builder: (context) {
+                        //             return AlertDialog(
+                        //               title: Text('update or delete'),
+                        //               content: Container(
+                        //                 height: 100,
+                        //                 width: 100,
+                        //                 child: Column(
+                        //                   children: [
+                        //                     CustomButton(
+                        //                       text: 'delete',
+                        //                       onPress: () {
+                        //                         setState(() {
+                        //                           delete(package.pId);
+                        //                           Navigator.pop(context);
+                        //                         });
+                        //                       },
+                        //                       color: Colors.white,
+                        //                       height: 50,
+                        //                       width: 50,
+                        //                     ),
+                        //                     CustomButton(
+                        //                       text: 'update',
+                        //                       onPress: () {
+                        //                         setState(() {
+                        //                           showMyDialog(
+                        //                             package.pId,
+                        //                             package.title,
+                        //                             package.description,
+                        //                             package.price,
+                        //                             package.img,
+                        //                           );
+                        //                         });
+                        //                       },
+                        //                       color: Colors.white,
+                        //                       height: 50,
+                        //                       width: 50,
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             );
+                        //           });
+                        //     },
+                        //   ),
+                        // ),
+                        ),
                   );
                 });
           } else if (snapshot.hasError) {

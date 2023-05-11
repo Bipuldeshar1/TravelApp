@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/screens/Home/home.dart';
+import 'package:project_3/screens/Home/nav.dart';
 import 'package:project_3/screens/auth/login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,9 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(duration, () {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => FirebaseAuth.instance.currentUser != null
-              ? HomeScreen()
-              : Login(),
+          builder: (context) =>
+              FirebaseAuth.instance.currentUser != null ? BottomNav() : Login(),
         ),
       );
     });
@@ -35,13 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff329cef),
-      // body: Center(
-      //   child: Image.asset(
-      //     "assets/dart.png",
-      //     width: double.infinity,
-      //     height: double.infinity,
-      //   ),
-      // ),
+      body: Container(
+        child: Image.asset(
+          "lib/assets/image.png",
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.fill,
+        ),
+      ),
     );
   }
 }
