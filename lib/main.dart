@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
 import 'package:project_3/screens/Home/home.dart';
 import 'package:project_3/screens/Home/nav.dart';
@@ -17,15 +18,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
 
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // home: (FirebaseAuth.instance.currentUser != null) ? HomeScreen() : Login());
-      home: SplashScreen(),
-    );
+    return KhaltiScope(
+        publicKey: 'test_public_key_5b2959a7a1f14136a53a5cc83e2ee970',
+ 
+        builder: (context, navigatorKey) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            localizationsDelegates: const [
+              KhaltiLocalizations.delegate,
+            ],
+            home: SplashScreen(),
+          );
+        });
   }
 }

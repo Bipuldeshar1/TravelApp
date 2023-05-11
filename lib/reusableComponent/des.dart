@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/model/userModel.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'package:project_3/reusableComponent/CustomButton.dart';
 
@@ -158,7 +159,7 @@ class _DesState extends State<Des> {
                         widget.package.title,
                         widget.package.description,
                         widget.package.img,
-                        widget.package.price,
+                        int.parse(widget.package.price),
                         sid,
                         sEmail);
                   },
@@ -228,12 +229,14 @@ class _DesState extends State<Des> {
     String title,
     String description,
     String img,
-    String price,
+    int price,
     String? sid,
     String? sEmail,
   ) {
     final date = DateTime.now();
     try {
+    
+
       FirebaseFirestore.instance.collection('orders').doc().set({
         'uId': uid,
         'uName': uname,
