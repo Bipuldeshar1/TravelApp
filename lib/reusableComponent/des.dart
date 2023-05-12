@@ -163,26 +163,37 @@ class _DesState extends State<Des> {
                     //     sid,
                     //     sEmail,
                     // );
-
-                    payment(
-                      uid,
-                      uname,
-                      uemail,
-                      date,
-                      widget.package.pId,
-                      widget.package.title,
-                      widget.package.description,
-                      widget.package.img,
-                      int.parse(widget.package.price),
-                      sid,
-                      sEmail,
-                    );
                   },
                   color: Colors.blue,
                   height: 30,
                   width: double.infinity,
                 )),
           ),
+          SliverToBoxAdapter(
+            child: ElevatedButton(
+                onPressed: () {
+                  final uid = FirebaseAuth.instance.currentUser!.uid;
+                  final uemail = FirebaseAuth.instance.currentUser!.email;
+                  final uname = name.toString();
+                  final date = DateTime.now().microsecondsSinceEpoch;
+                  final sid = widget.package.uId;
+                  final sEmail = widget.package.uemail;
+                  payWithKhalti(
+                    uid,
+                    uname,
+                    uemail,
+                    date,
+                    widget.package.pId,
+                    widget.package.title,
+                    widget.package.description,
+                    widget.package.img,
+                    int.parse(widget.package.price),
+                    sid,
+                    sEmail,
+                  );
+                },
+                child: Text('pay')),
+          )
         ],
       ),
 
@@ -268,61 +279,62 @@ class _DesState extends State<Des> {
     }
   }
 
-  void payment(
-    String uid,
+  void payWithKhalti(
+    uid,
     String uname,
     String? uemail,
-    int date,
+    date,
     String pId,
     String title,
     String description,
     String img,
     int price,
-    String? sid,
-    String? sEmail,
+    sid,
+    sEmail,
   ) {
     KhaltiScope.of(context).pay(
-        config: PaymentConfig(
-          amount: price * 100,
-          productIdentity: pId,
-          productName: title,
-        ),
-        preferences: [
-          PaymentPreference.khalti,
-        ],
-        onSuccess: (value) {
-          try {
-            FirebaseFirestore.instance.collection('orders').doc().set({
-              'uId': uid,
-              'uName': uname,
-              'uEmial': uemail,
-              'bookingDate': date,
-              'pId': pId,
-              'ptitle': title,
-              'pdescription': description,
-              'pimg': img,
-              'price': price,
-              'sid': sid,
-              'sEmail': sEmail,
-            });
-          } catch (e) {
-            print(e.toString());
-          }
-        },
-        onFailure: (value) {
-          _showSnackbar(context, 'fail');
-          print(value.toString());
-        },
-        onCancel: () {
-          _showSnackbar(context, 'processs cancelled');
-          Navigator.pop(context);
-        });
+      config: PaymentConfig(
+        amount: price * 100, //in paisa
+        productIdentity: pId,
+        productName: title,
+        mobileReadOnly: false,
+      ),
+      preferences: [
+        PaymentPreference.khalti,
+      ],
+      onSuccess: (PaymentSuccessModel success) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Payment Successful'),
+              actions: [
+                SimpleDialogOption(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      book(uid, uname, uemail, date, pId, title, description,
+                          img, price, sid, sEmail);
+                      Navigator.pop(context);
+                      print('oks');
+                    })
+              ],
+            );
+          },
+        );
+      },
+      onFailure: onFailure,
+      onCancel: onCancel,
+    );
   }
 
-  _showSnackbar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
+  void onFailure(PaymentFailureModel failure) {
+    debugPrint(
+      failure.toString(),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void onCancel() async {
+    final snackbar = SnackBar(content: Text('cancelled'));
+    await ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }

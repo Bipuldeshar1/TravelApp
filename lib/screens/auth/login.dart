@@ -210,49 +210,6 @@ class _LoginState extends State<Login> {
         }
       }
     });
-    // void route() {
-    //   User? user = FirebaseAuth.instance.currentUser;
-    //   var kk = FirebaseFirestore.instance
-    //       .collection('Users_Details')
-    //       .doc(user!.uid)
-    //       .get()
-    //       .then((DocumentSnapshot documentSnapshot) {
-    //     if (documentSnapshot.exists) {
-    //       if (documentSnapshot.get('role') == "user") {
-    //         Navigator.pushReplacement(
-    //           context,
-    //           MaterialPageRoute(
-    //             builder: (context) => HomeScreen(),
-    //           ),
-    //         );
-    //       } else {
-    //         Navigator.pushReplacement(
-    //           context,
-    //           MaterialPageRoute(
-    //             builder: (context) => AdminHomescreen(),
-    //           ),
-    //         );
-    //       }
-    //     }
-    //   });
-    // }
-
-    // void login(String email, String password) async {
-    // //  if (_formkey.currentState!.validate()) {
-    //     try {
-    //       UserCredential userCredential =
-    //           await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //         email: email,
-    //         password: password,
-    //       );
-    //       route();
-    //     } on FirebaseAuthException catch (e) {
-    //       if (e.code == 'user-not-found') {
-    //         print('No user found for that email.');
-    //       } else if (e.code == 'wrong-password') {
-    //         print('Wrong password provided for that user.');
-    //       }
-    //     }
-    //   }
+ 
   }
 }
