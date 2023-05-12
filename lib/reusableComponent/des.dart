@@ -150,18 +150,33 @@ class _DesState extends State<Des> {
                     final sid = widget.package.uId;
                     final sEmail = widget.package.uemail;
 
-                    book(
-                        uid,
-                        uname,
-                        uemail,
-                        date,
-                        widget.package.pId,
-                        widget.package.title,
-                        widget.package.description,
-                        widget.package.img,
-                        int.parse(widget.package.price),
-                        sid,
-                        sEmail);
+                    // book(
+                    //     uid,
+                    //     uname,
+                    //     uemail,
+                    //     date,
+                    //     widget.package.pId,
+                    //     widget.package.title,
+                    //     widget.package.description,
+                    //     widget.package.img,
+                    //     int.parse(widget.package.price),
+                    //     sid,
+                    //     sEmail,
+                    // );
+
+                    payment(
+                      uid,
+                      uname,
+                      uemail,
+                      date,
+                      widget.package.pId,
+                      widget.package.title,
+                      widget.package.description,
+                      widget.package.img,
+                      int.parse(widget.package.price),
+                      sid,
+                      sEmail,
+                    );
                   },
                   color: Colors.blue,
                   height: 30,
@@ -235,8 +250,6 @@ class _DesState extends State<Des> {
   ) {
     final date = DateTime.now();
     try {
-    
-
       FirebaseFirestore.instance.collection('orders').doc().set({
         'uId': uid,
         'uName': uname,
@@ -253,5 +266,63 @@ class _DesState extends State<Des> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void payment(
+    String uid,
+    String uname,
+    String? uemail,
+    int date,
+    String pId,
+    String title,
+    String description,
+    String img,
+    int price,
+    String? sid,
+    String? sEmail,
+  ) {
+    KhaltiScope.of(context).pay(
+        config: PaymentConfig(
+          amount: price * 100,
+          productIdentity: pId,
+          productName: title,
+        ),
+        preferences: [
+          PaymentPreference.khalti,
+        ],
+        onSuccess: (value) {
+          try {
+            FirebaseFirestore.instance.collection('orders').doc().set({
+              'uId': uid,
+              'uName': uname,
+              'uEmial': uemail,
+              'bookingDate': date,
+              'pId': pId,
+              'ptitle': title,
+              'pdescription': description,
+              'pimg': img,
+              'price': price,
+              'sid': sid,
+              'sEmail': sEmail,
+            });
+          } catch (e) {
+            print(e.toString());
+          }
+        },
+        onFailure: (value) {
+          _showSnackbar(context, 'fail');
+          print(value.toString());
+        },
+        onCancel: () {
+          _showSnackbar(context, 'processs cancelled');
+          Navigator.pop(context);
+        });
+  }
+
+  _showSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

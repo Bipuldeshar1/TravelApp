@@ -28,7 +28,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   void payWithKhalti() {
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
-        amount: 1000, //in paisa
+        amount: 10000, //in paisa
         productIdentity: 'Product Id',
         productName: 'Product Name',
         mobileReadOnly: false,

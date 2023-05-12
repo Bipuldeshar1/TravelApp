@@ -18,10 +18,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return KhaltiScope(
-        publicKey: 'test_public_key_5b2959a7a1f14136a53a5cc83e2ee970',
- 
+        publicKey: 'test_secret_key_9df482df44f340e5a5d49a96ed83d716',
         builder: (context, navigatorKey) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
