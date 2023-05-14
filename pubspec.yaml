@@ -46,6 +46,7 @@ dependencies:
   google_fonts: ^4.0.4
   flutter_image_slideshow: ^0.1.5
   khalti_flutter: ^2.2.1
+  flutter_shimmer: ^2.1.2
 
 dev_dependencies:
   flutter_test:

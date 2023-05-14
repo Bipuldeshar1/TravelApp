@@ -6,6 +6,7 @@ import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/customCard.dart';
 import 'package:project_3/reusableComponent/des.dart';
+import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
 class DashboardProduct extends StatefulWidget {
@@ -169,7 +170,15 @@ class _DashboardProductState extends State<DashboardProduct> {
           } else if (snapshot.data == null) {
             return Center(child: Text('no products posted'));
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Container(
+              height: double.infinity,
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (BuildContext context, int index) {
+                  return s();
+                },
+              ),
+            );
           }
         },
       ),

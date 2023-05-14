@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 import 'package:project_3/reusableComponent/CustomcardHOme.dart';
 import 'package:project_3/reusableComponent/customCard.dart';
+import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
+import 'package:project_3/widgets/search.dart';
 
 import '../../model/packagemodel.dart';
 import '../../reusableComponent/CustomButton.dart';
@@ -93,8 +95,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontSize: 50),
               ),
             ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 10,
+              ),
+            ),
             SliverToBoxAdapter(
-              child: Text('search goes herre'),
+              child: SearchSection(),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 20,
+              ),
             ),
             SliverToBoxAdapter(
               child: Text('top products'),
@@ -106,35 +118,42 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                          height: MediaQuery.of(context).size.height * .7,
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Des(
-                                                  package:
-                                                      snapshot.data![index])));
-                                    });
-                                  },
-                                  child: CustomCardHome(
-                                    img: snapshot.data![index].img,
-                                    price: snapshot.data![index].price,
-                                    title: snapshot.data![index].title,
-                                    des: snapshot.data![index].description,
-                                  ),
-                                );
-                              }));
+                        height: 500,
+                        child: ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Des(
+                                                package:
+                                                    snapshot.data![index])));
+                                  });
+                                },
+                                child: CustomCardHome(
+                                  img: snapshot.data![index].img,
+                                  price: snapshot.data![index].price,
+                                  title: snapshot.data![index].title,
+                                  des: snapshot.data![index].description,
+                                ),
+                              );
+                            }),
+                      );
                     } else if (snapshot.hasError) {
                       return const Text("Error fetching data!");
-                    } else if (snapshot.data == null) {
-                      return const Center(child: Text('no products posted'));
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return Container(
+                        height: 500,
+                        child: ListView.builder(
+                          itemCount: 4,
+                          itemBuilder: (BuildContext context, int index) {
+                            return s();
+                          },
+                        ),
+                      );
                     }
                   }),
             )
