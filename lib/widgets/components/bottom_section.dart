@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:project_3/model/packagemodel.dart';
-import 'package:project_3/widgets/components/Card_Top.dart';
+import 'package:project_3/reusableComponent/CustomcardHOme.dart';
+import 'package:project_3/reusableComponent/des.dart';
 
-import '../../reusableComponent/des.dart';
+import '../../model/packagemodel.dart';
 import '../../reusableComponent/simmer/s.dart';
 
-class TopSection extends StatefulWidget {
-  const TopSection({super.key});
+class BottomSection extends StatefulWidget {
+  const BottomSection({super.key});
 
   @override
-  State<TopSection> createState() => _TopSectionState();
+  State<BottomSection> createState() => _BottomSectionState();
 }
 
-class _TopSectionState extends State<TopSection> {
+class _BottomSectionState extends State<BottomSection> {
   @override
   Widget build(BuildContext context) {
-    Future<List<PackageModel>> recom() async {
+    Future<List<PackageModel>> Allfetch() async {
       final snapshot = await FirebaseFirestore.instance
           .collection('Allposts')
           .orderBy('price', descending: true)
@@ -28,16 +28,14 @@ class _TopSectionState extends State<TopSection> {
     }
 
     return FutureBuilder(
-        future: recom(),
+        future: Allfetch(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(
-              height: 250,
+              height: 500,
               child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    var package = snapshot.data![index];
                     return InkWell(
                         onTap: () {
                           setState(() {
@@ -48,10 +46,11 @@ class _TopSectionState extends State<TopSection> {
                                         Des(package: snapshot.data![index])));
                           });
                         },
-                        child: Cart(
-                          image: package.img,
-                          name: package.title,
-                          price: package.price,
+                        child: CustomCardHome(
+                          img: snapshot.data![index].img,
+                          price: snapshot.data![index].price,
+                          title: snapshot.data![index].title,
+                          des: snapshot.data![index].description,
                         ));
                   }),
             );
