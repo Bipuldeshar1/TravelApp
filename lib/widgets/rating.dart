@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RatingBar extends StatelessWidget {
-  final double rating;
+  final List<double> rating;
   final double size;
   int? ratingCount;
   RatingBar({
@@ -14,13 +14,20 @@ class RatingBar extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> _starList = [];
 
-    int realnumber = rating.floor();
-    int partNumber = ((rating - realnumber) * 10).ceil();
+    double averageRating =
+        rating.isNotEmpty ? rating.reduce((a, b) => a + b) / rating.length : 0;
+    int realNumber = averageRating.floor();
+    int partNumber = ((averageRating - realNumber) * 10).ceil();
 
     for (int i = 0; i < 5; i++) {
-      if (i < realnumber) {
+      if (i < realNumber) {
         _starList.add(Icon(
           Icons.star,
+          color: Color.fromARGB(255, 250, 225, 0),
+        ));
+      } else if (i == realNumber && partNumber > 0) {
+        _starList.add(Icon(
+          Icons.star_half,
           color: Color.fromARGB(255, 250, 225, 0),
         ));
       } else {

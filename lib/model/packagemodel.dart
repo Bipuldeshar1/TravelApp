@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 class PackageModel {
   String pId;
   String title;
   String description;
   String img;
-  int? rating;
+  List<double> ratings;
   String price;
   bool? fav;
   String? uId;
@@ -20,7 +17,7 @@ class PackageModel {
     required this.title,
     required this.description,
     required this.img,
-    this.rating,
+    this.ratings = const [],
     required this.price,
     this.fav,
     this.uId,
@@ -31,12 +28,19 @@ class PackageModel {
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> map) {
+    final ratings = map['ratings'];
+    List<double> parsedRatings = [];
+    if (ratings is List) {
+      parsedRatings = ratings.cast<double>();
+    } else if (ratings is int) {
+      parsedRatings = [ratings.toDouble()];
+    }
     return PackageModel(
       pId: map['pId'] ?? '',
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       img: map['img'] ?? '',
-      rating: map['rating'],
+      ratings: parsedRatings,
       price: map['price'].toString(),
       fav: map['fav'],
       uId: map['uId'],
@@ -46,6 +50,20 @@ class PackageModel {
       n: map['n'] ?? '',
     );
   }
-
-  
+  Map<String, dynamic> toJson() {
+    return {
+      'pId': pId,
+      'title': title,
+      'description': description,
+      'img': img,
+      'ratings': ratings, // Include ratings in the JSON representation
+      'price': price,
+      'fav': fav,
+      'uId': uId,
+      'uemail': uemail,
+      'lat': x,
+      'lon': y,
+      'n': n,
+    };
+  }
 }

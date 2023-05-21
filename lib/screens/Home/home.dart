@@ -2,16 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/const/style.dart';
 
 import 'package:project_3/reusableComponent/CustomcardHOme.dart';
 import 'package:project_3/reusableComponent/customCard.dart';
 import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
+
+import 'package:project_3/widgets/components/Top_Section.dart';
 import 'package:project_3/widgets/search.dart';
 
 import '../../model/packagemodel.dart';
 import '../../reusableComponent/CustomButton.dart';
 import '../../reusableComponent/des.dart';
+import '../../widgets/components/Label_Section.dart';
 import '../auth/login.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -109,9 +113,27 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SliverToBoxAdapter(
-              child: Text('top products'),
+              child: LabelSection(text: 'recommened', style: heading1),
             ),
-
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 20,
+              ),
+            ),
+            SliverToBoxAdapter(child: TopSection()),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 20,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: LabelSection(text: 'Allposts', style: heading1),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 20,
+              ),
+            ),
             SliverToBoxAdapter(
               child: FutureBuilder(
                   future: Allfetch(),
@@ -123,23 +145,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Des(
-                                                package:
-                                                    snapshot.data![index])));
-                                  });
-                                },
-                                child: CustomCardHome(
-                                  img: snapshot.data![index].img,
-                                  price: snapshot.data![index].price,
-                                  title: snapshot.data![index].title,
-                                  des: snapshot.data![index].description,
-                                ),
-                              );
+                                  onTap: () {
+                                    setState(() {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Des(
+                                                  package:
+                                                      snapshot.data![index])));
+                                    });
+                                  },
+                                  child: CustomCardHome(
+                                    img: snapshot.data![index].img,
+                                    price: snapshot.data![index].price,
+                                    title: snapshot.data![index].title,
+                                    des: snapshot.data![index].description,
+                                  ));
                             }),
                       );
                     } else if (snapshot.hasError) {

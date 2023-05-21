@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:project_3/fxn/book.dart';
 
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/model/userModel.dart';
@@ -9,7 +10,7 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/map/desmap.dart';
-import 'package:project_3/reusableComponent/map/map.dart';
+
 import 'package:project_3/widgets/rating.dart';
 
 class Des extends StatefulWidget {
@@ -26,6 +27,7 @@ class _DesState extends State<Des> {
   var priceController = TextEditingController();
   var descriptionController = TextEditingController();
   var imageController = TextEditingController();
+  var ratingController = TextEditingController();
   String name = '';
   String pnumb = '';
   Future<void> getName() async {
@@ -63,6 +65,52 @@ class _DesState extends State<Des> {
   @override
   Widget build(BuildContext context) {
     //  final uemail = FirebaseAuth.instance.currentUser!.email;
+
+    void showRating() {
+      Widget okButton = ElevatedButton(
+        child: Text("OK"),
+        onPressed: () {
+          try {
+            var pid = widget.package.pId.toString();
+            final productRef =
+                FirebaseFirestore.instance.collection('Allposts').doc(pid);
+            productRef.set(
+                {
+                  'ratings': ratingController.text,
+                },
+                SetOptions(
+                  merge: true,
+                )).then((value) {
+              Navigator.pop(context);
+              setState(() {});
+            });
+          } catch (e) {
+            print(e);
+          }
+        },
+      );
+      AlertDialog alert = AlertDialog(
+        title: Text("Rating"),
+        content: TextFormField(
+          controller: ratingController,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              labelText: 'rating'),
+        ),
+        actions: [
+          okButton,
+        ],
+      );
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
     final uname = getName();
     return Scaffold(
       body: CustomScrollView(
@@ -136,13 +184,31 @@ class _DesState extends State<Des> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: RatingBar(
-                  rating: 2,
-                  ratingCount: 15,
-                )),
-          ),
+              child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    showRating();
+                  },
+                  child: RatingBar(
+                    rating: widget.package.ratings == null
+                        ? []
+                        : widget.package.ratings,
+                    ratingCount: 15,
+                  ),
+                ),
+                CustomButton(
+                    text: 'reviews',
+                    onPress: () {},
+                    color: Colors.blue,
+                    height: 20,
+                    width: 50)
+              ],
+            ),
+          )),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -229,41 +295,6 @@ class _DesState extends State<Des> {
     );
   }
 
-  void book(
-    String uid,
-    String uname,
-    String? uemail,
-    int date,
-    String pId,
-    String title,
-    String description,
-    String img,
-    int price,
-    String? sid,
-    String? sEmail,
-    String pnum,
-  ) {
-    final date = DateTime.now();
-    try {
-      FirebaseFirestore.instance.collection('orders').doc().set({
-        'uId': uid,
-        'uName': uname,
-        'uEmial': uemail,
-        'bookingDate': date,
-        'pId': pId,
-        'ptitle': title,
-        'pdescription': description,
-        'pimg': img,
-        'price': price,
-        'sid': sid,
-        'sEmail': sEmail,
-        'pnum': pnum
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   void payWithKhalti(
     uid,
     String uname,
@@ -298,7 +329,8 @@ class _DesState extends State<Des> {
                 SimpleDialogOption(
                     child: const Text('OK'),
                     onPressed: () {
-                      book(uid, uname, uemail, date, pId, title, description,
+                      Books b = new Books();
+                      b.book(uid, uname, uemail, date, pId, title, description,
                           img, price, sid, sEmail, pnum);
                       Navigator.pop(context);
                       print('oks');
