@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class PackageModel {
   String pId;
   String title;
@@ -8,6 +11,9 @@ class PackageModel {
   bool? fav;
   String? uId;
   String? uemail;
+  String? x;
+  String? y;
+  String n;
 
   PackageModel({
     required this.pId,
@@ -19,6 +25,9 @@ class PackageModel {
     this.fav,
     this.uId,
     this.uemail,
+    this.x,
+    this.y,
+    required this.n,
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> map) {
@@ -28,24 +37,15 @@ class PackageModel {
       description: map['description'] ?? '',
       img: map['img'] ?? '',
       rating: map['rating'],
-      price: map['price'],
+      price: map['price'].toString(),
       fav: map['fav'],
       uId: map['uId'],
       uemail: map['uemail'],
+      x: map['lat'],
+      y: map['lon'],
+      n: map['n'] ?? '',
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'pid': pId,
-      'title': title,
-      'description': description,
-      'img': img,
-      'rating': rating,
-      'price': price,
-      'fav': fav,
-      'uId': uId,
-      'uemail': uemail,
-    };
-  }
+  
 }

@@ -8,11 +8,11 @@ import 'package:project_3/model/userModel.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'package:project_3/reusableComponent/CustomButton.dart';
+import 'package:project_3/reusableComponent/map/desmap.dart';
+import 'package:project_3/reusableComponent/map/map.dart';
+import 'package:project_3/widgets/rating.dart';
 
 class Des extends StatefulWidget {
-  // String title;
-  // String des;
-  // Des({required this.title, required this.des});
   final PackageModel package;
 
   Des({required this.package});
@@ -27,14 +27,30 @@ class _DesState extends State<Des> {
   var descriptionController = TextEditingController();
   var imageController = TextEditingController();
   String name = '';
+  String pnumb = '';
   Future<void> getName() async {
+    try {
+      final x = await FirebaseFirestore.instance
+          .collection('Users_Details')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      if (x.exists) {
+        final data = x.data();
+        name = data!['name'];
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> getNum() async {
     final x = await FirebaseFirestore.instance
         .collection('Users_Details')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     if (x.exists) {
       final data = x.data();
-      name = data!['name'];
+      pnumb = data!['pnum'];
     }
   }
 
@@ -46,7 +62,7 @@ class _DesState extends State<Des> {
 
   @override
   Widget build(BuildContext context) {
-    final uemail = FirebaseAuth.instance.currentUser!.email;
+    //  final uemail = FirebaseAuth.instance.currentUser!.email;
     final uname = getName();
     return Scaffold(
       body: CustomScrollView(
@@ -59,26 +75,52 @@ class _DesState extends State<Des> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * .6,
               ),
-              Positioned(
-                top: 16.0,
-                left: 16.0,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Positioned(
+                      top: 16.0,
+                      left: 16.0,
+                      child: CircleAvatar(
+                        backgroundColor:
+                            Colors.lightGreenAccent.withOpacity(0.5),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                          ),
+                          color: Colors.black,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 16.0,
+                      right: 16.0,
+                      child: CircleAvatar(
+                        backgroundColor:
+                            Colors.lightGreenAccent.withOpacity(0.5),
+                        child: IconButton(
+                          icon: Icon(Icons.favorite_border),
+                          color: Colors.black,
+                          onPressed: () {
+                            addFav(
+                              widget.package.img,
+                              widget.package.pId,
+                              widget.package.description,
+                              widget.package.price,
+                              widget.package.title,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Positioned(
-                top: 16.0,
-                right: 16.0,
-                child: IconButton(
-                  icon: Icon(Icons.favorite_border),
-                  color: Colors.white,
-                  onPressed: () {},
-                ),
-              ),
+              )
             ]),
           ),
           SliverToBoxAdapter(
@@ -95,24 +137,11 @@ class _DesState extends State<Des> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: const [
-                  Icon(Icons.star, color: Colors.yellow),
-                  Icon(Icons.star, color: Colors.yellow),
-                  Icon(Icons.star, color: Colors.yellow),
-                  Icon(Icons.star, color: Colors.yellow),
-                  Icon(Icons.star, color: Colors.yellow),
-                  SizedBox(width: 8.0),
-                  Text(
-                    '4.5 (1234 ratings)',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                padding: const EdgeInsets.all(16.0),
+                child: RatingBar(
+                  rating: 2,
+                  ratingCount: 15,
+                )),
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -129,45 +158,44 @@ class _DesState extends State<Des> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Rs ${widget.package.price}',
+                'Rs  ${widget.package.price}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
+                  color: Colors.black,
                 ),
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomButton(
-                  text: 'book now',
-                  onPress: () {
-                    final uid = FirebaseAuth.instance.currentUser!.uid;
-                    final uemail = FirebaseAuth.instance.currentUser!.email;
-                    final uname = name.toString();
-                    final date = DateTime.now().microsecondsSinceEpoch;
-                    final sid = widget.package.uId;
-                    final sEmail = widget.package.uemail;
-
-                    // book(
-                    //     uid,
-                    //     uname,
-                    //     uemail,
-                    //     date,
-                    //     widget.package.pId,
-                    //     widget.package.title,
-                    //     widget.package.description,
-                    //     widget.package.img,
-                    //     int.parse(widget.package.price),
-                    //     sid,
-                    //     sEmail,
-                    // );
-                  },
-                  color: Colors.blue,
-                  height: 30,
-                  width: double.infinity,
-                )),
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'contact info\n${widget.package.n}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: CustomButton(
+              text: 'map',
+              onPress: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DesMap(
+                              a: widget.package.x.toString(),
+                              b: widget.package.y.toString(),
+                            )));
+              },
+              color: Colors.amber,
+              height: 40,
+              width: 10,
+            ),
           ),
           SliverToBoxAdapter(
             child: ElevatedButton(
@@ -175,6 +203,7 @@ class _DesState extends State<Des> {
                   final uid = FirebaseAuth.instance.currentUser!.uid;
                   final uemail = FirebaseAuth.instance.currentUser!.email;
                   final uname = name.toString();
+                  final pnum = pnumb.toString();
                   final date = DateTime.now().microsecondsSinceEpoch;
                   final sid = widget.package.uId;
                   final sEmail = widget.package.uemail;
@@ -190,59 +219,13 @@ class _DesState extends State<Des> {
                     int.parse(widget.package.price),
                     sid,
                     sEmail,
+                    pnum,
                   );
                 },
                 child: Text('pay')),
           )
         ],
       ),
-
-      //  SingleChildScrollView(
-      //   child: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: [
-      //       // Container(
-      //       //   width: 200,
-      //       //   height: 200,
-      //       //   child: Image(image: NetworkImage(widget.package.img)),
-      //       // ),
-      //       // Text(widget.package.title),
-      //       // Text(widget.package.description),
-      //       // Text(name.toString()),
-      //       // Text(FirebaseAuth.instance.currentUser!.email.toString()),
-      //       // Text(widget.package.uemail.toString()),
-
-      //       CustomButton(
-      //         text: 'book now',
-      //         onPress: () {
-      //           final uid = FirebaseAuth.instance.currentUser!.uid;
-      //           final uemail = FirebaseAuth.instance.currentUser!.email;
-      //           final uname = name.toString();
-      //           final date = DateTime.now().microsecondsSinceEpoch;
-      //           final sid = widget.package.uId;
-      //           final sEmail = widget.package.uemail;
-
-      //           book(
-      //             uid,
-      //             uname,
-      //             uemail,
-      //             date,
-      //             widget.package.pId,
-      //             widget.package.title,
-      //             widget.package.description,
-      //             widget.package.img,
-      //             widget.package.price,
-      //             sid,
-      //             sEmail,
-      //           );
-      //         },
-      //         color: Colors.blue,
-      //         height: 30,
-      //         width: double.infinity,
-      //       )
-      //     ],
-      //   ),
-      // ),
     );
   }
 
@@ -258,6 +241,7 @@ class _DesState extends State<Des> {
     int price,
     String? sid,
     String? sEmail,
+    String pnum,
   ) {
     final date = DateTime.now();
     try {
@@ -273,6 +257,7 @@ class _DesState extends State<Des> {
         'price': price,
         'sid': sid,
         'sEmail': sEmail,
+        'pnum': pnum
       });
     } catch (e) {
       print(e);
@@ -291,6 +276,7 @@ class _DesState extends State<Des> {
     int price,
     sid,
     sEmail,
+    pnum,
   ) {
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
@@ -313,7 +299,7 @@ class _DesState extends State<Des> {
                     child: const Text('OK'),
                     onPressed: () {
                       book(uid, uname, uemail, date, pId, title, description,
-                          img, price, sid, sEmail);
+                          img, price, sid, sEmail, pnum);
                       Navigator.pop(context);
                       print('oks');
                     })
@@ -336,5 +322,24 @@ class _DesState extends State<Des> {
   void onCancel() async {
     final snackbar = SnackBar(content: Text('cancelled'));
     await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  void addFav(
+      String img, String pId, String description, String price, String title) {
+    try {
+      var x = FirebaseFirestore.instance.collection('fav').doc(pId).set({
+        'title': title,
+        'price': price,
+        'description': description,
+        'img': img,
+        'pId': pId,
+        'uid': FirebaseAuth.instance.currentUser!.uid,
+      }).then((value) async {
+        var snackbar = SnackBar(content: Text('addeed to favourite'));
+        await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

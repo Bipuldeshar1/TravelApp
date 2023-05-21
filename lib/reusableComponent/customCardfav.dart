@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 
-class CustomCard extends StatelessWidget {
+class CustomCardFav extends StatelessWidget {
   String img;
   String price;
   String title;
-  String des;
 
-  VoidCallback? onpresss;
-  CustomCard({
+  VoidCallback onpresss;
+  CustomCardFav({
     required this.img,
     required this.price,
     required this.title,
-    required this.des,
-    this.onpresss,
+    required this.onpresss,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width * 1,
         decoration: BoxDecoration(
@@ -80,20 +77,10 @@ class CustomCard extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                  onPressed: onpresss, icon: Icon(Icons.menu))
+                                  onPressed: onpresss, icon: Icon(Icons.delete))
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        des, //des
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         height: 4,

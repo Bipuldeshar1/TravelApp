@@ -23,7 +23,7 @@ class _DashboardProductState extends State<DashboardProduct> {
   var imageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    List<PackageModel> packagemodel = [];
+    // List<PackageModel> packagemodel = [];
 
     Future<List<PackageModel>> fetch() async {
       final snapshot = await FirebaseFirestore.instance
@@ -167,8 +167,6 @@ class _DashboardProductState extends State<DashboardProduct> {
                 });
           } else if (snapshot.hasError) {
             return Text("Error fetching data!");
-          } else if (snapshot.data == null) {
-            return Center(child: Text('no products posted'));
           } else {
             return Container(
               height: double.infinity,

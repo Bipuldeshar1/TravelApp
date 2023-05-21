@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomcardHOme.dart';
+import 'package:project_3/reusableComponent/des.dart';
 import 'package:project_3/reusableComponent/simmer/s.dart';
 
 class SearchDisplay extends StatefulWidget {
@@ -49,22 +50,32 @@ class _SearchDisplayState extends State<SearchDisplay> {
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return CustomCardHome(
-                        img: snapshot.data![index].img,
-                        price: snapshot.data![index].price,
-                        title: snapshot.data![index].title,
-                        des: snapshot.data![index].description,
+                      return InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Des(package: snapshot.data![index]))),
+                        child: CustomCardHome(
+                          img: snapshot.data![index].img,
+                          price: snapshot.data![index].price,
+                          title: snapshot.data![index].title,
+                          des: snapshot.data![index].description,
+                        ),
                       );
                     });
               } else if (snapshot.hasError) {
                 return const Text("Error fetching data!");
               } else {
-                return Container(height: MediaQuery.of(context).size.height*1,child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return s() ;
-                  },
-                ),);
+                return Container(
+                  height: MediaQuery.of(context).size.height * 1,
+                  child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      return s();
+                    },
+                  ),
+                );
               }
             }));
   }

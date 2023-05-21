@@ -1,53 +1,63 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_3/model/packagemodel.dart';
-
 class Booking {
-  final String id;
-  final String userId;
-  final String userName;
-  final String userEmail;
-  final String userPhone;
-  final PackageModel package;
-  final String paymentMethod;
-  final double totalAmount;
-  final DateTime bookingDate;
+  String bookingDate;
+  String pId;
+  String pDescription;
+  String pImg;
+  int price;
+  String pTitle;
+  String sEmail;
+  String sId;
+  String uEmail;
+  String uId;
+  String uName;
+  String pnum;
 
   Booking({
-    required this.id,
-    required this.userId,
-    required this.userName,
-    required this.userEmail,
-    required this.userPhone,
-    required this.package,
-    required this.paymentMethod,
-    required this.totalAmount,
     required this.bookingDate,
+    required this.pId,
+    required this.pDescription,
+    required this.pImg,
+    required this.price,
+    required this.pTitle,
+    required this.sEmail,
+    required this.sId,
+    required this.uEmail,
+    required this.uId,
+    required this.uName,
+    required this.pnum,
   });
 
-  factory Booking.fromJson(Map<String, dynamic> map, String id) {
+  factory Booking.fromJson(Map<String, dynamic> map) {
     return Booking(
-      id: id,
-      userId: map['userId'],
-      userName: map['userName'],
-      userEmail: map['userEmail'],
-      userPhone: map['userPhone'],
-      package: PackageModel.fromJson(map['package']),
-      paymentMethod: map['paymentMethod'],
-      totalAmount: map['totalAmount'],
-      bookingDate: (map['bookingDate'] as Timestamp).toDate(),
+      bookingDate: map['bookingDate'].toString(),
+      pId: map['pId'] ?? '',
+      pDescription: map['pdescription'] ?? '',
+      pImg: map['pimg'] ?? '',
+      price: map['price'] ?? 0,
+      pTitle: map['ptitle'] ?? '',
+      sEmail: map['sEmail'] ?? '',
+      sId: map['sid'] ?? '',
+      uEmail: map['uEmial'] ?? '',
+      uId: map['uId'] ?? '',
+      uName: map['uName'] ?? '',
+      pnum: map['pnum'] ?? '',
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'userName': userName,
-      'userEmail': userEmail,
-      'userPhone': userPhone,
-      'package': package.toJson(),
-      'paymentMethod': paymentMethod,
-      'totalAmount': totalAmount,
-      'bookingDate': Timestamp.fromDate(bookingDate),
+      'bookingDate': bookingDate,
+      'pId': pId,
+      'pdescription': pDescription,
+      'pimg': pImg,
+      'price': price,
+      'ptitle': pTitle,
+      'sEmail': sEmail,
+      'sid': sId,
+      'uEmial': uEmail,
+      'uId': uId,
+      'uName': uName,
+      'pnum': pnum,
     };
   }
 }

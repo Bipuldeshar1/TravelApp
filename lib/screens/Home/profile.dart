@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:project_3/screens/auth/login.dart';
 
+import '../../reusableComponent/map/newmap.dart';
+
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
 
@@ -27,6 +29,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icon(Icons.logout_outlined))
         ],
       ),
+      body: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => NewMap()));
+          },
+          child: Text('map')),
     );
   }
 }

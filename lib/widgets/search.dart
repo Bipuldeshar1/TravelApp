@@ -10,28 +10,34 @@ class SearchSection extends StatefulWidget {
 }
 
 class _SearchSectionState extends State<SearchSection> {
-  final SearchController=TextEditingController();
+  final SearchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-      _handleSubmitted(String query) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) =>SearchDisplay(query: query) ),
-    );
-  }
-    
+    _handleSubmitted(String query) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SearchDisplay(query: query)),
+      );
+    }
+
     return Row(
       children: [
         Expanded(
           child: TextField(
-            controller:SearchController ,
+            controller: SearchController,
             cursorColor: accent,
             style: p1,
             decoration: InputDecoration(
-              prefixIcon: InkWell(onTap: () {
-               _handleSubmitted(SearchController.text);
-              },
-              child: Icon(Icons.search, size: 22, color: text,),),
+              prefixIcon: InkWell(
+                onTap: () {
+                  _handleSubmitted(SearchController.text);
+                },
+                child: Icon(
+                  Icons.search,
+                  size: 22,
+                  color: text,
+                ),
+              ),
               hintText: 'search places',
               hintStyle: p1,
               fillColor: white,
@@ -41,17 +47,25 @@ class _SearchSectionState extends State<SearchSection> {
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
               ),
-              
             ),
           ),
         ),
         SizedBox(
-          width: small,height: 10,
+          width: small,
+          height: 10,
         ),
         Container(
           decoration: BoxDecoration(
             color: accent,
             borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3), // Shadow color
+                spreadRadius: 2, // Shadow spread radius
+                blurRadius: 5, // Shadow blur radius
+                offset: Offset(0, 3), // Shadow offset
+              )
+            ],
           ),
           height: 50,
           width: 50,

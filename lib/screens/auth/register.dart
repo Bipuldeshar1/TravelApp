@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/fxn/route.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,12 +63,13 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'name'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'enter name';
-                      } else
-                        return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     final snackbar = SnackBar(content: Text('enter name'));
+                    //     ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    //   } else
+                    //     return null;
+                    // },
                   ),
                   const SizedBox(
                     height: 20,
@@ -79,12 +81,12 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'role'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'must not be empty';
-                      } else
-                        return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'must not be empty';
+                    //   } else
+                    //     return null;
+                    // },
                   ),
                   const SizedBox(
                     height: 20,
@@ -96,24 +98,24 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'Email'),
-                    validator: (value) {
-                      const pattern =
-                          r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
-                          r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-                          r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
-                          r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-                          r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-                          r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-                          r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-                      final regex = RegExp(pattern);
+                    // validator: (value) {
+                    //   const pattern =
+                    //       r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
+                    //       r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
+                    //       r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
+                    //       r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
+                    //       r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
+                    //       r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
+                    //       r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+                    //   final regex = RegExp(pattern);
 
-                      if (value == null || value.isEmpty) {
-                        return 'enter email';
-                      } else if (!regex.hasMatch(value)) {
-                        return 'enter valid email';
-                      } else
-                        return null;
-                    },
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'enter email';
+                    //   } else if (!regex.hasMatch(value)) {
+                    //     return 'enter valid email';
+                    //   } else
+                    //     return null;
+                    // },
                   ),
                   const SizedBox(
                     height: 20,
@@ -138,36 +140,14 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'password'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'enter psw';
-                      } else if (value.length < 8) {
-                        return 'password should exceed 8 character';
-                      } else
-                        return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: phoneNumberController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        labelText: 'phone number'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'enter phone number';
-                      } else if (value.length < 10) {
-                        return 'number should be 10 character';
-                      } else if (value.length > 10) {
-                        return 'number should not exceed 10 character';
-                      } else
-                        return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'enter psw';
+                    //   } else if (value.length < 8) {
+                    //     return 'password should exceed 8 character';
+                    //   } else
+                    //     return null;
+                    // },
                   ),
                   const SizedBox(
                     height: 10,
@@ -208,11 +188,11 @@ class _RegisterState extends State<Register> {
                         _formKey.currentState!.save();
                       }
                       createAccount(
-                        EmailController.text.toString(),
-                        passwordController.text.toString(),
-                        nameController.text.toString(),
-                        roleController.text.toString(),
-                      );
+                          EmailController.text.toString(),
+                          passwordController.text.toString(),
+                          nameController.text.toString(),
+                          roleController.text.toString(),
+                          phoneNumberController.toString());
                     },
                     color: Colors.blue,
                     height: 50,
@@ -227,22 +207,37 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  createAccount(String email, String password, String name, String role) async {
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          )
-          .then((value) => PostDetailUser(email, name, role, password));
-    } on FirebaseAuthException catch (e) {
-      final snackbar = SnackBar(content: Text(e.code.toString()));
+  createAccount(String email, String password, String name, role, pnum) async {
+    if (email == '' ||
+        password == '' ||
+        name == '' ||
+        role == '' ||
+        pnum == '') {
+      final snackbar = SnackBar(content: Text('field shouldnot be empty'));
       await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else if (password.length < 8) {
+      final snackbar =
+          SnackBar(content: Text('password should be 8 char long'));
+      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else {
+      try {
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: email,
+              password: password,
+            )
+            .then((value) => PostDetailUser(email, name, role, password, pnum));
+      } on FirebaseAuthException catch (e) {
+        final snackbar = SnackBar(content: Text(e.code.toString()));
+        await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }
     }
   }
 
-  PostDetailUser(String email, String name, String role, String password) {
+  PostDetailUser(
+      String email, String name, String role, String password, pnum) {
     try {
+      Fxn f = new Fxn();
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       var user = FirebaseAuth.instance.currentUser;
       CollectionReference ref = firebaseFirestore.collection('Users_Details');
@@ -250,7 +245,7 @@ class _RegisterState extends State<Register> {
         'email': email.toString(),
         'role': role.toString(),
         'name': name.toString(),
-        'password': password.toString()
+        'password': password.toString(),
       });
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Login()));
