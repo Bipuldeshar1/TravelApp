@@ -9,8 +9,6 @@ import 'package:project_3/widgets/search.dart';
 import '../../widgets/components/Label_Section.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
