@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:project_3/screens/auth/login.dart';
+import 'package:project_3/widgets/rating.dart';
 
 import '../../reusableComponent/map/newmap.dart';
 
@@ -29,12 +30,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icon(Icons.logout_outlined))
         ],
       ),
-      body: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NewMap()));
-          },
-          child: Text('map')),
+      // body: ElevatedButton(
+      //     onPressed: () {
+      //       Navigator.push(
+      //           context, MaterialPageRoute(builder: (context) => NewMap()));
+      //     },
+      //     child: Text('map')),
     );
   }
 }

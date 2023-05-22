@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:project_3/fxn/book.dart';
 
 import 'package:project_3/model/packagemodel.dart';
+
 import 'package:project_3/model/userModel.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/map/desmap.dart';
+import 'package:project_3/screens/Home/home.dart';
+import 'package:project_3/screens/Home/nav.dart';
 
 import 'package:project_3/widgets/rating.dart';
 
@@ -147,14 +150,50 @@ class _DesState extends State<Des> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {},
-                  child: RatingBar(
-                    rating: widget.package.ratings == null
-                        ? []
-                        : widget.package.ratings,
-                    ratingCount: 15,
-                  ),
-                ),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('rating'),
+                            content: Container(
+                              height: 200,
+                              width: 100,
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    controller: reviewController,
+                                  ),
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  CustomButton(
+                                    text: 'ok',
+                                    onPress: () {
+                                      FirebaseFirestore.instance
+                                          .collection('Allposts')
+                                          .doc(widget.package.pId)
+                                          .update({
+                                        'ratings':
+                                            int.parse(reviewController.text)
+                                      }).then((value) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BottomNav())));
+                                    },
+                                    color: Colors.blue,
+                                    height: 40,
+                                    width: double.infinity,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: RatingBar(rating: widget.package.ratings)),
                 CustomButton(
                     text: 'reviews',
                     onPress: () {
@@ -193,7 +232,11 @@ class _DesState extends State<Des> {
                                         'descripiton':
                                             widget.package.description,
                                         'price': widget.package.price,
-                                      });
+                                      }).then((value) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BottomNav())));
                                     },
                                     color: Colors.blue,
                                     height: 50,
@@ -377,4 +420,11 @@ class _DesState extends State<Des> {
       print(e.toString());
     }
   }
+
+  // void submit(RatingModel s) async {
+  //   final doc = await FirebaseFirestore.instance.collection('rating').doc();
+  //   final json = s.toJson();
+  //   await doc.set(json);
+  // }
+  // Output: 4.333333333333333
 }

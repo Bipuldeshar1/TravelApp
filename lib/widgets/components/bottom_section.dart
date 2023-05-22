@@ -16,19 +16,28 @@ class BottomSection extends StatefulWidget {
 class _BottomSectionState extends State<BottomSection> {
   @override
   Widget build(BuildContext context) {
-    Future<List<PackageModel>> Allfetch() async {
-      final snapshot = await FirebaseFirestore.instance
+    // Future<List<PackageModel>> Allfetch() async {
+    //   final snapshot = await FirebaseFirestore.instance
+    //       .collection('Allposts')
+    //       .orderBy('price', descending: true)
+    //       .get();
+    //   final userData = snapshot.docs
+    //       .map((doc) => PackageModel.fromJson(doc.data()))
+    //       .toList(); // map each document to a PackageModel object
+    //   return userData;
+    // }]
+    Stream<List<PackageModel>> fetch() {
+      return FirebaseFirestore.instance
           .collection('Allposts')
           .orderBy('price', descending: true)
-          .get();
-      final userData = snapshot.docs
-          .map((doc) => PackageModel.fromJson(doc.data()))
-          .toList(); // map each document to a PackageModel object
-      return userData;
+          .snapshots()
+          .map((querySnapshot) => querySnapshot.docs
+              .map((doc) => PackageModel.fromJson(doc.data()))
+              .toList());
     }
 
-    return FutureBuilder(
-        future: Allfetch(),
+    return StreamBuilder(
+        stream: fetch(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(

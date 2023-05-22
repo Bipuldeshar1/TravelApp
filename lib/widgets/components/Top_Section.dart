@@ -16,19 +16,28 @@ class TopSection extends StatefulWidget {
 class _TopSectionState extends State<TopSection> {
   @override
   Widget build(BuildContext context) {
-    Future<List<PackageModel>> recom() async {
-      final snapshot = await FirebaseFirestore.instance
+    // Future<List<PackageModel>> recom() async {
+    //   final snapshot = await FirebaseFirestore.instance
+    //       .collection('Allposts')
+    //       .orderBy('price', descending: true)
+    //       .get();
+    //   final userData = snapshot.docs
+    //       .map((doc) => PackageModel.fromJson(doc.data()))
+    //       .toList(); // map each document to a PackageModel object
+    //   return userData;
+    // }
+    Stream<List<PackageModel>> recom() {
+      return FirebaseFirestore.instance
           .collection('Allposts')
-          .orderBy('price', descending: true)
-          .get();
-      final userData = snapshot.docs
-          .map((doc) => PackageModel.fromJson(doc.data()))
-          .toList(); // map each document to a PackageModel object
-      return userData;
+          .orderBy('ratings', descending: true)
+          .snapshots()
+          .map((querySnapshot) => querySnapshot.docs
+              .map((doc) => PackageModel.fromJson(doc.data()))
+              .toList());
     }
 
-    return FutureBuilder(
-        future: recom(),
+    return StreamBuilder(
+        stream: recom(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(

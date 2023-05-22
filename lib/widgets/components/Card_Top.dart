@@ -76,7 +76,7 @@ class Cart extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'asa',
+                      name,
                       style: GoogleFonts.poppins(
                         color: white,
                         fontSize: 18,
