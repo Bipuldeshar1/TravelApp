@@ -1,11 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_input/dropdown_input.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:project_3/fxn/route.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project_3/screens/auth/login.dart';
+
+// class SingleValueDropDownController {
+//   String _selectedValue = '';
+
+//   String get selectedValue => _selectedValue;
+
+//   set selectedValue(String value) {
+//     _selectedValue = value;
+//   }
+// }
 
 class Register extends StatefulWidget {
   @override
@@ -13,8 +26,11 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  _RegisterState() {
+    _selectedVal = _list[0];
+  }
   TextEditingController nameController = TextEditingController();
-  TextEditingController roleController = TextEditingController();
+
   TextEditingController EmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -22,12 +38,18 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   bool obsecureText = true;
 
+  final _list = [
+    'user',
+    'admin',
+  ];
+  String? _selectedVal = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
           image: AssetImage(
             'lib/assets/register.png',
@@ -46,7 +68,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  const Text(
                     'Register',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -63,30 +85,32 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'name'),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     final snackbar = SnackBar(content: Text('enter name'));
-                    //     ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                    //   } else
-                    //     return null;
-                    // },
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    controller: roleController,
+                  DropdownButtonFormField(
                     decoration: InputDecoration(
+                        labelText: 'role',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                        ),
-                        labelText: 'role'),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'must not be empty';
-                    //   } else
-                    //     return null;
-                    // },
+                        )),
+                    value: _selectedVal,
+                    items: _list
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedVal = value as String;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -98,24 +122,6 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'Email'),
-                    // validator: (value) {
-                    //   const pattern =
-                    //       r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
-                    //       r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-                    //       r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
-                    //       r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-                    //       r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-                    //       r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-                    //       r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-                    //   final regex = RegExp(pattern);
-
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'enter email';
-                    //   } else if (!regex.hasMatch(value)) {
-                    //     return 'enter valid email';
-                    //   } else
-                    //     return null;
-                    // },
                   ),
                   const SizedBox(
                     height: 20,
@@ -140,14 +146,6 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         labelText: 'password'),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'enter psw';
-                    //   } else if (value.length < 8) {
-                    //     return 'password should exceed 8 character';
-                    //   } else
-                    //     return null;
-                    // },
                   ),
                   const SizedBox(
                     height: 10,
@@ -191,7 +189,7 @@ class _RegisterState extends State<Register> {
                           EmailController.text.toString(),
                           passwordController.text.toString(),
                           nameController.text.toString(),
-                          roleController.text.toString(),
+                          _selectedVal.toString(),
                           phoneNumberController.toString());
                     },
                     color: Colors.blue,

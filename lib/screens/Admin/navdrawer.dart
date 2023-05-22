@@ -3,6 +3,7 @@ import 'package:project_3/screens/Admin/addProducts.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
 import 'package:project_3/screens/Admin/order.dart';
 import 'package:project_3/screens/Admin/product.dart';
+import 'package:project_3/screens/Admin/review.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class NavDrawer extends StatelessWidget {
               AddProducts(
                   text: 'AddProduct', onClick: () => selectedItem(context, 2)),
               product(text: 'product', onClick: () => selectedItem(context, 3)),
+              Review(text: 'reviews', onClick: () => selectedItem(context, 4)),
             ],
           ),
         ),
@@ -48,6 +50,10 @@ class NavDrawer extends StatelessWidget {
       case 3:
         Navigator.of(context).push(
             (MaterialPageRoute(builder: (context) => DashboardProduct())));
+        break;
+      case 4:
+        Navigator.of(context)
+            .push((MaterialPageRoute(builder: (context) => ReviewScreen())));
         break;
     }
   }
@@ -94,6 +100,16 @@ class NavDrawer extends StatelessWidget {
   }
 
   Home({required String text, required Function() onClick}) {
+    return ListTile(
+      title: Text(
+        text,
+        style: TextStyle(color: Colors.grey),
+      ),
+      onTap: onClick,
+    );
+  }
+
+  Review({required String text, required Function() onClick}) {
     return ListTile(
       title: Text(
         text,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:project_3/fxn/book.dart';
@@ -28,6 +29,7 @@ class _DesState extends State<Des> {
   var descriptionController = TextEditingController();
   var imageController = TextEditingController();
   var ratingController = TextEditingController();
+  var reviewController = TextEditingController();
   String name = '';
   String pnumb = '';
   Future<void> getName() async {
@@ -65,51 +67,6 @@ class _DesState extends State<Des> {
   @override
   Widget build(BuildContext context) {
     //  final uemail = FirebaseAuth.instance.currentUser!.email;
-
-    void showRating() {
-      Widget okButton = ElevatedButton(
-        child: Text("OK"),
-        onPressed: () {
-          try {
-            var pid = widget.package.pId.toString();
-            final productRef =
-                FirebaseFirestore.instance.collection('Allposts').doc(pid);
-            productRef.set(
-                {
-                  'ratings': ratingController.text,
-                },
-                SetOptions(
-                  merge: true,
-                )).then((value) {
-              Navigator.pop(context);
-              setState(() {});
-            });
-          } catch (e) {
-            print(e);
-          }
-        },
-      );
-      AlertDialog alert = AlertDialog(
-        title: Text("Rating"),
-        content: TextFormField(
-          controller: ratingController,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              labelText: 'rating'),
-        ),
-        actions: [
-          okButton,
-        ],
-      );
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
 
     final uname = getName();
     return Scaffold(
@@ -190,9 +147,7 @@ class _DesState extends State<Des> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
-                    showRating();
-                  },
+                  onTap: () {},
                   child: RatingBar(
                     rating: widget.package.ratings == null
                         ? []
@@ -202,10 +157,58 @@ class _DesState extends State<Des> {
                 ),
                 CustomButton(
                     text: 'reviews',
-                    onPress: () {},
+                    onPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('update or delete'),
+                            content: Container(
+                              height: 200,
+                              width: 100,
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    controller: reviewController,
+                                  ),
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  CustomButton(
+                                    text: 'submit',
+                                    onPress: () {
+                                      FirebaseFirestore.instance
+                                          .collection('reviews')
+                                          .doc()
+                                          .set({
+                                        'review': reviewController.text,
+                                        'sid': FirebaseAuth
+                                            .instance.currentUser!.uid,
+                                        'sEmail': FirebaseAuth
+                                            .instance.currentUser!.email,
+                                        'sName': name,
+                                        'uid': widget.package.uId,
+                                        'uemail': widget.package.uemail,
+                                        'title': widget.package.title,
+                                        'descripiton':
+                                            widget.package.description,
+                                        'price': widget.package.price,
+                                      });
+                                    },
+                                    color: Colors.blue,
+                                    height: 50,
+                                    width: double.infinity,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                     color: Colors.blue,
-                    height: 20,
-                    width: 50)
+                    height: 30,
+                    width: 80)
               ],
             ),
           )),
