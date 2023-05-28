@@ -258,12 +258,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'lat': x,
         'lon': y,
         'n': numberController.text.toString(),
-        'ratings': 0,
+        'ratings': 5.toString(),
       }).then((value) {
         FirebaseFirestore.instance.collection('ratings').doc(id).set({
           'ratings': [
             {
-              'rid': null,
+              'rid': user.uid,
               'rating': 5.toString(),
               'pid': id,
             }

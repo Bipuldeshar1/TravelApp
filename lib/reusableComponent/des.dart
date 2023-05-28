@@ -71,37 +71,82 @@ class _DesState extends State<Des> {
     fetchRatings();
   }
 
+  // void fetchRatings() async {
+  //   // Fetch all documents within the 'ratings' collection
+  //   QuerySnapshot<Map<String, dynamic>> querySnapshot =
+  //       await FirebaseFirestore.instance.collection('ratings').get();
+
+  //   List<QueryDocumentSnapshot<Map<String, dynamic>>> ratingDocs =
+  //       querySnapshot.docs;
+
+  //   for (var ratingDoc in ratingDocs) {
+  //     List<dynamic> ratings = ratingDoc.data()['ratings'] as List<dynamic>;
+
+  //     for (var ratingObj in ratings) {
+  //       var ratingValue = double.parse(ratingObj['rating']);
+
+  //       if (ratingValue is int) {
+  //         sumRatings += ratingValue.toDouble();
+  //       } else if (ratingValue is double) {
+  //         sumRatings += ratingValue;
+  //       }
+  //     }
+
+  //     totalRatings += ratings.length;
+  //   }
+
+  //   if (totalRatings > 0) {
+  //     averageRating = sumRatings / totalRatings;
+  //     print('Average Rating: $averageRating');
+  //     print('sum${sumRatings}');
+  //   } else {
+  //     print('No ratings available.');
+  //   }
+  //   setState(() {});
+  // }
+
   void fetchRatings() async {
-    // Fetch all documents within the 'ratings' collection
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('ratings').get();
+    // Fetch the document with the given currentPid from the 'ratings' collection
+    var currentPid = widget.package.pId;
+    DocumentSnapshot<Map<String, dynamic>> docSnapshot = await FirebaseFirestore
+        .instance
+        .collection('ratings')
+        .doc(currentPid)
+        .get();
 
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> ratingDocs =
-        querySnapshot.docs;
-
-    for (var ratingDoc in ratingDocs) {
-      List<dynamic> ratings = ratingDoc.data()['ratings'] as List<dynamic>;
+    if (docSnapshot.exists) {
+      List<dynamic> ratings = docSnapshot.data()?['ratings'] as List<dynamic>;
 
       for (var ratingObj in ratings) {
-        var ratingValue = double.parse(ratingObj['rating']);
+        String pid = ratingObj['pid'];
+        String rating = ratingObj['rating'];
+        String rid = ratingObj['rid'];
 
-        if (ratingValue is int) {
-          sumRatings += ratingValue.toDouble();
-        } else if (ratingValue is double) {
-          sumRatings += ratingValue;
+        if (pid == currentPid) {
+          var ratingValue = double.parse(rating);
+
+          if (ratingValue is int) {
+            sumRatings += ratingValue.toDouble();
+          } else if (ratingValue is double) {
+            sumRatings += ratingValue;
+          }
+
+          totalRatings++;
         }
       }
 
-      totalRatings += ratings.length;
+      if (totalRatings > 0) {
+        averageRating = sumRatings / totalRatings;
+        print('Average Rating: $averageRating');
+        print('Sum of Ratings: $sumRatings');
+      } else {
+        print('No ratings available for the current PID.');
+      }
+    } else {
+      print(
+          'Document with the current PID does not exist in the ratings collection.');
     }
 
-    if (totalRatings > 0) {
-      averageRating = sumRatings / totalRatings;
-      print('Average Rating: $averageRating');
-      print('sum${sumRatings}');
-    } else {
-      print('No ratings available.');
-    }
     setState(() {});
   }
 
