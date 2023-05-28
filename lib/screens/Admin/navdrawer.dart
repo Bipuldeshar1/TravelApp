@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_3/screens/Admin/addProducts.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
-import 'package:project_3/screens/Admin/order.dart';
+import 'package:project_3/screens/Admin/confiremBooking.dart';
+import 'package:project_3/screens/Admin/pendingBooking.dart';
+
 import 'package:project_3/screens/Admin/product.dart';
 import 'package:project_3/screens/Admin/review.dart';
 
@@ -20,11 +22,17 @@ class NavDrawer extends StatelessWidget {
               Home(text: 'Home', onClick: () => selectedItem(context, 0)),
               // AddAdmin(
               //     text: 'AddAdmin', onClick: () => selectedItem(context, 1)),
-              orders(text: 'orders', onClick: () => selectedItem(context, 1)),
+              orders(
+                  text: 'Pendeing Bookings',
+                  onClick: () => selectedItem(context, 1)),
               AddProducts(
-                  text: 'AddProduct', onClick: () => selectedItem(context, 2)),
-              product(text: 'product', onClick: () => selectedItem(context, 3)),
+                  text: 'Add Destination',
+                  onClick: () => selectedItem(context, 2)),
+              product(text: 'Posts', onClick: () => selectedItem(context, 3)),
               Review(text: 'reviews', onClick: () => selectedItem(context, 4)),
+              CBooking(
+                  text: 'confirmed Bookings',
+                  onClick: () => selectedItem(context, 5)),
             ],
           ),
         ),
@@ -41,7 +49,7 @@ class NavDrawer extends StatelessWidget {
         break;
       case 1:
         Navigator.of(context)
-            .push((MaterialPageRoute(builder: (context) => DashboardOrder())));
+            .push((MaterialPageRoute(builder: (context) => PendingBooking())));
         break;
       case 2:
         Navigator.of(context).push(
@@ -49,11 +57,15 @@ class NavDrawer extends StatelessWidget {
         break;
       case 3:
         Navigator.of(context).push(
-            (MaterialPageRoute(builder: (context) => DashboardProduct())));
+            (MaterialPageRoute(builder: (context) => DashboardProducts())));
         break;
       case 4:
         Navigator.of(context)
             .push((MaterialPageRoute(builder: (context) => ReviewScreen())));
+        break;
+      case 5:
+        Navigator.of(context)
+            .push((MaterialPageRoute(builder: (context) => ConfirmBooking())));
         break;
     }
   }
@@ -110,6 +122,16 @@ class NavDrawer extends StatelessWidget {
   }
 
   Review({required String text, required Function() onClick}) {
+    return ListTile(
+      title: Text(
+        text,
+        style: TextStyle(color: Colors.grey),
+      ),
+      onTap: onClick,
+    );
+  }
+
+  CBooking({required String text, required Function() onClick}) {
     return ListTile(
       title: Text(
         text,

@@ -51,6 +51,11 @@ dependencies:
   http: ^0.13.6
   dropdown_input: ^0.0.1
 
+  chat_bubbles: ^1.4.1
+  intl: ^0.18.1
+  dialog_flowtter: ^0.3.3
+  dialogflow_grpc: ^0.2.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -79,6 +84,10 @@ flutter:
     - lib/assets/login.png
     - lib/assets/register.png
     - lib/assets/image.png
+    - lib/assets/robo.jpg
+    - lib/assets/1.jpg
+    - lib/assets/2.jpg
+    - lib/assets/3.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

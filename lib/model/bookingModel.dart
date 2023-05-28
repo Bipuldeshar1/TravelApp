@@ -1,4 +1,5 @@
 class Booking {
+  String id;
   String bookingDate;
   String pId;
   String pDescription;
@@ -11,8 +12,10 @@ class Booking {
   String uId;
   String uName;
   String pnum;
+  String msg;
 
   Booking({
+    required this.id,
     required this.bookingDate,
     required this.pId,
     required this.pDescription,
@@ -25,12 +28,14 @@ class Booking {
     required this.uId,
     required this.uName,
     required this.pnum,
+    required this.msg,
   });
 
   factory Booking.fromJson(Map<String, dynamic> map) {
     return Booking(
       bookingDate: map['bookingDate'].toString(),
       pId: map['pId'] ?? '',
+      id: map['id'] ?? '',
       pDescription: map['pdescription'] ?? '',
       pImg: map['pimg'] ?? '',
       price: map['price'] ?? 0,
@@ -41,23 +46,7 @@ class Booking {
       uId: map['uId'] ?? '',
       uName: map['uName'] ?? '',
       pnum: map['pnum'] ?? '',
+      msg: map['msg'] ?? '',
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'bookingDate': bookingDate,
-      'pId': pId,
-      'pdescription': pDescription,
-      'pimg': pImg,
-      'price': price,
-      'ptitle': pTitle,
-      'sEmail': sEmail,
-      'sid': sId,
-      'uEmial': uEmail,
-      'uId': uId,
-      'uName': uName,
-      'pnum': pnum,
-    };
   }
 }

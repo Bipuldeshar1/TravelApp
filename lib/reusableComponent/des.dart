@@ -35,6 +35,9 @@ class _DesState extends State<Des> {
   var reviewController = TextEditingController();
   String name = '';
   String pnumb = '';
+  int totalRatings = 0;
+  double sumRatings = 0.0;
+  double averageRating = 0.0;
   Future<void> getName() async {
     try {
       final x = await FirebaseFirestore.instance
@@ -65,6 +68,81 @@ class _DesState extends State<Des> {
   void initState() {
     super.initState();
     getName();
+    fetchRatings();
+  }
+
+  void fetchRatings() async {
+    // Fetch all documents within the 'ratings' collection
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('ratings').get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> ratingDocs =
+        querySnapshot.docs;
+
+    for (var ratingDoc in ratingDocs) {
+      List<dynamic> ratings = ratingDoc.data()['ratings'] as List<dynamic>;
+
+      for (var ratingObj in ratings) {
+        var ratingValue = double.parse(ratingObj['rating']);
+
+        if (ratingValue is int) {
+          sumRatings += ratingValue.toDouble();
+        } else if (ratingValue is double) {
+          sumRatings += ratingValue;
+        }
+      }
+
+      totalRatings += ratings.length;
+    }
+
+    if (totalRatings > 0) {
+      averageRating = sumRatings / totalRatings;
+      print('Average Rating: $averageRating');
+      print('sum${sumRatings}');
+    } else {
+      print('No ratings available.');
+    }
+    setState(() {});
+  }
+
+  void sendRating() async {
+    String packageId = widget.package.pId;
+
+    // Fetch the current list of ratings
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('ratings')
+        .doc(packageId)
+        .get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+      List<dynamic> ratingsList = data['ratings'] ?? [];
+
+      // Add the new rating to the existing list
+      ratingsList.add({
+        'rating': ratingController.text,
+        'rid': FirebaseAuth.instance.currentUser!.uid,
+        'pid': packageId,
+      });
+
+      // Update the document with the modified list
+      await FirebaseFirestore.instance
+          .collection('ratings')
+          .doc(packageId)
+          .update({'ratings': ratingsList})
+          .then((value) => FirebaseFirestore.instance
+                  .collection('Allposts')
+                  .doc(widget.package.pId)
+                  .update({
+                'ratings': averageRating,
+              }))
+          .then((value) => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => BottomNav())));
+    } else {
+      // Handle the case when the document does not exist
+      print('Document not found');
+    }
   }
 
   @override
@@ -152,48 +230,30 @@ class _DesState extends State<Des> {
                 InkWell(
                     onTap: () {
                       showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('rating'),
-                            content: Container(
-                              height: 200,
-                              width: 100,
-                              child: Column(
-                                children: [
-                                  TextField(
-                                    controller: reviewController,
-                                  ),
-                                  const SizedBox(
-                                    height: 40,
-                                  ),
-                                  CustomButton(
-                                    text: 'ok',
-                                    onPress: () {
-                                      FirebaseFirestore.instance
-                                          .collection('Allposts')
-                                          .doc(widget.package.pId)
-                                          .update({
-                                        'ratings':
-                                            int.parse(reviewController.text)
-                                      }).then((value) => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BottomNav())));
-                                    },
-                                    color: Colors.blue,
-                                    height: 40,
-                                    width: double.infinity,
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Rating'),
+                              actions: [
+                                Column(
+                                  children: [
+                                    TextField(
+                                      controller: ratingController,
+                                    ),
+                                    ElevatedButton(
+                                      child: Text('ok'),
+                                      onPressed: () {
+                                        sendRating();
+                                      },
+                                    )
+                                  ],
+                                )
+                              ],
+                            );
+                          });
                     },
-                    child: RatingBar(rating: widget.package.ratings)),
+                    child: RatingBar(
+                        rating: averageRating.ceil().floor().toDouble())),
                 CustomButton(
                     text: 'reviews',
                     onPress: () {
@@ -369,17 +429,16 @@ class _DesState extends State<Des> {
         showDialog(
           context: context,
           builder: (context) {
+            Books b = new Books();
+            b.book(uid, uname, uemail, date, pId, title, description, img,
+                price, sid, sEmail, pnum);
             return AlertDialog(
               title: const Text('Payment Successful'),
               actions: [
                 SimpleDialogOption(
                     child: const Text('OK'),
                     onPressed: () {
-                      Books b = new Books();
-                      b.book(uid, uname, uemail, date, pId, title, description,
-                          img, price, sid, sEmail, pnum);
                       Navigator.pop(context);
-                      print('oks');
                     })
               ],
             );

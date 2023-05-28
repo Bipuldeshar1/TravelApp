@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="project_3"
         android:name="${applicationName}"
@@ -12,7 +13,7 @@
        
 
     <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="aa"/>
+               android:value="AIzaSyDaqkp7BSmJSFgAzrEp66ORSNSW7VyQeSo"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

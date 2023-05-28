@@ -17,11 +17,6 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   Widget build(BuildContext context) {
-//     Future<List<PackageModel>>fav()async{
-// var documentSnapshot= await FirebaseFirestore.instance.collection('fav').where('uid',isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
-//   final favData= documentSnapshot.docs.map((e) => PackageModel.fromJson(e.data())).toList();
-//   return favData;
-//     }
     Stream<List<PackageModel>> fav() async* {
       try {
         var documentSnapshot = await FirebaseFirestore.instance

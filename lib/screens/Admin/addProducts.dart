@@ -220,9 +220,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                     }
-                   setState(() {
-                      addPosts();
-                   });
+
+                    addPosts();
+                    titleController.clear();
+                    descriptionController.clear();
+                    numberController.clear();
+                    priceController.clear();
                   },
                   color: Colors.yellow,
                   height: 50,
@@ -255,6 +258,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'lat': x,
         'lon': y,
         'n': numberController.text.toString(),
+        'ratings': 0,
+      }).then((value) {
+        FirebaseFirestore.instance.collection('ratings').doc(id).set({
+          'ratings': [
+            {
+              'rid': null,
+              'rating': 5.toString(),
+              'pid': id,
+            }
+          ]
+        });
       });
     } catch (e) {
       print(e);

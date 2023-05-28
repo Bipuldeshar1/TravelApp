@@ -12,7 +12,7 @@ class CustomCard extends StatelessWidget {
     required this.price,
     required this.title,
     required this.des,
-    this.onpresss,
+    required this.onpresss,
   });
 
   @override

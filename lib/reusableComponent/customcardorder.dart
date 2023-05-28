@@ -7,6 +7,7 @@ class CustomCardorders extends StatelessWidget {
   String cname;
   String pnum;
   VoidCallback? onpresss;
+
   CustomCardorders({
     required this.img,
     required this.price,
@@ -82,7 +83,8 @@ class CustomCardorders extends StatelessWidget {
                                   ),
                                 ),
                                 IconButton(
-                                    onPressed: onpresss, icon: Icon(Icons.menu))
+                                    onPressed: onpresss,
+                                    icon: Icon(Icons.menu_sharp))
                               ],
                             ),
                           ),

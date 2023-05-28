@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/model/reviewmodel.dart';
+import 'package:project_3/screens/Admin/navdrawer.dart';
 
 import '../../reusableComponent/simmer/s.dart';
 
@@ -27,6 +28,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
     }
 
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('reviews'),
       ),
