@@ -1,11 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/chat/homePageChat.dart';
+import 'package:project_3/model/userModel.dart';
 import 'package:project_3/screens/Home/fav.dart';
 import 'package:project_3/screens/Home/home.dart';
 import 'package:project_3/screens/Home/profile.dart';
-import 'package:project_3/screens/Home/soloPost.dart';
 
 class BottomNav extends StatefulWidget {
-  BottomNav({Key? key}) : super(key: key);
+  UserModel userModel;
+  User firebaseUser;
+
+  BottomNav({
+    required this.firebaseUser,
+    required this.userModel,
+  });
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -13,12 +21,24 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
-  final List<Map<String, dynamic>> _pages = [
-    {'page': HomeScreen()},
-    {'page': FavouriteScreen()},
-    {'page': ProfileScreen()},
-    {'page': SoloPost()},
-  ];
+  late final List<Map<String, dynamic>> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      {'page': HomeScreen()},
+      {'page': FavouriteScreen()},
+      {'page': ProfileScreen()},
+      {
+        'page': HomePageChat(
+          userModel: widget.userModel,
+          firebaseUser: widget.firebaseUser,
+        )
+      },
+    ];
+  }
+
   void _selectedPage(int index) {
     setState(() {
       _selectedIndex = index;

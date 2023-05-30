@@ -60,26 +60,17 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  Des(package: snapshot.data![index])));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomCardFav(
-                        img: snapshot.data![index].img,
-                        price: snapshot.data![index].price,
-                        title: snapshot.data![index].title,
-                        onpresss: () {
-                          setState(() {
-                            del(snapshot.data![index].pId);
-                          });
-                        },
-                      ),
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomCardFav(
+                      img: snapshot.data![index].img,
+                      price: snapshot.data![index].price,
+                      title: snapshot.data![index].title,
+                      onpresss: () {
+                        setState(() {
+                          del(snapshot.data![index].pId);
+                        });
+                      },
                     ),
                   );
                 },

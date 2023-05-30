@@ -7,7 +7,6 @@ import 'package:project_3/fxn/book.dart';
 
 import 'package:project_3/model/packagemodel.dart';
 
-import 'package:project_3/model/userModel.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 import 'package:project_3/reusableComponent/CustomButton.dart';
@@ -71,40 +70,6 @@ class _DesState extends State<Des> {
     fetchRatings();
   }
 
-  // void fetchRatings() async {
-  //   // Fetch all documents within the 'ratings' collection
-  //   QuerySnapshot<Map<String, dynamic>> querySnapshot =
-  //       await FirebaseFirestore.instance.collection('ratings').get();
-
-  //   List<QueryDocumentSnapshot<Map<String, dynamic>>> ratingDocs =
-  //       querySnapshot.docs;
-
-  //   for (var ratingDoc in ratingDocs) {
-  //     List<dynamic> ratings = ratingDoc.data()['ratings'] as List<dynamic>;
-
-  //     for (var ratingObj in ratings) {
-  //       var ratingValue = double.parse(ratingObj['rating']);
-
-  //       if (ratingValue is int) {
-  //         sumRatings += ratingValue.toDouble();
-  //       } else if (ratingValue is double) {
-  //         sumRatings += ratingValue;
-  //       }
-  //     }
-
-  //     totalRatings += ratings.length;
-  //   }
-
-  //   if (totalRatings > 0) {
-  //     averageRating = sumRatings / totalRatings;
-  //     print('Average Rating: $averageRating');
-  //     print('sum${sumRatings}');
-  //   } else {
-  //     print('No ratings available.');
-  //   }
-  //   setState(() {});
-  // }
-
   void fetchRatings() async {
     // Fetch the document with the given currentPid from the 'ratings' collection
     var currentPid = widget.package.pId;
@@ -151,6 +116,8 @@ class _DesState extends State<Des> {
   }
 
   void sendRating() async {
+    //old
+
     String packageId = widget.package.pId;
 
     // Fetch the current list of ratings
@@ -182,8 +149,7 @@ class _DesState extends State<Des> {
                   .update({
                 'ratings': averageRating,
               }))
-          .then((value) => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => BottomNav())));
+          .then((value) => Navigator.pop(context));
     } else {
       // Handle the case when the document does not exist
       print('Document not found');
@@ -337,11 +303,8 @@ class _DesState extends State<Des> {
                                         'descripiton':
                                             widget.package.description,
                                         'price': widget.package.price,
-                                      }).then((value) => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BottomNav())));
+                                      }).then((value) =>
+                                              Navigator.pop(context));
                                     },
                                     color: Colors.blue,
                                     height: 50,

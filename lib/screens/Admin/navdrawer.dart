@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/chat/homePageChat.dart';
+import 'package:project_3/model/userModel.dart';
 import 'package:project_3/screens/Admin/addProducts.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
 import 'package:project_3/screens/Admin/confiremBooking.dart';
@@ -8,8 +12,6 @@ import 'package:project_3/screens/Admin/product.dart';
 import 'package:project_3/screens/Admin/review.dart';
 
 class NavDrawer extends StatelessWidget {
-  const NavDrawer({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,6 +35,8 @@ class NavDrawer extends StatelessWidget {
               CBooking(
                   text: 'confirmed Bookings',
                   onClick: () => selectedItem(context, 5)),
+              homePageChat(
+                  text: 'chat', onClick: () => selectedItem(context, 6)),
             ],
           ),
         ),
@@ -41,7 +45,17 @@ class NavDrawer extends StatelessWidget {
   }
 
 //drawer item redirect to corresponding page due to this fxn
-  selectedItem(context, int i) {
+  selectedItem(context, int i) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    DocumentSnapshot userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get();
+
+    UserModel userModel =
+        UserModel.fromMap(userData.data() as Map<String, dynamic>);
+
     switch (i) {
       case 0:
         Navigator.of(context)
@@ -67,6 +81,11 @@ class NavDrawer extends StatelessWidget {
         Navigator.of(context)
             .push((MaterialPageRoute(builder: (context) => ConfirmBooking())));
         break;
+      case 6:
+        Navigator.of(context).push((MaterialPageRoute(
+            builder: (context) =>
+                HomePageChat(userModel: userModel, firebaseUser: user))));
+        break;
     }
   }
 
@@ -91,16 +110,6 @@ class NavDrawer extends StatelessWidget {
     );
   }
 
-  // AddAdmin({required String text, required Function() onClick}) {
-  //   return ListTile(
-  //     title: Text(
-  //       text,
-  //       style: TextStyle(color: Colors.grey),
-  //     ),
-  //     onTap: onClick,
-  //   );
-  // }
-
   orders({required String text, required Function() onClick}) {
     return ListTile(
       title: Text(
@@ -112,6 +121,16 @@ class NavDrawer extends StatelessWidget {
   }
 
   Home({required String text, required Function() onClick}) {
+    return ListTile(
+      title: Text(
+        text,
+        style: TextStyle(color: Colors.grey),
+      ),
+      onTap: onClick,
+    );
+  }
+
+  homePageChat({required String text, required Function() onClick}) {
     return ListTile(
       title: Text(
         text,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/model/userModel.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
 import 'package:project_3/screens/Home/nav.dart';
 
@@ -35,11 +36,20 @@ class Fxn {
 //select colors attractive for ui
 //scaffold timer
 //scaffold add where neded
-  route(BuildContext context) {
+  route(BuildContext context) async {
     User? user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection('Users_Details')
+
+    DocumentSnapshot userData = await FirebaseFirestore.instance
+        .collection('users')
         .doc(user!.uid)
+        .get();
+
+    UserModel userModel =
+        UserModel.fromMap(userData.data() as Map<String, dynamic>);
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
         .get()
         .then((DocumentSnapshot a) {
       if (a.exists) {
@@ -50,7 +60,10 @@ class Fxn {
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         } else {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => BottomNav()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      BottomNav(firebaseUser: user, userModel: userModel)));
           final snackbar = SnackBar(content: Text('successful  loggedin'));
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         }
