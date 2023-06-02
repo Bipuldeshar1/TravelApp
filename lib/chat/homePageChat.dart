@@ -56,7 +56,7 @@ class _HomePageChatState extends State<HomePageChat> {
                           List<String> participantsKeys =
                               participants.keys.toList();
 
-                          // participants.remove(widget.userModel.uid);
+                          participants.remove(widget.userModel.uid);
 
                           return FutureBuilder(
                             future: FirebaseHelper.getUserModelById(
