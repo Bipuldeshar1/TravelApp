@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -275,26 +275,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
-  // void addPosts(PackageModel product) {
-  //   int date = DateTime.now().millisecondsSinceEpoch;
-  //   try {
-  //     final User? user = FirebaseAuth.instance.currentUser;
-  //     String uid = user!.uid;
-  //     final postRef = FirebaseDatabase.instance.ref().child('All_posts');
-  //     final post = postRef.child(date.toString()).set({
-  //       'uId': uid,
-  //       'uemail': user.email,
-  //       'Id': date, //post id
-  //       'title': titleController.text.toString(),
-  //       'description': descriptionController.text.toString(),
-  //       'price': priceController.text.toString(),
-  //       'img': imageUrl,
-  //     });
-  //     print(post);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()
         .then((value) {})

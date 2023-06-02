@@ -71,12 +71,22 @@ class MyAppLoggedIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BottomNav(
-        firebaseUser: firebaseUser,
-        userModel: userModel,
-      ),
-    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
+    return KhaltiScope(
+        publicKey: 'test_public_key_5b2959a7a1f14136a53a5cc83e2ee970',
+        builder: (context, navigatorKey) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            localizationsDelegates: const [
+              KhaltiLocalizations.delegate,
+            ],
+            home: BottomNav(
+              firebaseUser: firebaseUser,
+              userModel: userModel,
+            ),
+          );
+        });
   }
 }

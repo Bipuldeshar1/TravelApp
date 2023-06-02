@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
@@ -24,10 +26,12 @@ class _DashboardProductsState extends State<DashboardProducts> {
   var imageController = TextEditingController();
   String imageUrl = '';
 
-  File? image;
+  File? images;
+
   @override
   Widget build(BuildContext context) {
     // List<PackageModel> packagemodel = [];
+    //8 sec timer to update
 
     Future<List<PackageModel>> fetch() async {
       final snapshot = await FirebaseFirestore.instance
@@ -94,6 +98,7 @@ class _DashboardProductsState extends State<DashboardProducts> {
                                       text: 'update',
                                       onPress: () {
                                         setState(() {
+                                          Navigator.pop(context);
                                           showMyDialog(
                                             package.pId,
                                             package.title,
@@ -207,10 +212,34 @@ class _DashboardProductsState extends State<DashboardProducts> {
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    width: 200,
-                    height: 200,
-                    child: Image(image: NetworkImage(image)),
+                  Row(
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 200,
+                        child: images != null
+                            ? Image.file(
+                                images!,
+                                fit: BoxFit.fill,
+                              )
+                            : Container(
+                                width: 200,
+                                height: 200,
+                                child: Image(
+                                  image: NetworkImage(
+                                    image,
+                                  ),
+                                ),
+                              ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          pickImage();
+                          setState(() {});
+                        },
+                        icon: Icon(Icons.update),
+                      ),
+                    ],
                   ),
                   TextField(
                     controller: titleController,
@@ -250,6 +279,7 @@ class _DashboardProductsState extends State<DashboardProducts> {
                       'title': titleController.text.toString(),
                       'description': descriptionController.text.toString(),
                       'price': priceController.text.toString(),
+                      'img': imageUrl,
                     }).then((value) => Navigator.pop(context));
                   });
                 },
@@ -258,5 +288,28 @@ class _DashboardProductsState extends State<DashboardProducts> {
             ],
           );
         });
+  }
+
+  void pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      String uniqueid = DateTime.now().microsecondsSinceEpoch.toString();
+      Reference reference = FirebaseStorage.instance.ref();
+      Reference referenceImage = reference.child('product_Image_post');
+      Reference referenceImageToUpload = referenceImage.child(uniqueid);
+
+      await referenceImageToUpload.putFile(File(image!.path));
+      print('sent');
+      imageUrl = await referenceImageToUpload.getDownloadURL();
+      print(imageUrl);
+
+      if (image != null) {
+        setState(() {
+          this.images = File(image.path);
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

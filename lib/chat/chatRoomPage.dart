@@ -119,9 +119,23 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           ? Colors.grey
                                           : Colors.blue,
                                       borderRadius: BorderRadius.circular(5)),
-                                  child: Text(
-                                    currentMessage.text.toString(),
-                                    style: TextStyle(color: Colors.white),
+                                  child: LayoutBuilder(
+                                    builder: (BuildContext context,
+                                        BoxConstraints constraints) {
+                                      return Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth:
+                                                150 // Set maximum width based on parent constraints
+                                            ),
+                                        child: Text(
+                                          currentMessage.text.toString(),
+                                          maxLines:
+                                              null, // Allow unlimited lines
+                                          softWrap: true, // Enable wrapping
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -143,29 +157,31 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                   },
                 ),
               )),
-              Container(
-                decoration: BoxDecoration(border: Border.all()),
-                child: Center(
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: TextField(
-                          controller: messageController,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: 'msg',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  child: Center(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: TextField(
+                            controller: messageController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              hintText: 'msg',
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          sendMessage();
-                        },
-                        icon: Icon(
-                          Icons.send,
-                        ),
-                      )
-                    ],
+                        IconButton(
+                          onPressed: () {
+                            sendMessage();
+                          },
+                          icon: Icon(
+                            Icons.send,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )

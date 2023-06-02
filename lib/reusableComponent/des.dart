@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:project_3/chat/chatRoomPage.dart';
 import 'package:project_3/fxn/book.dart';
 
 import 'package:project_3/model/packagemodel.dart';
@@ -37,6 +38,7 @@ class _DesState extends State<Des> {
   int totalRatings = 0;
   double sumRatings = 0.0;
   double averageRating = 0.0;
+
   Future<void> getName() async {
     try {
       final x = await FirebaseFirestore.instance
