@@ -38,11 +38,12 @@ class _DesState extends State<Des> {
   int totalRatings = 0;
   double sumRatings = 0.0;
   double averageRating = 0.0;
+  final _formKey = GlobalKey<FormState>();
 
   Future<void> getName() async {
     try {
       final x = await FirebaseFirestore.instance
-          .collection('Users_Details')
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
       if (x.exists) {
@@ -56,12 +57,12 @@ class _DesState extends State<Des> {
 
   Future<void> getNum() async {
     final x = await FirebaseFirestore.instance
-        .collection('Users_Details')
+        .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     if (x.exists) {
       final data = x.data();
-      pnumb = data!['pnum'];
+      pnumb = data!['pnum'] ?? "";
     }
   }
 
@@ -69,6 +70,7 @@ class _DesState extends State<Des> {
   void initState() {
     super.initState();
     getName();
+    getNum();
     fetchRatings();
   }
 
@@ -161,8 +163,9 @@ class _DesState extends State<Des> {
   @override
   Widget build(BuildContext context) {
     //  final uemail = FirebaseAuth.instance.currentUser!.email;
+    final uname = name.toString();
+    final pnum = pnumb.toString();
 
-    final uname = getName();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -248,18 +251,36 @@ class _DesState extends State<Des> {
                             return AlertDialog(
                               title: const Text('Rating'),
                               actions: [
-                                Column(
-                                  children: [
-                                    TextField(
-                                      controller: ratingController,
-                                    ),
-                                    ElevatedButton(
-                                      child: Text('ok'),
-                                      onPressed: () {
-                                        sendRating();
-                                      },
-                                    )
-                                  ],
+                                Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      TextFormField(
+                                        controller: ratingController,
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'cannot be null';
+                                          }
+                                          final val = int.parse(value);
+                                          if (val > 5) {
+                                            return 'review should be below 5';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text('ok'),
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _formKey.currentState!.save();
+                                            sendRating();
+                                          }
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             );
@@ -274,45 +295,59 @@ class _DesState extends State<Des> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('update or delete'),
+                            title: Text('Add a review'),
                             content: Container(
                               height: 200,
                               width: 100,
-                              child: Column(
-                                children: [
-                                  TextField(
-                                    controller: reviewController,
-                                  ),
-                                  const SizedBox(
-                                    height: 40,
-                                  ),
-                                  CustomButton(
-                                    text: 'submit',
-                                    onPress: () {
-                                      FirebaseFirestore.instance
-                                          .collection('reviews')
-                                          .doc()
-                                          .set({
-                                        'review': reviewController.text,
-                                        'sid': FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                        'sEmail': FirebaseAuth
-                                            .instance.currentUser!.email,
-                                        'sName': name,
-                                        'uid': widget.package.uId,
-                                        'uemail': widget.package.uemail,
-                                        'title': widget.package.title,
-                                        'descripiton':
-                                            widget.package.description,
-                                        'price': widget.package.price,
-                                      }).then((value) =>
-                                              Navigator.pop(context));
-                                    },
-                                    color: Colors.blue,
-                                    height: 50,
-                                    width: double.infinity,
-                                  ),
-                                ],
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: reviewController,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'cannot be null';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 40,
+                                    ),
+                                    CustomButton(
+                                      text: 'submit',
+                                      onPress: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+
+                                          FirebaseFirestore.instance
+                                              .collection('reviews')
+                                              .doc()
+                                              .set({
+                                            'review': reviewController.text,
+                                            'sid': FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            'sEmail': FirebaseAuth
+                                                .instance.currentUser!.email,
+                                            'sName': name,
+                                            'uid': widget.package.uId,
+                                            'uemail': widget.package.uemail,
+                                            'title': widget.package.title,
+                                            'descripiton':
+                                                widget.package.description,
+                                            'price': widget.package.price,
+                                          }).then((value) =>
+                                                  Navigator.pop(context));
+                                        }
+                                      },
+                                      color: Colors.blue,
+                                      height: 50,
+                                      width: double.infinity,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -379,6 +414,15 @@ class _DesState extends State<Des> {
               width: 10,
             ),
           ),
+          // SliverToBoxAdapter(
+          //   child: Column(
+          //     children: [
+          //       Text(pnum),
+          //       Text(name),
+          //       Text(FirebaseAuth.instance.currentUser!.email.toString())
+          //     ],
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: ElevatedButton(
                 onPressed: () {

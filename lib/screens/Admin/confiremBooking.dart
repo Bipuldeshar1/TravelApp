@@ -48,6 +48,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                     title: package.pTitle,
                     cname: package.uName,
                     pnum: package.pnum,
+                    email: package.uEmail,
                     onpresss: () {
                       myDialog(package);
                     },

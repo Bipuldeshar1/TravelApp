@@ -52,7 +52,7 @@ class _RegisterState extends State<Register> {
         decoration: const BoxDecoration(
             image: DecorationImage(
           image: AssetImage(
-            'lib/assets/register.png',
+            'lib/assets/login.png',
           ),
           fit: BoxFit.fill,
         )),
@@ -66,7 +66,7 @@ class _RegisterState extends State<Register> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 20,
+                    height: 80,
                   ),
                   const Text(
                     'Register',

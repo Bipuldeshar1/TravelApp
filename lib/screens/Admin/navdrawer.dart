@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/chat/adminchathome.dart';
 import 'package:project_3/chat/homePageChat.dart';
+
 import 'package:project_3/model/userModel.dart';
 import 'package:project_3/screens/Admin/addProducts.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
@@ -84,7 +86,7 @@ class NavDrawer extends StatelessWidget {
       case 6:
         Navigator.of(context).push((MaterialPageRoute(
             builder: (context) =>
-                HomePageChat(userModel: userModel, firebaseUser: user))));
+                HomePageChatAdmin(userModel: userModel, firebaseUser: user))));
         break;
     }
   }

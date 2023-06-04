@@ -32,7 +32,13 @@ class CardDashboard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           icon,
+          const SizedBox(
+            height: 20,
+          ),
           Text(title),
+          const SizedBox(
+            height: 20,
+          ),
           Text(content),
         ],
       ),

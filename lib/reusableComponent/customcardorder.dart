@@ -6,6 +6,7 @@ class CustomCardorders extends StatelessWidget {
   String title;
   String cname;
   String pnum;
+  String email;
   VoidCallback? onpresss;
 
   CustomCardorders({
@@ -14,6 +15,7 @@ class CustomCardorders extends StatelessWidget {
     required this.title,
     required this.cname,
     required this.pnum,
+    required this.email,
     this.onpresss,
   });
 
@@ -102,6 +104,7 @@ class CustomCardorders extends StatelessWidget {
                         const Text('orderby :'),
                         Text(cname),
                         Text(pnum),
+                        Text(email)
                       ],
                     ),
                   ),

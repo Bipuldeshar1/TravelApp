@@ -214,24 +214,30 @@ class _DashboardProductsState extends State<DashboardProducts> {
                 children: [
                   Row(
                     children: [
+                      // Container(
+                      //   width: 200,
+                      //   height: 200,
+                      //   child: images != null
+                      //       ? Image.file(
+                      //           images!,
+                      //           fit: BoxFit.fill,
+                      //         )
+                      //       : Container(
+                      //           width: 200,
+                      //           height: 200,
+                      //           child: Image(
+                      //             image: NetworkImage(
+                      //               image,
+                      //             ),
+                      //           ),
+                      //         ),
+                      // ),
+
                       Container(
-                        width: 200,
-                        height: 200,
-                        child: images != null
-                            ? Image.file(
-                                images!,
-                                fit: BoxFit.fill,
-                              )
-                            : Container(
-                                width: 200,
-                                height: 200,
-                                child: Image(
-                                  image: NetworkImage(
-                                    image,
-                                  ),
-                                ),
-                              ),
-                      ),
+                          width: 200,
+                          height: 200,
+                          child: Image(image: NetworkImage(image))),
+
                       IconButton(
                         onPressed: () {
                           pickImage();
@@ -279,7 +285,7 @@ class _DashboardProductsState extends State<DashboardProducts> {
                       'title': titleController.text.toString(),
                       'description': descriptionController.text.toString(),
                       'price': priceController.text.toString(),
-                      'img': imageUrl,
+                      'img': imageUrl
                     }).then((value) => Navigator.pop(context));
                   });
                 },
@@ -303,11 +309,7 @@ class _DashboardProductsState extends State<DashboardProducts> {
       imageUrl = await referenceImageToUpload.getDownloadURL();
       print(imageUrl);
 
-      if (image != null) {
-        setState(() {
-          this.images = File(image.path);
-        });
-      }
+      images = File(image.path);
     } catch (e) {
       print(e);
     }

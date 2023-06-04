@@ -6,25 +6,26 @@ import 'package:project_3/chat/searchPAge.dart';
 import 'package:project_3/model/chatRoomModel.dart';
 import 'package:project_3/model/firebasehelper.dart';
 import 'package:project_3/model/userModel.dart';
+import 'package:project_3/screens/Admin/navdrawer.dart';
 import 'package:project_3/screens/auth/login.dart';
 
-class HomePageChat extends StatefulWidget {
+class HomePageChatAdmin extends StatefulWidget {
   UserModel userModel;
   User firebaseUser;
-  HomePageChat({
+  HomePageChatAdmin({
     required this.userModel,
     required this.firebaseUser,
   });
   @override
-  State<HomePageChat> createState() => _HomePageChatState();
+  State<HomePageChatAdmin> createState() => _HomePageChatAdminState();
 }
 
-class _HomePageChatState extends State<HomePageChat> {
+class _HomePageChatAdminState extends State<HomePageChatAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text('chat'),
       ),
       body: Padding(
@@ -60,7 +61,7 @@ class _HomePageChatState extends State<HomePageChat> {
 
                           return FutureBuilder(
                             future: FirebaseHelper.getUserModelById(
-                                participantsKeys[1]),
+                                participantsKeys[0]),
                             builder: (context, userData) {
                               if (userData.connectionState ==
                                   ConnectionState.done) {

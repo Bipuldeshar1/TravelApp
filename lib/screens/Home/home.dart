@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_3/const/style.dart';
 import 'package:project_3/screens/Home/nnotification.dart';
+import 'package:project_3/screens/Home/seeAll.dart';
 
 import 'package:project_3/widgets/components/Bottom_Section.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -97,7 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SliverToBoxAdapter(
-              child: LabelSection(text: 'recommened', style: heading1),
+              child: LabelSection(
+                text: 'recommened',
+                style: heading1,
+              ),
             ),
             const SliverToBoxAdapter(
               child: SizedBox(
@@ -108,7 +112,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: TopSection(),
             ),
             SliverToBoxAdapter(
-              child: LabelSection(text: 'Allposts', style: heading1),
+              child: LabelSection(
+                text: 'Allposts',
+                style: heading1,
+              ),
             ),
             const SliverToBoxAdapter(
               child: SizedBox(

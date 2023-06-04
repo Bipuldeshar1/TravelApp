@@ -12,6 +12,7 @@ import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/map/map.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
+import 'package:project_3/screens/Admin/product.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProductScreen extends StatefulWidget {
@@ -146,9 +147,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     return null;
                   },
                 ),
-                SizedBox(
-                  height: 40,
-                ),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: 'phone number'),
@@ -157,7 +155,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     if (value!.isEmpty) {
                       return 'enter num';
                     } else if (value.length != 10) {
-                      return 'number should be equal to 10 char';
+                      return 'number should be equal to 10  char';
+                    } else {
+                      return null;
                     }
                     return null;
                   },
@@ -219,13 +219,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      addPosts();
+                      titleController.clear();
+                      descriptionController.clear();
+                      numberController.clear();
+                      priceController.clear();
                     }
-
-                    addPosts();
-                    titleController.clear();
-                    descriptionController.clear();
-                    numberController.clear();
-                    priceController.clear();
                   },
                   color: Colors.yellow,
                   height: 50,
@@ -269,7 +268,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
             }
           ]
         });
-      });
+      }).then((value) => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => DashboardProducts())));
     } catch (e) {
       print(e);
     }

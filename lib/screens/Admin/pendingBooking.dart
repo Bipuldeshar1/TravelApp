@@ -47,6 +47,7 @@ class _PendingBookingState extends State<PendingBooking> {
                     title: package.pTitle,
                     cname: package.uName,
                     pnum: package.pnum,
+                    email: package.sEmail,
                     onpresss: () {
                       myDialog(package);
                     },
