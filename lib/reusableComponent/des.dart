@@ -390,6 +390,7 @@ class _DesState extends State<Des> {
                                                     .collection('reviews')
                                                     .doc()
                                                     .set({
+                                                  'pid': widget.package.pId,
                                                   'review':
                                                       reviewController.text,
                                                   'sid': FirebaseAuth.instance
@@ -663,92 +664,98 @@ class _DesState extends State<Des> {
           // )
 
           SliverToBoxAdapter(
-            child: FutureBuilder(
-              future: fetchReview(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Container(
-                    height: 200,
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          final package = snapshot.data![index];
+            child: Container(
+              width: double.infinity,
+              height: 200,
+              child: FutureBuilder(
+                future: fetchReview(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      width: 200,
+                      height: 200,
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final package = snapshot.data![index];
 
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey
-                                        .withOpacity(0.3), // Shadow color
-                                    spreadRadius: 2, // Shadow spread radius
-                                    blurRadius: 5, // Shadow blur radius
-                                    offset: Offset(0, 3), // Shadow offset
-                                  )
-                                ],
-                              ),
-                              height: 120,
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 6,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        package.title,
-                                        style: heading2,
-                                      ),
-                                      const Text(
-                                        'review:',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                      Container(
-                                        width: 300,
-                                        child: Text(
-                                          package.review,
-                                          style: p3,
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey
+                                          .withOpacity(0.3), // Shadow color
+                                      spreadRadius: 2, // Shadow spread radius
+                                      blurRadius: 5, // Shadow blur radius
+                                      offset: Offset(0, 3), // Shadow offset
+                                    )
+                                  ],
+                                ),
+                                height: 120,
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 6,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          package.title,
+                                          style: heading2,
                                         ),
-                                      ),
-                                      const Text(
-                                        'reviewed by:',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                      Text(package.uemail, style: p3),
-                                    ],
-                                  ),
-                                ],
+                                        const Text(
+                                          'review:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                        Container(
+                                          width: 300,
+                                          child: Text(
+                                            package.review,
+                                            style: p3,
+                                          ),
+                                        ),
+                                        const Text(
+                                          'reviewed by:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        Text(package.uemail, style: p3),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        }),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("Error fetching data!");
-                } else {
-                  return Container(
-                    height: double.infinity,
-                    child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (BuildContext context, int index) {
-                        return s();
-                      },
-                    ),
-                  );
-                }
-              },
+                            );
+                          }),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text("Error fetching data!");
+                  } else {
+                    return Container(
+                      height: double.infinity,
+                      child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (BuildContext context, int index) {
+                          return s();
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
