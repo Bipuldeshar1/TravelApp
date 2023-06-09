@@ -47,7 +47,7 @@ class _DesState extends State<Des> {
   Future<List<ReviewModel>> fetchReview() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('reviews')
-        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where('pid', isEqualTo: widget.package.pId)
         .get();
     final userData = snapshot.docs
         .map((doc) => ReviewModel.fromJson(doc.data()))
