@@ -62,28 +62,6 @@ class _DesMapState extends State<DesMap> {
           myLocationButtonEnabled: true,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            getUserCurrentLocation().then((value) async {
-              _marker.add(Marker(
-                markerId: MarkerId('2'),
-                position: LatLng(value.latitude, value.longitude),
-                infoWindow: InfoWindow(title: 'current location'),
-              ));
-              CameraPosition cameraPosition = CameraPosition(
-                target: LatLng(value.latitude, value.longitude),
-                zoom: 14,
-              );
-
-              final GoogleMapController controller = await _controller.future;
-              controller.animateCamera(
-                  CameraUpdate.newCameraPosition(cameraPosition));
-            });
-          });
-        },
-        child: Icon(Icons.location_on_rounded),
-      ),
     );
   }
 

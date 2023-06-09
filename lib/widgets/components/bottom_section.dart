@@ -31,7 +31,7 @@ class _BottomSectionState extends State<BottomSection> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(
-              height: 500,
+              height: 430,
               child: ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {

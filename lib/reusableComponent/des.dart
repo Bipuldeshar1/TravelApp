@@ -386,8 +386,10 @@ class _DesState extends State<Des> {
                                                       .email,
                                                   'sName': name,
                                                   'uid': widget.package.uId,
-                                                  'uemail':
-                                                      widget.package.uemail,
+                                                  'uemail': FirebaseAuth
+                                                      .instance
+                                                      .currentUser!
+                                                      .email,
                                                   'title': widget.package.title,
                                                   'descripiton': widget
                                                       .package.description,
@@ -548,26 +550,34 @@ class _DesState extends State<Des> {
                       color: Colors.black,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DesMap(
-                            a: widget.package.x.toString(),
-                            b: widget.package.y.toString(),
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Browse Location',
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 16,
-                      ),
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    child: DesMap(
+                      a: widget.package.x.toString(),
+                      b: widget.package.y.toString(),
                     ),
-                  )
+                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => DesMap(
+                  //           a: widget.package.x.toString(),
+                  //           b: widget.package.y.toString(),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: const Text(
+                  //     'Browse Location',
+                  //     style: TextStyle(
+                  //       color: Colors.blueGrey,
+                  //       fontSize: 16,
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             ),

@@ -17,6 +17,7 @@ class CustomCardHome extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        height: 150,
         width: MediaQuery.of(context).size.width * 1,
         decoration: BoxDecoration(
           boxShadow: [
@@ -46,15 +47,15 @@ class CustomCardHome extends StatelessWidget {
                   child: Hero(
                     tag: Text('aaa'),
                     child: Image(
-                      height: 120,
-                      width: 120,
+                      height: 150,
+                      width: 150,
                       image: NetworkImage(img),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  width: 50,
+                  width: 30,
                 ),
                 Container(
                   width: 150,
@@ -66,7 +67,7 @@ class CustomCardHome extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            width: 50,
+                            width: 100,
                             child: Text(
                               title,
 
@@ -80,8 +81,8 @@ class CustomCardHome extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 4,
+                      const SizedBox(
+                        height: 8,
                       ),
                       Text(
                         des,
@@ -91,7 +92,7 @@ class CustomCardHome extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
-                        height: 4,
+                        height: 10,
                       ),
                       Text(
                         'RS ${price}',

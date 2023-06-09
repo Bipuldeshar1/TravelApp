@@ -17,6 +17,7 @@ class CustomCardFav extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        height: 150,
         width: MediaQuery.of(context).size.width * 1,
         decoration: BoxDecoration(
           boxShadow: [
@@ -46,8 +47,8 @@ class CustomCardFav extends StatelessWidget {
                   child: Hero(
                     tag: Text('aaa'),
                     child: Image(
-                      height: 120,
-                      width: 120,
+                      height: 150,
+                      width: 140,
                       image: NetworkImage(img),
                       fit: BoxFit.cover,
                     ),

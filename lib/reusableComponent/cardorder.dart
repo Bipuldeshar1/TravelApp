@@ -55,7 +55,7 @@ class OrderCard extends StatelessWidget {
               child: ClipRRect(
                 child: Image(
                   image: NetworkImage(img),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
