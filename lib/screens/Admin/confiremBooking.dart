@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:project_3/model/bookingModel.dart';
-import 'package:project_3/reusableComponent/customcardorder.dart';
+import 'package:project_3/reusableComponent/cardorder.dart';
+
 import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
@@ -42,16 +43,27 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final package = snapshot.data![index];
-                  return CustomCardorders(
+                  // return CustomCardorders(
+                  //   img: package.pImg,
+                  //   price: package.price.toString(),
+                  //   title: package.pTitle,
+                  //   cname: package.uName,
+                  //   pnum: package.pnum,
+                  //   email: package.uEmail,
+                  //   onpresss: () {
+                  //     myDialog(package);
+                  //   },
+                  // );
+                  return OrderCard(
+                    onpresss: () {
+                      myDialog(package);
+                    },
                     img: package.pImg,
                     price: package.price.toString(),
                     title: package.pTitle,
                     cname: package.uName,
                     pnum: package.pnum,
                     email: package.uEmail,
-                    onpresss: () {
-                      myDialog(package);
-                    },
                   );
                 });
           } else if (snapshot.hasError) {
@@ -78,11 +90,10 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
         builder: (context) {
           return AlertDialog(
             content: Container(
-              width: double.infinity,
-              height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextButton.icon(
                     onPressed: () {

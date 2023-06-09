@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/map/map.dart';
+import 'package:project_3/reusableComponent/map/newmap.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 import 'package:project_3/screens/Admin/product.dart';
 import 'package:uuid/uuid.dart';
@@ -28,6 +29,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   var priceController = TextEditingController();
   var numberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Marker? selectedMarker;
 
   String imageUrl = '';
   String id = Uuid().v4();
@@ -87,7 +89,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
-        title: Text('add products'),
+        title: Text('add Destination'),
       ),
       body: Form(
         key: _formKey,
@@ -114,10 +116,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'title'),
+                  decoration: InputDecoration(
+                    labelText: 'title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                   controller: titleController,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -126,8 +133,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'description'),
+                  decoration: InputDecoration(
+                    labelText: 'description',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  maxLines: null,
+                  minLines: 1,
+                  maxLength: 200,
+                  textInputAction: TextInputAction.newline,
                   controller: descriptionController,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -136,20 +155,37 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: 'price'),
+                  decoration: InputDecoration(
+                    labelText: 'price',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                   controller: priceController,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'enter price';
                     }
+
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: 'phone number'),
+                  decoration: InputDecoration(
+                    labelText: 'phone number',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                   controller: numberController,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -165,7 +201,52 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 SizedBox(
                   height: 40,
                 ),
-                Text('product location info:'),
+                Text('location info:'),
+                // Container(
+                //   width: double.infinity,
+                //   height: 300,
+                //   child: SafeArea(
+                //     child: GoogleMap(
+                //       initialCameraPosition: _kGooglePlex,
+                //       onMapCreated: (GoogleMapController controller) {
+                //         _controller.complete(controller);
+                //       },
+                //       mapType: MapType.normal,
+                //       myLocationEnabled: true,
+                //       compassEnabled: true,
+                //       markers: Set<Marker>.of(_marker),
+                //       myLocationButtonEnabled: false,
+                //       onTap: (argument) async {
+                //         setState(() {
+                //           getUserCurrentLocation().then((value) async {
+                //             print('location current');
+
+                //             print(value.latitude.toString() +
+                //                 " " +
+                //                 value.longitude.toString());
+                //             _marker.add(Marker(
+                //               markerId: MarkerId('2'),
+                //               position: LatLng(value.latitude, value.longitude),
+                //               infoWindow: InfoWindow(title: 'current location'),
+                //             ));
+                //             CameraPosition cameraPosition = CameraPosition(
+                //               target: LatLng(value.latitude, value.longitude),
+                //               zoom: 14,
+                //             );
+
+                //             final GoogleMapController controller =
+                //                 await _controller.future;
+                //             controller.animateCamera(
+                //                 CameraUpdate.newCameraPosition(cameraPosition));
+                //             //lat long for db
+                //             x = value.latitude.toString();
+                //             y = value.longitude.toString();
+                //           });
+                //         });
+                //       },
+                //     ),
+                //   ),
+                // ),
                 Container(
                   width: double.infinity,
                   height: 300,
@@ -180,21 +261,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       compassEnabled: true,
                       markers: Set<Marker>.of(_marker),
                       myLocationButtonEnabled: false,
-                      onTap: (argument) async {
+                      onTap: (LatLng tappedLocation) async {
                         setState(() {
                           getUserCurrentLocation().then((value) async {
                             print('location current');
-
                             print(value.latitude.toString() +
                                 " " +
                                 value.longitude.toString());
-                            _marker.add(Marker(
+
+                            if (selectedMarker != null) {
+                              _marker.remove(selectedMarker);
+                            }
+
+                            Marker newMarker = Marker(
                               markerId: MarkerId('2'),
-                              position: LatLng(value.latitude, value.longitude),
+                              position: tappedLocation,
                               infoWindow: InfoWindow(title: 'current location'),
-                            ));
+                            );
+
+                            _marker.add(newMarker);
+
                             CameraPosition cameraPosition = CameraPosition(
-                              target: LatLng(value.latitude, value.longitude),
+                              target: tappedLocation,
                               zoom: 14,
                             );
 
@@ -202,15 +290,30 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 await _controller.future;
                             controller.animateCamera(
                                 CameraUpdate.newCameraPosition(cameraPosition));
-                            //lat long for db
-                            x = value.latitude.toString();
-                            y = value.longitude.toString();
+
+                            x = tappedLocation.latitude.toString();
+                            y = tappedLocation.longitude.toString();
+
+                            selectedMarker = newMarker;
                           });
                         });
                       },
                     ),
                   ),
                 ),
+
+                // ElevatedButton(
+                //     onPressed: () {
+                //       Navigator.push(context,
+                //           MaterialPageRoute(builder: (context) => NewMap()));
+                //     },
+                //     child: Text('map')),
+
+                ElevatedButton(
+                    onPressed: () {
+                      navigateToCurrentLocation();
+                    },
+                    child: Icon(Icons.my_location)),
                 const SizedBox(
                   height: 40,
                 ),
@@ -247,6 +350,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           .collection('Allposts')
           .doc(id) // Use document ID generated by Firestore
           .set({
+        'createdOn': date,
         'uId': uid,
         'pId': id,
         'uemail': user.email,
@@ -282,5 +386,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
       print('error' + error.toString());
     });
     return await Geolocator.getCurrentPosition();
+  }
+
+  // Function to navigate to the user's current location
+  void navigateToCurrentLocation() async {
+    final position = await getUserCurrentLocation();
+    if (position != null) {
+      final cameraPosition = CameraPosition(
+        target: LatLng(position.latitude, position.longitude),
+        zoom: 14,
+      );
+      final controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    }
   }
 }

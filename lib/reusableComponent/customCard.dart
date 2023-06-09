@@ -88,12 +88,15 @@ class CustomCard extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text(
-                        des, //des
-                        style: TextStyle(
-                          fontSize: 16,
+                      Container(
+                        width: 50,
+                        child: Text(
+                          des, //des
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         height: 4,

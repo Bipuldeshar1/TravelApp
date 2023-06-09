@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     return KhaltiScope(
-        publicKey: 'test_public_key_5b2959a7a1f14136a53a5cc83e2ee970',
+        publicKey: 'test_public_key_bab58358fea24b1e83d3e94b94fadf13',
         builder: (context, navigatorKey) {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -74,7 +74,7 @@ class MyAppLoggedIn extends StatelessWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     return KhaltiScope(
-        publicKey: 'test_public_key_5b2959a7a1f14136a53a5cc83e2ee970',
+        publicKey: 'test_public_key_bab58358fea24b1e83d3e94b94fadf13',
         builder: (context, navigatorKey) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

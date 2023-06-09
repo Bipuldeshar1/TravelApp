@@ -126,6 +126,9 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 20,
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   TextFormField(
                     obscureText: obsecureText,
                     controller: passwordController,
@@ -205,17 +208,23 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  createAccount(String email, String password, String name, role, pnum) async {
+  createAccount(String email, String password, String name, String role,
+      String number) async {
     if (email == '' ||
         password == '' ||
         name == '' ||
         role == '' ||
-        pnum == '') {
-      final snackbar = SnackBar(content: Text('field shouldnot be empty'));
+        number == '') {
+      final snackbar = SnackBar(
+        content: Text('Field cannot be empty'),
+        duration: Duration(seconds: 3),
+      );
       await ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else if (password.length < 8) {
-      final snackbar =
-          SnackBar(content: Text('password should be 8 char long'));
+      final snackbar = SnackBar(
+        content: Text('Password should be at least 8 characters long'),
+        duration: Duration(seconds: 3),
+      );
       await ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
       try {
@@ -224,9 +233,13 @@ class _RegisterState extends State<Register> {
               email: email,
               password: password,
             )
-            .then((value) => PostDetailUser(email, name, role, password, pnum));
+            .then(
+                (value) => PostDetailUser(email, name, role, password, number));
       } on FirebaseAuthException catch (e) {
-        final snackbar = SnackBar(content: Text(e.code.toString()));
+        final snackbar = SnackBar(
+          content: Text(e.code.toString()),
+          duration: Duration(seconds: 3),
+        );
         await ScaffoldMessenger.of(context).showSnackBar(snackbar);
       }
     }

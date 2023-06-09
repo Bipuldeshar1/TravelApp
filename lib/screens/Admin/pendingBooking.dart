@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/model/bookingModel.dart';
-import 'package:project_3/reusableComponent/customcardorder.dart';
+import 'package:project_3/reusableComponent/cardorder.dart';
+
 import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
@@ -31,7 +32,7 @@ class _PendingBookingState extends State<PendingBooking> {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
-        title: Text('orders'),
+        title: Text('Pending Bookings'),
       ),
       body: StreamBuilder<List<Booking>>(
         stream: fetchOrder(),
@@ -41,20 +42,35 @@ class _PendingBookingState extends State<PendingBooking> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final package = snapshot.data![index];
-                  return CustomCardorders(
+                  // return CustomCardorders(
+                  //   img: package.pImg,
+                  //   price: package.price.toString(),
+                  //   title: package.pTitle,
+                  //   cname: package.uName,
+                  //   pnum: package.pnum,
+                  //   email: package.uEmail,
+                  //   onpresss: () {
+                  //     myDialog(package);
+                  //   },
+                  // );
+                  return OrderCard(
+                    onpresss: () {
+                      myDialog(package);
+                    },
                     img: package.pImg,
                     price: package.price.toString(),
                     title: package.pTitle,
                     cname: package.uName,
                     pnum: package.pnum,
-                    email: package.sEmail,
-                    onpresss: () {
-                      myDialog(package);
-                    },
+                    email: package.uEmail,
                   );
                 });
           } else if (snapshot.hasError) {
             return Text("Error fetching data!");
+          } else if (snapshot.data == null) {
+            return const Center(
+              child: Text('no posts available'),
+            );
           } else {
             return Container(
               height: double.infinity,
@@ -77,9 +93,8 @@ class _PendingBookingState extends State<PendingBooking> {
         builder: (context) {
           return AlertDialog(
             content: Container(
-              width: 200,
-              height: 200,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextButton.icon(
                     onPressed: () {
@@ -98,7 +113,8 @@ class _PendingBookingState extends State<PendingBooking> {
                             'sEmail': package.sEmail,
                             'sid': package.sId,
                             'uId': package.uId,
-                            'uName': package.uName
+                            'uName': package.uName,
+                            'uEmail': package.uEmail,
                           })
                           .then((value) => storenotification(package))
                           .then((value) => del(package));
@@ -128,7 +144,8 @@ class _PendingBookingState extends State<PendingBooking> {
                           'sEmail': package.sEmail,
                           'sid': package.sId,
                           'uId': package.uId,
-                          'uName': package.uName
+                          'uName': package.uName,
+                          'uEmail': package.uEmail,
                         });
                       } catch (e) {
                         print(e.toString());
@@ -166,7 +183,8 @@ class _PendingBookingState extends State<PendingBooking> {
         'sEmail': package.sEmail,
         'sid': package.sId,
         'uId': package.uId,
-        'uName': package.uName
+        'uName': package.uName,
+        'uEmail': package.uEmail,
       });
     } catch (e) {
       print(e.toString());

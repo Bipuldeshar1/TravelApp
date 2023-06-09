@@ -21,7 +21,7 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
     Future<List<PackageModel>> fetch() async {
       final snapshot = await FirebaseFirestore.instance
           .collection('Allposts')
-          .where('uId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email)
           .get();
       final userData = snapshot.docs
           .map((doc) => PackageModel.fromJson(doc.data()))
@@ -89,28 +89,8 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
             padding: const EdgeInsets.all(18.0),
             child: Column(
               children: [
-                FutureBuilder(
-                  future: fetch(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        height: 70,
-                        child: ListView.builder(
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return CardUser(
-                                name: snapshot.data![index].uemail.toString() ==
-                                        null
-                                    ? ''
-                                    : snapshot.data![index].uemail.toString());
-                          },
-                        ),
-                      );
-                    } else {
-                      return Text('loading');
-                    }
-                  },
-                ),
+                CardUser(
+                    name: FirebaseAuth.instance.currentUser!.email.toString()),
                 const SizedBox(
                   height: 40,
                 ),
@@ -141,7 +121,7 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                               if (snapshot.hasData) {
                                 // return Text('orders ${snapshot.data.toString()}');
                                 return CardDashboard(
-                                    title: 'orders',
+                                    title: 'Pending bookings ',
                                     content: snapshot.data.toString(),
                                     icon:
                                         Icon(Icons.online_prediction_rounded));
@@ -179,7 +159,7 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                               if (snapshot.hasData) {
                                 // return Text('cOrder${snapshot.data.toString()}');
                                 return CardDashboard(
-                                    title: 'Confirmed orders',
+                                    title: 'Confirmed bookings',
                                     content: snapshot.data.toString(),
                                     icon:
                                         Icon(Icons.production_quantity_limits));

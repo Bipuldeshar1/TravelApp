@@ -65,15 +65,18 @@ class CustomCardHome extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            title,
+                          Container(
+                            width: 50,
+                            child: Text(
+                              title,
 
-                            //title
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                              //title
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),

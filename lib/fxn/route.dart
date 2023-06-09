@@ -56,7 +56,10 @@ class Fxn {
         if (a.get('role') == 'admin') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => AdminHomescreen()));
-          final snackbar = SnackBar(content: Text('successful  loggedin'));
+          final snackbar = SnackBar(
+            content: Text('successful  loggedin'),
+            duration: Duration(seconds: 3),
+          );
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         } else {
           Navigator.push(
@@ -64,7 +67,10 @@ class Fxn {
               MaterialPageRoute(
                   builder: (context) =>
                       BottomNav(firebaseUser: user, userModel: userModel)));
-          final snackbar = SnackBar(content: Text('successful  loggedin'));
+          final snackbar = SnackBar(
+            content: Text('successful  loggedin'),
+            duration: Duration(seconds: 3),
+          );
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         }
       }

@@ -42,7 +42,7 @@ class Booking {
       pTitle: map['ptitle'] ?? '',
       sEmail: map['sEmail'] ?? '',
       sId: map['sid'] ?? '',
-      uEmail: map['uEmial'] ?? '',
+      uEmail: map['uEmail'] ?? '',
       uId: map['uId'] ?? '',
       uName: map['uName'] ?? '',
       pnum: map['pnum'] ?? '',

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_3/const/style.dart';
 import 'package:project_3/model/reviewmodel.dart';
+
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
 import '../../reusableComponent/simmer/s.dart';
@@ -40,14 +42,60 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final package = snapshot.data![index];
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(children: [
-                        Text('review :\n ${package.review}'),
-                        Text('reviewed by\n${package.sName}'),
-                        Text('reviewed on\n${package.title}')
-                      ]),
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3), // Shadow color
+                            spreadRadius: 2, // Shadow spread radius
+                            blurRadius: 5, // Shadow blur radius
+                            offset: Offset(0, 3), // Shadow offset
+                          )
+                        ],
+                      ),
+                      height: 120,
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 6,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                package.title,
+                                style: heading2,
+                              ),
+                              const Text(
+                                'review:',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              Container(
+                                width: 300,
+                                child: Text(
+                                  package.review,
+                                  style: p3,
+                                ),
+                              ),
+                              const Text(
+                                'reviewed by:',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              Text(package.uemail, style: p3),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 });

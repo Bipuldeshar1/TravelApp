@@ -4,6 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 class Books {
+  String pnumb = '';
+  Future<void> getNum() async {
+    final x = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    if (x.exists) {
+      final data = x.data();
+      pnumb = data!['pnum'] ?? "";
+    }
+  }
+
   void book(
     String uid,
     String uname,
@@ -26,7 +38,7 @@ class Books {
         'id': id,
         'uId': uid,
         'uName': uname,
-        'uEmial': uemail,
+        'uEmail': FirebaseAuth.instance.currentUser!.email,
         'bookingDate': date,
         'pId': pId,
         'ptitle': title,
@@ -35,7 +47,7 @@ class Books {
         'price': price,
         'sid': sid,
         'sEmail': sEmail,
-        'pnum': pnum,
+        'pnum': pnumb,
         'status': text,
       });
     } catch (e) {

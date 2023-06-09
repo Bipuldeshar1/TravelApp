@@ -13,6 +13,7 @@ import 'package:project_3/reusableComponent/customCard.dart';
 import 'package:project_3/reusableComponent/des.dart';
 import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
+import 'package:project_3/screens/Admin/update.dart';
 
 class DashboardProducts extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _DashboardProductsState extends State<DashboardProducts> {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
-        title: Text('products'),
+        title: Text('Posts'),
       ),
       body: FutureBuilder<List<PackageModel>>(
         future: fetch(),
@@ -78,9 +79,8 @@ class _DashboardProductsState extends State<DashboardProducts> {
                             return AlertDialog(
                               title: Text('update or delete'),
                               content: Container(
-                                height: 100,
-                                width: 100,
                                 child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     CustomButton(
                                       text: 'delete',
@@ -97,16 +97,22 @@ class _DashboardProductsState extends State<DashboardProducts> {
                                     CustomButton(
                                       text: 'update',
                                       onPress: () {
-                                        setState(() {
-                                          Navigator.pop(context);
-                                          showMyDialog(
-                                            package.pId,
-                                            package.title,
-                                            package.description,
-                                            package.price,
-                                            package.img,
-                                          );
-                                        });
+                                        // setState(() {
+                                        //   Navigator.pop(context);
+                                        //   showMyDialog(
+                                        //     package.pId,
+                                        //     package.title,
+                                        //     package.description,
+                                        //     package.price,
+                                        //     package.img,
+                                        //   );
+                                        // });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Update(
+                                                      package: package,
+                                                    )));
                                       },
                                       color: Colors.white,
                                       height: 50,

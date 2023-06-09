@@ -34,6 +34,7 @@ class _DesState extends State<Des> {
   var ratingController = TextEditingController();
   var reviewController = TextEditingController();
   String name = '';
+  String role = '';
   String pnumb = '';
   int totalRatings = 0;
   double sumRatings = 0.0;
@@ -49,6 +50,21 @@ class _DesState extends State<Des> {
       if (x.exists) {
         final data = x.data();
         name = data!['name'];
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> getrole() async {
+    try {
+      final x = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      if (x.exists) {
+        final data = x.data();
+        role = data!['role'];
       }
     } catch (e) {
       print(e.toString());
@@ -71,6 +87,7 @@ class _DesState extends State<Des> {
     super.initState();
     getName();
     getNum();
+    getrole();
     fetchRatings();
   }
 
@@ -225,6 +242,7 @@ class _DesState extends State<Des> {
               )
             ]),
           ),
+
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -237,219 +255,388 @@ class _DesState extends State<Des> {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Rating'),
-                              actions: [
-                                Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      TextFormField(
-                                        controller: ratingController,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'cannot be null';
-                                          }
-                                          final val = int.parse(value);
-                                          if (val > 5) {
-                                            return 'review should be below 5';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: Text('ok'),
-                                        onPressed: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            _formKey.currentState!.save();
-                                            sendRating();
-                                          }
-                                        },
+          role == 'user'
+              ? SliverToBoxAdapter(
+                  child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Rating'),
+                                    actions: [
+                                      Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          children: [
+                                            TextFormField(
+                                              controller: ratingController,
+                                              validator: (value) {
+                                                if (value!.isEmpty) {
+                                                  return 'cannot be null';
+                                                }
+                                                final val = int.parse(value);
+                                                if (val > 5) {
+                                                  return 'review should be below 5';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              child: Text('ok'),
+                                              onPressed: () {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  _formKey.currentState!.save();
+                                                  sendRating();
+                                                }
+                                              },
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    child: RatingBar(
-                        rating: averageRating.ceil().floor().toDouble())),
-                CustomButton(
-                    text: 'reviews',
-                    onPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Add a review'),
-                            content: Container(
-                              height: 200,
-                              width: 100,
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      controller: reviewController,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'cannot be null';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      height: 40,
-                                    ),
-                                    CustomButton(
-                                      text: 'submit',
-                                      onPress: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          _formKey.currentState!.save();
-
-                                          FirebaseFirestore.instance
-                                              .collection('reviews')
-                                              .doc()
-                                              .set({
-                                            'review': reviewController.text,
-                                            'sid': FirebaseAuth
-                                                .instance.currentUser!.uid,
-                                            'sEmail': FirebaseAuth
-                                                .instance.currentUser!.email,
-                                            'sName': name,
-                                            'uid': widget.package.uId,
-                                            'uemail': widget.package.uemail,
-                                            'title': widget.package.title,
-                                            'descripiton':
-                                                widget.package.description,
-                                            'price': widget.package.price,
-                                          }).then((value) =>
-                                                  Navigator.pop(context));
-                                        }
-                                      },
-                                      color: Colors.blue,
-                                      height: 50,
-                                      width: double.infinity,
-                                    ),
-                                  ],
+                                  );
+                                });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Ratings',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                RatingBar(
+                                    rating: averageRating
+                                        .ceil()
+                                        .floor()
+                                        .toDouble()),
+                              ],
                             ),
-                          );
-                        },
-                      );
-                    },
-                    color: Colors.blue,
-                    height: 30,
-                    width: 80)
-              ],
-            ),
-          )),
+                          )),
+                      CustomButton(
+                          text: 'reviews',
+                          onPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Add a review'),
+                                  content: Container(
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextFormField(
+                                            controller: reviewController,
+                                            maxLines: null,
+                                            minLines: 1,
+                                            maxLength: 200,
+                                            textInputAction:
+                                                TextInputAction.newline,
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return 'cannot be null';
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                vertical: 50,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 40,
+                                          ),
+                                          CustomButton(
+                                            text: 'submit',
+                                            onPress: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                _formKey.currentState!.save();
+
+                                                FirebaseFirestore.instance
+                                                    .collection('reviews')
+                                                    .doc()
+                                                    .set({
+                                                  'review':
+                                                      reviewController.text,
+                                                  'sid': FirebaseAuth.instance
+                                                      .currentUser!.uid,
+                                                  'sEmail': FirebaseAuth
+                                                      .instance
+                                                      .currentUser!
+                                                      .email,
+                                                  'sName': name,
+                                                  'uid': widget.package.uId,
+                                                  'uemail':
+                                                      widget.package.uemail,
+                                                  'title': widget.package.title,
+                                                  'descripiton': widget
+                                                      .package.description,
+                                                  'price': widget.package.price,
+                                                }).then((value) =>
+                                                        Navigator.pop(context));
+                                              }
+                                            },
+                                            color: Colors.blue,
+                                            height: 50,
+                                            width: double.infinity,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          color: Colors.blue,
+                          height: 30,
+                          width: 80)
+                    ],
+                  ),
+                ))
+              : SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Ratings',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RatingBar(
+                          rating: averageRating.ceil().floor().toDouble(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'description:\n${widget.package.description}',
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Description:',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '${widget.package.description}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Price:',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    'Rs ${widget.package.price}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Rs  ${widget.package.price}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  color: Colors.black,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Contact info:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '${widget.package.n}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '${widget.package.uemail}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'contact info\n${widget.package.n}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: CustomButton(
-              text: 'map',
-              onPress: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DesMap(
-                              a: widget.package.x.toString(),
-                              b: widget.package.y.toString(),
-                            )));
-              },
-              color: Colors.amber,
-              height: 40,
-              width: 10,
             ),
           ),
           // SliverToBoxAdapter(
-          //   child: Column(
-          //     children: [
-          //       Text(pnum),
-          //       Text(name),
-          //       Text(FirebaseAuth.instance.currentUser!.email.toString())
-          //     ],
+          //   child: CustomButton(
+          //     text: 'map',
+          //     onPress: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) => DesMap(
+          //                     a: widget.package.x.toString(),
+          //                     b: widget.package.y.toString(),
+          //                   )));
+          //     },
+          //     color: Colors.amber,
+          //     height: 40,
+          //     width: 10,
           //   ),
           // ),
           SliverToBoxAdapter(
-            child: ElevatedButton(
-                onPressed: () {
-                  final uid = FirebaseAuth.instance.currentUser!.uid;
-                  final uemail = FirebaseAuth.instance.currentUser!.email;
-                  final uname = name.toString();
-                  final pnum = pnumb.toString();
-                  final date = DateTime.now().microsecondsSinceEpoch;
-                  final sid = widget.package.uId;
-                  final sEmail = widget.package.uemail;
-                  payWithKhalti(
-                    uid,
-                    uname,
-                    uemail,
-                    date,
-                    widget.package.pId,
-                    widget.package.title,
-                    widget.package.description,
-                    widget.package.img,
-                    int.parse(widget.package.price),
-                    sid,
-                    sEmail,
-                    pnum,
-                  );
-                },
-                child: Text('pay')),
-          )
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Location info:',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DesMap(
+                            a: widget.package.x.toString(),
+                            b: widget.package.y.toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Browse Location',
+                      style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          role == 'user'
+              ? SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20, right: 20, bottom: 5, top: 5),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                          final uemail =
+                              FirebaseAuth.instance.currentUser!.email;
+                          final uname = name.toString();
+                          final pnum = pnumb.toString();
+                          final date = DateTime.now().microsecondsSinceEpoch;
+                          final sid = widget.package.uId;
+                          final sEmail = widget.package.uemail;
+                          payWithKhalti(
+                            uid,
+                            uname,
+                            uemail,
+                            date,
+                            widget.package.pId,
+                            widget.package.title,
+                            widget.package.description,
+                            widget.package.img,
+                            int.parse(widget.package.price),
+                            sid,
+                            sEmail,
+                            pnum,
+                          );
+                        },
+                        child: Text('Book')),
+                  ),
+                )
+              : SliverToBoxAdapter(),
+          // SliverToBoxAdapter(
+          //   child: Padding(
+          //     padding:
+          //         const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
+          //     child: ElevatedButton(
+          //         onPressed: () {
+          //           final uid = FirebaseAuth.instance.currentUser!.uid;
+          //           final uemail = FirebaseAuth.instance.currentUser!.email;
+          //           final uname = name.toString();
+          //           final pnum = pnumb.toString();
+          //           final date = DateTime.now().microsecondsSinceEpoch;
+          //           final sid = widget.package.uId;
+          //           final sEmail = widget.package.uemail;
+          //           payWithKhalti(
+          //             uid,
+          //             uname,
+          //             uemail,
+          //             date,
+          //             widget.package.pId,
+          //             widget.package.title,
+          //             widget.package.description,
+          //             widget.package.img,
+          //             int.parse(widget.package.price),
+          //             sid,
+          //             sEmail,
+          //             pnum,
+          //           );
+          //         },
+          //         child: Text('Book')),
+          //   ),
+          // )
         ],
       ),
     );
@@ -533,11 +720,4 @@ class _DesState extends State<Des> {
       print(e.toString());
     }
   }
-
-  // void submit(RatingModel s) async {
-  //   final doc = await FirebaseFirestore.instance.collection('rating').doc();
-  //   final json = s.toJson();
-  //   await doc.set(json);
-  // }
-  // Output: 4.333333333333333
 }

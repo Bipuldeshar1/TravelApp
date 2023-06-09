@@ -3,14 +3,16 @@ class UserModel {
   String? fullname;
   String? email;
   String? profilepic;
+  String? pnum;
 
-  UserModel({this.uid, this.fullname, this.email, this.profilepic});
+  UserModel({this.uid, this.fullname, this.email, this.profilepic, this.pnum});
 
   UserModel.fromMap(Map<String, dynamic> map) {
     uid = map["uid"];
-    fullname = map["fullname"];
+    fullname = map["name"];
     email = map["email"];
     profilepic = map["profilepic"];
+    pnum = map["number"];
   }
 
   Map<String, dynamic> toMap() {

@@ -154,21 +154,33 @@ class _LoginState extends State<Login> {
   }
 
   void login(String email, String password) async {
-    try {
-      UserCredential u = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email.toString(), password: password.toString());
-      print(email);
-      print(password);
-      if (u.user != null) {
-        // Navigator.popUntil(context, (route) => route.isFirst); //close all pages
-
-        f.route(context);
-      }
-    } on FirebaseAuthException catch (e) {
-      final snackbar = SnackBar(content: Text(e.code.toString()));
+    if (email == '' || password == '') {
+      final snackbar = SnackBar(
+        content: Text('field cannot be empty'),
+        duration: Duration(seconds: 3),
+      );
       await ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } catch (e) {
-      print(e);
+    } else {
+      try {
+        UserCredential u = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: email.toString(), password: password.toString());
+        print(email);
+        print(password);
+        if (u.user != null) {
+          // Navigator.popUntil(context, (route) => route.isFirst); //close all pages
+
+          f.route(context);
+        }
+      } on FirebaseAuthException catch (e) {
+        final snackbar = SnackBar(
+          content: Text(e.code.toString()),
+          duration: Duration(seconds: 3),
+        );
+        await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }

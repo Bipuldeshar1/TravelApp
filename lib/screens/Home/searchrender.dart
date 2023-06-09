@@ -25,8 +25,9 @@ class _SearchDisplayState extends State<SearchDisplay> {
       final snapshot = await FirebaseFirestore.instance
           .collection('Allposts')
           .where('title', isGreaterThanOrEqualTo: widget.query)
-          .where('title', isLessThanOrEqualTo: widget.query)
+          .where('title', isLessThanOrEqualTo: widget.query + '\uf8ff')
           .get();
+
       final userData = snapshot.docs
           .map((doc) => PackageModel.fromJson(doc.data()))
           .toList(); // map each document to a PackageModel object
