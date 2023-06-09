@@ -4,14 +4,17 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:project_3/chat/chatRoomPage.dart';
+import 'package:project_3/const/style.dart';
 import 'package:project_3/fxn/book.dart';
 
 import 'package:project_3/model/packagemodel.dart';
 
 import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:project_3/model/reviewmodel.dart';
 
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/map/desmap.dart';
+import 'package:project_3/reusableComponent/simmer/s.dart';
 import 'package:project_3/screens/Home/home.dart';
 import 'package:project_3/screens/Home/nav.dart';
 
@@ -40,6 +43,17 @@ class _DesState extends State<Des> {
   double sumRatings = 0.0;
   double averageRating = 0.0;
   final _formKey = GlobalKey<FormState>();
+
+  Future<List<ReviewModel>> fetchReview() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('reviews')
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    final userData = snapshot.docs
+        .map((doc) => ReviewModel.fromJson(doc.data()))
+        .toList(); // map each document to a PackageModel object
+    return userData;
+  }
 
   Future<void> getName() async {
     try {
@@ -647,6 +661,96 @@ class _DesState extends State<Des> {
           //         child: Text('Book')),
           //   ),
           // )
+
+          SliverToBoxAdapter(
+            child: FutureBuilder(
+              future: fetchReview(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    height: 200,
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final package = snapshot.data![index];
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.3), // Shadow color
+                                    spreadRadius: 2, // Shadow spread radius
+                                    blurRadius: 5, // Shadow blur radius
+                                    offset: Offset(0, 3), // Shadow offset
+                                  )
+                                ],
+                              ),
+                              height: 120,
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 6,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        package.title,
+                                        style: heading2,
+                                      ),
+                                      const Text(
+                                        'review:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                      Container(
+                                        width: 300,
+                                        child: Text(
+                                          package.review,
+                                          style: p3,
+                                        ),
+                                      ),
+                                      const Text(
+                                        'reviewed by:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                      Text(package.uemail, style: p3),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("Error fetching data!");
+                } else {
+                  return Container(
+                    height: double.infinity,
+                    child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (BuildContext context, int index) {
+                        return s();
+                      },
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
