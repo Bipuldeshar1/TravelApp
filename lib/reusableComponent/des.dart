@@ -277,66 +277,124 @@ class _DesState extends State<Des> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Rating'),
-                                    actions: [
-                                      Form(
-                                        key: _formKey,
-                                        child: Column(
-                                          children: [
-                                            // TextFormField(
-                                            //   controller: ratingController,
-                                            //   validator: (value) {
-                                            //     if (value!.isEmpty) {
-                                            //       return 'cannot be null';
-                                            //     }
+                          onTap: () async {
+                            // var x = FirebaseFirestore.instance
+                            //     .collection('ratings')
+                            //     .doc(widget.package.pId)
+                            //     .collection('ratings')
+                            //     .where('rid',
+                            //         isEqualTo:
+                            //             FirebaseAuth.instance.currentUser!.uid);
+                            String packageId = widget.package.pId;
 
-                                            //     if (value 6) {
-                                            //       return 'review should be below 5';
-                                            //     } else {
-                                            //       return null;
-                                            //     }
-                                            //   },
-                                            // ),
-                                            TextFormField(
-                                              controller: ratingController,
-                                              validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return 'cannot be null';
-                                                }
+// Fetch the current list of ratings
+                            DocumentSnapshot documentSnapshot =
+                                await FirebaseFirestore.instance
+                                    .collection('ratings')
+                                    .doc(packageId)
+                                    .get();
 
-                                                final rating =
-                                                    double.tryParse(value);
+                            if (documentSnapshot.exists) {
+                              Map<String, dynamic> data = documentSnapshot
+                                  .data() as Map<String, dynamic>;
+                              List<dynamic> ratingsList = data['ratings'] ?? [];
 
-                                                if (rating != null &&
-                                                    rating > 5) {
-                                                  return 'review should be below 5';
-                                                } else {
-                                                  return null;
-                                                }
-                                              },
-                                            ),
+                              bool hasGivenRating = false;
 
-                                            ElevatedButton(
-                                              child: Text('ok'),
-                                              onPressed: () {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  _formKey.currentState!.save();
-                                                  sendRating();
-                                                }
-                                              },
-                                            )
-                                          ],
+                              for (var rating in ratingsList) {
+                                if (rating['rid'] ==
+                                    FirebaseAuth.instance.currentUser!.uid) {
+                                  hasGivenRating = true;
+                                  break;
+                                }
+                              }
+
+                              if (hasGivenRating) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('Already provided ratings'),
+                                        content: CustomButton(
+                                          text: 'ok',
+                                          onPress: () {
+                                            Navigator.pop(context);
+                                          },
+                                          color: Colors.blue,
+                                          height: 30,
+                                          width: 50,
                                         ),
-                                      )
-                                    ],
-                                  );
-                                });
+                                      );
+                                    });
+                                print('User has given a rating.');
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Rating'),
+                                        actions: [
+                                          Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              children: [
+                                                // TextFormField(
+                                                //   controller: ratingController,
+                                                //   validator: (value) {
+                                                //     if (value!.isEmpty) {
+                                                //       return 'cannot be null';
+                                                //     }
+
+                                                //     if (value 6) {
+                                                //       return 'review should be below 5';
+                                                //     } else {
+                                                //       return null;
+                                                //     }
+                                                //   },
+                                                // ),
+                                                TextFormField(
+                                                  controller: ratingController,
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return 'cannot be null';
+                                                    }
+
+                                                    final rating =
+                                                        double.tryParse(value);
+
+                                                    if (rating != null &&
+                                                        rating > 5) {
+                                                      return 'review should be below 5';
+                                                    } else {
+                                                      return null;
+                                                    }
+                                                  },
+                                                ),
+
+                                                ElevatedButton(
+                                                  child: Text('ok'),
+                                                  onPressed: () {
+                                                    if (_formKey.currentState!
+                                                        .validate()) {
+                                                      _formKey.currentState!
+                                                          .save();
+                                                      sendRating();
+                                                    }
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                                print('User has not given a rating.');
+                              }
+                            } else {
+                              // The document does not exist or ratings list is empty
+                              // Perform your desired actions here
+                              print('No ratings found for the package.');
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
