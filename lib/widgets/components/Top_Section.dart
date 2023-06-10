@@ -44,7 +44,7 @@ class _TopSectionState extends State<TopSection> {
               height: 250,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 2,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var package = snapshot.data![index];
                     return InkWell(
