@@ -288,20 +288,39 @@ class _DesState extends State<Des> {
                                         key: _formKey,
                                         child: Column(
                                           children: [
+                                            // TextFormField(
+                                            //   controller: ratingController,
+                                            //   validator: (value) {
+                                            //     if (value!.isEmpty) {
+                                            //       return 'cannot be null';
+                                            //     }
+
+                                            //     if (value 6) {
+                                            //       return 'review should be below 5';
+                                            //     } else {
+                                            //       return null;
+                                            //     }
+                                            //   },
+                                            // ),
                                             TextFormField(
                                               controller: ratingController,
                                               validator: (value) {
                                                 if (value!.isEmpty) {
                                                   return 'cannot be null';
                                                 }
-                                                final val = int.parse(value);
-                                                if (val > 5) {
+
+                                                final rating =
+                                                    double.tryParse(value);
+
+                                                if (rating != null &&
+                                                    rating >= 5) {
                                                   return 'review should be below 5';
                                                 } else {
                                                   return null;
                                                 }
                                               },
                                             ),
+
                                             ElevatedButton(
                                               child: Text('ok'),
                                               onPressed: () {
