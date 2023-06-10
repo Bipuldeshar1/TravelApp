@@ -313,7 +313,7 @@ class _DesState extends State<Des> {
                                                     double.tryParse(value);
 
                                                 if (rating != null &&
-                                                    rating >= 5) {
+                                                    rating > 5) {
                                                   return 'review should be below 5';
                                                 } else {
                                                   return null;
