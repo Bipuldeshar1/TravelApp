@@ -44,6 +44,10 @@ class _RegisterState extends State<Register> {
   ];
   String? _selectedVal = '';
 
+  bool containsSpecialCharactersOrNumbers(String input) {
+    return RegExp(r'[!@#\$%^&*(),.?":{}|<>0-9]').hasMatch(input);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,6 +221,12 @@ class _RegisterState extends State<Register> {
         number == '') {
       final snackbar = SnackBar(
         content: Text('Field cannot be empty'),
+        duration: Duration(seconds: 3),
+      );
+      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else if (containsSpecialCharactersOrNumbers(name)) {
+      final snackbar = SnackBar(
+        content: Text('Name should not contain special characters or numbers'),
         duration: Duration(seconds: 3),
       );
       await ScaffoldMessenger.of(context).showSnackBar(snackbar);

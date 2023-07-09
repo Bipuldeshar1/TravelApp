@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -42,6 +43,7 @@ class _DesState extends State<Des> {
   int totalRatings = 0;
   double sumRatings = 0.0;
   double averageRating = 0.0;
+  String rat = '';
   final _formKey = GlobalKey<FormState>();
 
   Future<List<ReviewModel>> fetchReview() async {
@@ -256,7 +258,6 @@ class _DesState extends State<Des> {
               )
             ]),
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -278,13 +279,6 @@ class _DesState extends State<Des> {
                     children: [
                       InkWell(
                           onTap: () async {
-                            // var x = FirebaseFirestore.instance
-                            //     .collection('ratings')
-                            //     .doc(widget.package.pId)
-                            //     .collection('ratings')
-                            //     .where('rid',
-                            //         isEqualTo:
-                            //             FirebaseAuth.instance.currentUser!.uid);
                             String packageId = widget.package.pId;
 
 // Fetch the current list of ratings
@@ -338,20 +332,6 @@ class _DesState extends State<Des> {
                                             key: _formKey,
                                             child: Column(
                                               children: [
-                                                // TextFormField(
-                                                //   controller: ratingController,
-                                                //   validator: (value) {
-                                                //     if (value!.isEmpty) {
-                                                //       return 'cannot be null';
-                                                //     }
-
-                                                //     if (value 6) {
-                                                //       return 'review should be below 5';
-                                                //     } else {
-                                                //       return null;
-                                                //     }
-                                                //   },
-                                                // ),
                                                 TextFormField(
                                                   controller: ratingController,
                                                   validator: (value) {
@@ -370,7 +350,6 @@ class _DesState extends State<Des> {
                                                     }
                                                   },
                                                 ),
-
                                                 ElevatedButton(
                                                   child: Text('ok'),
                                                   onPressed: () {
@@ -420,7 +399,7 @@ class _DesState extends State<Des> {
                           )),
                       CustomButton(
                           text: 'reviews',
-                          onPress: () {
+                          onPress: () async {
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -467,6 +446,8 @@ class _DesState extends State<Des> {
                                                     .collection('reviews')
                                                     .doc()
                                                     .set({
+                                                  'rid': FirebaseAuth.instance
+                                                      .currentUser!.uid,
                                                   'pid': widget.package.pId,
                                                   'review':
                                                       reviewController.text,
@@ -533,50 +514,178 @@ class _DesState extends State<Des> {
                 ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Description:',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    padding: const EdgeInsets.all(8.0),
+                    height: 300,
+                    child: ContainedTabBarView(
+                      tabs: [
+                        Text(
+                          'Descripiton',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Text(
+                          'Map',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Text(
+                          'Reviews',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                      views: [
+                        Container(
+                          child: Text(
+                            '${widget.package.description}',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Container(
+                            width: double.infinity,
+                            height: 250,
+                            child: DesMap(
+                              a: widget.package.x.toString(),
+                              b: widget.package.y.toString(),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: FutureBuilder(
+                            future: fetchReview(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Container(
+                                  width: 200,
+                                  height: 200,
+                                  child: ListView.builder(
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (context, index) {
+                                        final package = snapshot.data![index];
+
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          child: Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(
+                                                          0.3), // Shadow color
+                                                  spreadRadius:
+                                                      2, // Shadow spread radius
+                                                  blurRadius:
+                                                      5, // Shadow blur radius
+                                                  offset: Offset(
+                                                      0, 3), // Shadow offset
+                                                )
+                                              ],
+                                            ),
+                                            height: 120,
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 6,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: 300,
+                                                      child: Text(
+                                                        package.review,
+                                                        style: TextStyle(
+                                                          fontSize: 16.0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Text(
+                                                      'reviewed by:',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                    Text(
+                                                      package.uemail,
+                                                      style: TextStyle(
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("Error fetching data!");
+                              } else {
+                                return Container(
+                                  height: double.infinity,
+                                  child: ListView.builder(
+                                    itemCount: 5,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return s();
+                                    },
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                      onChange: (index) => print(index),
                     ),
                   ),
-                  Text(
-                    '${widget.package.description}',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
+
+                  // ),
                 ],
               ),
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Price:',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Price:',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        'Rs ${widget.package.price}',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Rs ${widget.package.price}',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           SliverToBoxAdapter(
@@ -607,69 +716,6 @@ class _DesState extends State<Des> {
                       color: Colors.black,
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          // SliverToBoxAdapter(
-          //   child: CustomButton(
-          //     text: 'map',
-          //     onPress: () {
-          //       Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //               builder: (context) => DesMap(
-          //                     a: widget.package.x.toString(),
-          //                     b: widget.package.y.toString(),
-          //                   )));
-          //     },
-          //     color: Colors.amber,
-          //     height: 40,
-          //     width: 10,
-          //   ),
-          // ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Location info:',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 250,
-                    child: DesMap(
-                      a: widget.package.x.toString(),
-                      b: widget.package.y.toString(),
-                    ),
-                  ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => DesMap(
-                  //           a: widget.package.x.toString(),
-                  //           b: widget.package.y.toString(),
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  //   child: const Text(
-                  //     'Browse Location',
-                  //     style: TextStyle(
-                  //       color: Colors.blueGrey,
-                  //       fontSize: 16,
-                  //     ),
-                  //   ),
-                  // )
                 ],
               ),
             ),
@@ -708,133 +754,6 @@ class _DesState extends State<Des> {
                   ),
                 )
               : SliverToBoxAdapter(),
-          // SliverToBoxAdapter(
-          //   child: Padding(
-          //     padding:
-          //         const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
-          //     child: ElevatedButton(
-          //         onPressed: () {
-          //           final uid = FirebaseAuth.instance.currentUser!.uid;
-          //           final uemail = FirebaseAuth.instance.currentUser!.email;
-          //           final uname = name.toString();
-          //           final pnum = pnumb.toString();
-          //           final date = DateTime.now().microsecondsSinceEpoch;
-          //           final sid = widget.package.uId;
-          //           final sEmail = widget.package.uemail;
-          //           payWithKhalti(
-          //             uid,
-          //             uname,
-          //             uemail,
-          //             date,
-          //             widget.package.pId,
-          //             widget.package.title,
-          //             widget.package.description,
-          //             widget.package.img,
-          //             int.parse(widget.package.price),
-          //             sid,
-          //             sEmail,
-          //             pnum,
-          //           );
-          //         },
-          //         child: Text('Book')),
-          //   ),
-          // )
-
-          SliverToBoxAdapter(
-            child: Container(
-              width: double.infinity,
-              height: 200,
-              child: FutureBuilder(
-                future: fetchReview(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Container(
-                      width: 200,
-                      height: 200,
-                      child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            final package = snapshot.data![index];
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              child: Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey
-                                          .withOpacity(0.3), // Shadow color
-                                      spreadRadius: 2, // Shadow spread radius
-                                      blurRadius: 5, // Shadow blur radius
-                                      offset: Offset(0, 3), // Shadow offset
-                                    )
-                                  ],
-                                ),
-                                height: 120,
-                                child: Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 6,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          package.title,
-                                          style: heading2,
-                                        ),
-                                        const Text(
-                                          'review:',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                        Container(
-                                          width: 300,
-                                          child: Text(
-                                            package.review,
-                                            style: p3,
-                                          ),
-                                        ),
-                                        const Text(
-                                          'reviewed by:',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                        Text(package.uemail, style: p3),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text("Error fetching data!");
-                  } else {
-                    return Container(
-                      height: double.infinity,
-                      child: ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (BuildContext context, int index) {
-                          return s();
-                        },
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
         ],
       ),
     );

@@ -220,30 +220,10 @@ class _DashboardProductsState extends State<DashboardProducts> {
                 children: [
                   Row(
                     children: [
-                      // Container(
-                      //   width: 200,
-                      //   height: 200,
-                      //   child: images != null
-                      //       ? Image.file(
-                      //           images!,
-                      //           fit: BoxFit.fill,
-                      //         )
-                      //       : Container(
-                      //           width: 200,
-                      //           height: 200,
-                      //           child: Image(
-                      //             image: NetworkImage(
-                      //               image,
-                      //             ),
-                      //           ),
-                      //         ),
-                      // ),
-
                       Container(
                           width: 200,
                           height: 200,
                           child: Image(image: NetworkImage(image))),
-
                       IconButton(
                         onPressed: () {
                           pickImage();
