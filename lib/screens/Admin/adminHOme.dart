@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/admin/cardDashbord.dart';
 import 'package:project_3/reusableComponent/admin/carduser.dart';
+import 'package:project_3/screens/Admin/Anotification.dart';
 import 'package:project_3/screens/Admin/contact.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
@@ -82,6 +83,14 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
             //           MaterialPageRoute(builder: (context) => Contact()));
             //     },
             //     icon: Icon(Icons.contact_emergency)),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminNotificationScreen()));
+                },
+                icon: Icon(Icons.notifications)),
             IconButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut().then((value) =>

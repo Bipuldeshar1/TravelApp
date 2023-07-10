@@ -49,9 +49,47 @@ class Books {
         'sEmail': sEmail,
         'pnum': pnumb,
         'status': text,
-      });
+      }).then((value) => storenotification(
+          uid, uname, pId, title, description, img, price, sid, sEmail, pnumb));
     } catch (e) {
       print(e);
+    }
+  }
+
+  storenotification(
+    String uid,
+    String uname,
+    String pId,
+    String title,
+    String description,
+    String img,
+    int price,
+    String? sid,
+    String? sEmail,
+    String pnum,
+  ) {
+    String msg = ' New Booking ';
+    var date = DateTime.now();
+    try {
+      FirebaseFirestore.instance.collection('Order_notification').doc().set({
+        //'id': package.id,
+        'msg': msg,
+        'nDate': date,
+        'bookingDate': date,
+        'pId': pId,
+        'pdescription': description,
+        'pimg': img,
+        'pnum': pnum,
+        'price': price,
+        'ptitle': title,
+        'sEmail': sEmail,
+        'sid': sid,
+        'uId': uid,
+        'uName': uname,
+        'uEmail': FirebaseAuth.instance.currentUser!.email,
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

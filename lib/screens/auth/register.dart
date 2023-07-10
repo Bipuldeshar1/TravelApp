@@ -230,6 +230,12 @@ class _RegisterState extends State<Register> {
         duration: Duration(seconds: 3),
       );
       await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else if (name.length < 4) {
+      final snackbar = SnackBar(
+        content: Text('name should greater than 4 char'),
+        duration: Duration(seconds: 3),
+      );
+      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else if (password.length < 8) {
       final snackbar = SnackBar(
         content: Text('Password should be at least 8 characters long'),

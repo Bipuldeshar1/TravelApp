@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SliverToBoxAdapter(
               child: LabelSection(
-                text: 'recommened',
+                text: 'Recommended',
                 style: heading1,
               ),
             ),
