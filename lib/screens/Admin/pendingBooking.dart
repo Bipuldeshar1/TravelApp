@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/model/bookingModel.dart';
 import 'package:project_3/reusableComponent/cardorder.dart';
-
 import 'package:project_3/reusableComponent/simmer/s.dart';
-import 'package:project_3/screens/Admin/adminHOme.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
 class PendingBooking extends StatefulWidget {
@@ -32,7 +30,7 @@ class _PendingBookingState extends State<PendingBooking> {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
-        title: Text('Pending Bookings'),
+        title: Text('Bookings'),
       ),
       body: StreamBuilder<List<Booking>>(
         stream: fetchOrder(),
@@ -53,16 +51,13 @@ class _PendingBookingState extends State<PendingBooking> {
                   //     myDialog(package);
                   //   },
                   // );
-                  return OrderCard(
-                    onpresss: () {
-                      myDialog(package);
-                    },
+                  return CustomCardOrder(
                     img: package.pImg,
                     price: package.price.toString(),
                     title: package.pTitle,
-                    cname: package.uName,
-                    pnum: package.pnum,
-                    email: package.uEmail,
+                    des: package.pDescription,
+                    bname: package.uName,
+                    bemail: package.uEmail,
                   );
                 });
           } else if (snapshot.hasError) {

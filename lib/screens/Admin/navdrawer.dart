@@ -28,18 +28,15 @@ class NavDrawer extends StatelessWidget {
               // AddAdmin(
               //     text: 'AddAdmin', onClick: () => selectedItem(context, 1)),
               orders(
-                  text: 'Pendeing Bookings',
-                  onClick: () => selectedItem(context, 1)),
+                  text: ' Bookings', onClick: () => selectedItem(context, 1)),
               AddProducts(
                   text: 'Add Destination',
                   onClick: () => selectedItem(context, 2)),
               product(text: 'Posts', onClick: () => selectedItem(context, 3)),
-              Review(text: 'reviews', onClick: () => selectedItem(context, 4)),
-              CBooking(
-                  text: 'confirmed Bookings',
-                  onClick: () => selectedItem(context, 5)),
+              Review(text: 'Reviews', onClick: () => selectedItem(context, 4)),
+
               homePageChat(
-                  text: 'chat', onClick: () => selectedItem(context, 6)),
+                  text: 'Chat', onClick: () => selectedItem(context, 5)),
             ],
           ),
         ),
@@ -80,11 +77,8 @@ class NavDrawer extends StatelessWidget {
         Navigator.of(context)
             .push((MaterialPageRoute(builder: (context) => ReviewScreen())));
         break;
+
       case 5:
-        Navigator.of(context)
-            .push((MaterialPageRoute(builder: (context) => ConfirmBooking())));
-        break;
-      case 6:
         Navigator.of(context).push((MaterialPageRoute(
             builder: (context) =>
                 HomePageChatAdmin(userModel: userModel, firebaseUser: user))));
