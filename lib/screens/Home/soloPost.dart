@@ -13,7 +13,7 @@ class _SoloPostState extends State<SoloPost> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('msg'),
+        title: const Text('msg'),
       ),
     );
   }

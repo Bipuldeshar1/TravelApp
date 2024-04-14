@@ -7,7 +7,7 @@ class CustomCard extends StatelessWidget {
   String des;
 
   VoidCallback? onpresss;
-  CustomCard({
+  CustomCard({super.key, 
     required this.img,
     required this.price,
     required this.title,
@@ -27,7 +27,7 @@ class CustomCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.3), // Shadow color
               spreadRadius: 2, // Shadow spread radius
               blurRadius: 5, // Shadow blur radius
-              offset: Offset(0, 3), // Shadow offset
+              offset: const Offset(0, 3), // Shadow offset
             )
           ],
           color: Colors.white,
@@ -44,12 +44,12 @@ class CustomCard extends StatelessWidget {
               child: Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       bottomLeft: Radius.circular(20),
                     ),
                     child: Hero(
-                      tag: Text('aaa'),
+                      tag: const Text('aaa'),
                       child: Image(
                         height: 120,
                         width: 120,
@@ -59,53 +59,53 @@ class CustomCard extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(12),
+                    margin: const EdgeInsets.all(12),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          child: Container(
+                          child: SizedBox(
                             width: 225,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: 150,
                                   child: Text(
                                     title,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                                 IconButton(
-                                    onPressed: onpresss, icon: Icon(Icons.menu))
+                                    onPressed: onpresss, icon: const Icon(Icons.menu))
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
-                        Container(
+                        SizedBox(
                           width: 50,
                           child: Text(
                             des, //des
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Text(
                           price,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                           ),
                           overflow: TextOverflow.ellipsis,

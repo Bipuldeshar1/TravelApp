@@ -198,6 +198,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 
 class UpdateProfile extends StatefulWidget {
+  const UpdateProfile({super.key});
+
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
 }
@@ -209,7 +211,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
     final numberController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     pickImage() async {
       try {
         final pickedImage =
@@ -243,14 +245,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('update profile'),
+        title: const Text('update profile'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Center(
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 children: [
                   InkWell(
@@ -307,8 +309,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   CustomButton(
                       text: 'update',
                       onPress: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
                           update(nameController.text, numberController.text,
                               imageUrl);
                         }

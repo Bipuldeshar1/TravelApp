@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/customCardfav.dart';
-import 'package:project_3/reusableComponent/des.dart';
 
 import '../../reusableComponent/simmer/s.dart';
 
 class FavouriteScreen extends StatefulWidget {
+  const FavouriteScreen({super.key});
+
   @override
   State<FavouriteScreen> createState() => _FavouriteScreenState();
 }
@@ -34,28 +33,27 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('favourite'),
+        title: const Text('favourite'),
         automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<List<PackageModel>>(
         stream: fav(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
+            return SizedBox(
               height: 500,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );
-            ;
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
             if (snapshot.data == null || snapshot.data!.isEmpty) {
-              return Center(child: Text('No favourite added'));
+              return const Center(child: Text('No favourite added'));
             } else {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
@@ -89,7 +87,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           .doc(pId)
           .delete()
           .then((value) {
-        final snackbar = SnackBar(content: Text('removed successfully'));
+        const snackbar = SnackBar(content: Text('removed successfully'));
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
       });
     } catch (e) {

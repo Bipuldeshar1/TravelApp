@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class DesMap extends StatefulWidget {
   String a;
   String b;
-  DesMap({
+  DesMap({super.key, 
     required this.a,
     required this.b,
   });
@@ -17,9 +17,9 @@ class DesMap extends StatefulWidget {
 }
 
 class _DesMapState extends State<DesMap> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   late CameraPosition _kGooglePlex;
-  List<Marker> _marker = [];
+  final List<Marker> _marker = [];
 
   @override
   void initState() {
@@ -37,9 +37,9 @@ class _DesMapState extends State<DesMap> {
         zoom: 19.151926040649414,
       );
       _marker.add(Marker(
-          markerId: MarkerId('1'),
+          markerId: const MarkerId('1'),
           position: LatLng(lat, lan),
-          infoWindow: InfoWindow(title: 'destination')));
+          infoWindow: const InfoWindow(title: 'destination')));
     } catch (e) {
       print(e);
     }
@@ -69,7 +69,7 @@ class _DesMapState extends State<DesMap> {
     await Geolocator.requestPermission()
         .then((value) {})
         .onError((error, stackTrace) {
-      print('error' + error.toString());
+      print('error$error');
     });
     return await Geolocator.getCurrentPosition();
   }

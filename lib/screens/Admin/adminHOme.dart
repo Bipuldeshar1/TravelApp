@@ -5,13 +5,12 @@ import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/admin/cardDashbord.dart';
 import 'package:project_3/reusableComponent/admin/carduser.dart';
 import 'package:project_3/screens/Admin/Anotification.dart';
-import 'package:project_3/screens/Admin/contact.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 
 import 'package:project_3/screens/auth/login.dart';
 
 class AdminHomescreen extends StatefulWidget {
-  AdminHomescreen({Key? key}) : super(key: key);
+  const AdminHomescreen({Key? key}) : super(key: key);
 
   @override
   State<AdminHomescreen> createState() => _AdminHomescreenState();
@@ -73,9 +72,9 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
     }
 
     return Scaffold(
-        drawer: NavDrawer(),
+        drawer: const NavDrawer(),
         appBar: AppBar(
-          title: Text('Dashboard'),
+          title: const Text('Dashboard'),
           actions: [
             // IconButton(
             //     onPressed: () {
@@ -88,16 +87,16 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AdminNotificationScreen()));
+                          builder: (context) => const AdminNotificationScreen()));
                 },
-                icon: Icon(Icons.notifications)),
+                icon: const Icon(Icons.notifications)),
             IconButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut().then((value) =>
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Login())));
+                          MaterialPageRoute(builder: (context) => const Login())));
                 },
-                icon: Icon(Icons.logout))
+                icon: const Icon(Icons.logout))
           ],
         ),
         body: SingleChildScrollView(
@@ -124,10 +123,10 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                                 return CardDashboard(
                                     title: 'products',
                                     content: snapshot.data.toString(),
-                                    icon: Icon(Icons
+                                    icon: const Icon(Icons
                                         .production_quantity_limits_rounded));
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                             },
                           ),
@@ -137,12 +136,12 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                               if (snapshot.hasData) {
                                 // return Text('orders ${snapshot.data.toString()}');
                                 return CardDashboard(
-                                    title: 'Pending bookings ',
+                                    title: 'Pending orders',
                                     content: snapshot.data.toString(),
                                     icon:
-                                        Icon(Icons.online_prediction_rounded));
+                                        const Icon(Icons.online_prediction_rounded));
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                             },
                           ),
@@ -162,10 +161,10 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                                 return CardDashboard(
                                     title: 'reviews',
                                     content: snapshot.data.toString(),
-                                    icon: Icon(
+                                    icon: const Icon(
                                         Icons.dashboard_customize_outlined));
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                             },
                           ),
@@ -175,12 +174,12 @@ class _AdminHomescreenState extends State<AdminHomescreen> {
                               if (snapshot.hasData) {
                                 // return Text('cOrder${snapshot.data.toString()}');
                                 return CardDashboard(
-                                    title: 'Confirmed bookings',
+                                    title: 'Confirmed orders',
                                     content: snapshot.data.toString(),
                                     icon:
-                                        Icon(Icons.production_quantity_limits));
+                                        const Icon(Icons.production_quantity_limits));
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                             },
                           )

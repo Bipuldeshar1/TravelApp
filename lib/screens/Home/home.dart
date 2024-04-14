@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_3/const/style.dart';
 import 'package:project_3/screens/Home/nnotification.dart';
-import 'package:project_3/screens/Home/seeAll.dart';
 
 import 'package:project_3/widgets/components/Bottom_Section.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -12,6 +11,8 @@ import 'package:project_3/widgets/search.dart';
 import '../../widgets/components/Label_Section.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.flutter_dash,
                     size: 40,
                   ),
@@ -42,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NotificationScreen()));
+                              builder: (context) => const NotificationScreen()));
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.notifications_active_rounded,
                     ),
                   ),
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.grey.withOpacity(0.3), // Shadow color
                     spreadRadius: 2, // Shadow spread radius
                     blurRadius: 5, // Shadow blur radius
-                    offset: Offset(0, 3), // Shadow offset
+                    offset: const Offset(0, 3), // Shadow offset
                   )
                 ],
               ),
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
             ),
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: SearchSection(),
             ),
             const SliverToBoxAdapter(
@@ -108,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
             ),
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: TopSection(),
             ),
             SliverToBoxAdapter(
@@ -122,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
             ),
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: BottomSection(),
             )
           ],

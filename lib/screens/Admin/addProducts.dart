@@ -8,16 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:project_3/model/packagemodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
-import 'package:project_3/reusableComponent/map/map.dart';
-import 'package:project_3/reusableComponent/map/newmap.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
 import 'package:project_3/screens/Admin/product.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProductScreen extends StatefulWidget {
-  AddProductScreen({Key? key}) : super(key: key);
+  const AddProductScreen({Key? key}) : super(key: key);
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
@@ -32,7 +29,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Marker? selectedMarker;
 
   String imageUrl = '';
-  String id = Uuid().v4();
+  String id = const Uuid().v4();
 
   File? image;
   pickImage() async {
@@ -58,16 +55,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   //GeoPoint userLocation=GeoPoint(latitude, longitude);
   String x = '';
   String y = '';
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(40.741895, -73.989308),
     zoom: 14.41,
   );
-  List<Marker> _marker = [];
+  final List<Marker> _marker = [];
   final List<Marker> _list = const [
     Marker(
       markerId: MarkerId('1'),
@@ -87,9 +84,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('add Destination'),
+        title: const Text('add Destination'),
       ),
       body: Form(
         key: _formKey,
@@ -112,10 +109,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             image!,
                             fit: BoxFit.fill,
                           )
-                        : Center(child: Text('click pick an product image')),
+                        : const Center(child: Text('click pick an product image')),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 TextFormField(
@@ -198,10 +195,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
-                Text('location info:'),
+                const Text('location info:'),
                 // Container(
                 //   width: double.infinity,
                 //   height: 300,
@@ -247,7 +244,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 //     ),
                 //   ),
                 // ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 300,
                   child: SafeArea(
@@ -265,18 +262,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         setState(() {
                           getUserCurrentLocation().then((value) async {
                             print('location current');
-                            print(value.latitude.toString() +
-                                " " +
-                                value.longitude.toString());
+                            print("${value.latitude} ${value.longitude}");
 
                             if (selectedMarker != null) {
                               _marker.remove(selectedMarker);
                             }
 
                             Marker newMarker = Marker(
-                              markerId: MarkerId('2'),
+                              markerId: const MarkerId('2'),
                               position: tappedLocation,
-                              infoWindow: InfoWindow(title: 'current location'),
+                              infoWindow: const InfoWindow(title: 'current location'),
                             );
 
                             _marker.add(newMarker);
@@ -313,7 +308,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     onPressed: () {
                       navigateToCurrentLocation();
                     },
-                    child: Icon(Icons.my_location)),
+                    child: const Icon(Icons.my_location)),
                 const SizedBox(
                   height: 40,
                 ),
@@ -373,7 +368,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ]
         });
       }).then((value) => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DashboardProducts())));
+              MaterialPageRoute(builder: (context) => const DashboardProducts())));
     } catch (e) {
       print(e);
     }
@@ -383,7 +378,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     await Geolocator.requestPermission()
         .then((value) {})
         .onError((error, stackTrace) {
-      print('error' + error.toString());
+      print('error$error');
     });
     return await Geolocator.getCurrentPosition();
   }
@@ -391,13 +386,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
   // Function to navigate to the user's current location
   void navigateToCurrentLocation() async {
     final position = await getUserCurrentLocation();
-    if (position != null) {
-      final cameraPosition = CameraPosition(
-        target: LatLng(position.latitude, position.longitude),
-        zoom: 14,
-      );
-      final controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    final cameraPosition = CameraPosition(
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 14,
+    );
+    final controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     }
-  }
 }

@@ -14,15 +14,15 @@ class s extends StatelessWidget {
             child: Column(
           children: [
             Skeleton(width: 80),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Skeleton(),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Skeleton(),
-            SizedBox(
+            const SizedBox(
               height: 8,
             )
           ],

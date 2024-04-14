@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
   final onPress;
   double width;
   double height;
-  CustomButton({
+  CustomButton({super.key, 
     required this.text,
     required this.onPress,
     required this.color,
@@ -20,11 +20,11 @@ class CustomButton extends StatelessWidget {
       child: Container(
         height: height,
         width: width,
+        decoration: BoxDecoration(
+            color: color, borderRadius: BorderRadius.circular(10)),
         child: Center(
           child: Text(text),
         ),
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(10)),
       ),
     );
   }

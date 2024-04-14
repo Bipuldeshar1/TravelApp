@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/chat/adminchathome.dart';
-import 'package:project_3/chat/homePageChat.dart';
 
 import 'package:project_3/model/userModel.dart';
 
 import 'package:project_3/screens/Admin/addProducts.dart';
 import 'package:project_3/screens/Admin/adminHOme.dart';
-import 'package:project_3/screens/Admin/confiremBooking.dart';
 import 'package:project_3/screens/Admin/pendingBooking.dart';
 
 import 'package:project_3/screens/Admin/product.dart';
 import 'package:project_3/screens/Admin/review.dart';
 
 class NavDrawer extends StatelessWidget {
+  const NavDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 45, 20, 50),
+      padding: const EdgeInsets.fromLTRB(0, 45, 20, 50),
       child: Drawer(
         child: Container(
           color: Colors.white,
@@ -30,7 +30,7 @@ class NavDrawer extends StatelessWidget {
               orders(
                   text: ' Bookings', onClick: () => selectedItem(context, 1)),
               AddProducts(
-                  text: 'Add Destination',
+                  text: 'Add Foods',
                   onClick: () => selectedItem(context, 2)),
               product(text: 'Posts', onClick: () => selectedItem(context, 3)),
               Review(text: 'Reviews', onClick: () => selectedItem(context, 4)),
@@ -59,23 +59,23 @@ class NavDrawer extends StatelessWidget {
     switch (i) {
       case 0:
         Navigator.of(context)
-            .push((MaterialPageRoute(builder: (context) => AdminHomescreen())));
+            .push((MaterialPageRoute(builder: (context) => const AdminHomescreen())));
         break;
       case 1:
         Navigator.of(context)
-            .push((MaterialPageRoute(builder: (context) => PendingBooking())));
+            .push((MaterialPageRoute(builder: (context) => const PendingBooking())));
         break;
       case 2:
         Navigator.of(context).push(
-            (MaterialPageRoute(builder: (context) => AddProductScreen())));
+            (MaterialPageRoute(builder: (context) => const AddProductScreen())));
         break;
       case 3:
         Navigator.of(context).push(
-            (MaterialPageRoute(builder: (context) => DashboardProducts())));
+            (MaterialPageRoute(builder: (context) => const DashboardProducts())));
         break;
       case 4:
         Navigator.of(context)
-            .push((MaterialPageRoute(builder: (context) => ReviewScreen())));
+            .push((MaterialPageRoute(builder: (context) => const ReviewScreen())));
         break;
 
       case 5:
@@ -91,7 +91,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );
@@ -101,7 +101,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );
@@ -111,7 +111,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );
@@ -121,7 +121,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );
@@ -131,7 +131,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );
@@ -141,7 +141,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );
@@ -151,7 +151,7 @@ class NavDrawer extends StatelessWidget {
     return ListTile(
       title: Text(
         text,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey),
       ),
       onTap: onClick,
     );

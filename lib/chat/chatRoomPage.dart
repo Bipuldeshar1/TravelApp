@@ -11,7 +11,7 @@ class ChatRoomPage extends StatefulWidget {
   final ChatRoomModel chatroom;
   User firebaseUser;
   UserModel userModel;
-  ChatRoomPage({
+  ChatRoomPage({super.key, 
     required this.chatroom,
     required this.targetUser,
     required this.firebaseUser,
@@ -79,7 +79,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
             children: [
               Expanded(
                   child: Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('chatrooms')
@@ -106,10 +106,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                   : MainAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 2,
                                   ),
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     vertical: 10,
                                     horizontal: 10,
                                   ),
@@ -123,7 +123,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                     builder: (BuildContext context,
                                         BoxConstraints constraints) {
                                       return Container(
-                                        constraints: BoxConstraints(
+                                        constraints: const BoxConstraints(
                                             maxWidth:
                                                 150 // Set maximum width based on parent constraints
                                             ),
@@ -132,7 +132,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           maxLines:
                                               null, // Allow unlimited lines
                                           softWrap: true, // Enable wrapping
-                                          style: TextStyle(color: Colors.white),
+                                          style: const TextStyle(color: Colors.white),
                                         ),
                                       );
                                     },
@@ -143,16 +143,16 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           },
                         );
                       } else if (snapshot.hasError) {
-                        return Center(
+                        return const Center(
                           child: Text('errroe'),
                         );
                       } else {
-                        return Center(
+                        return const Center(
                           child: Text('say hi'),
                         );
                       }
                     } else {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
@@ -167,7 +167,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           child: TextField(
                             controller: messageController,
                             maxLines: null,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'msg',
                             ),
                           ),
@@ -176,7 +176,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           onPressed: () {
                             sendMessage();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.send,
                           ),
                         )

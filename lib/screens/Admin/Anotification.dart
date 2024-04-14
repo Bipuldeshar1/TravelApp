@@ -29,7 +29,7 @@ class _AdminNotificationScreenState extends State<AdminNotificationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notification'),
+        title: const Text('Notification'),
       ),
       body: StreamBuilder(
         stream: fetch(),
@@ -45,16 +45,16 @@ class _AdminNotificationScreenState extends State<AdminNotificationScreen> {
                       name: package.uName);
                 });
           } else if (snapshot.hasError) {
-            return Text("Error fetching data!");
+            return const Text("Error fetching data!");
           } else if (snapshot.data == null) {
-            return Text('no data');
+            return const Text('no data');
           } else {
-            return Container(
+            return SizedBox(
               height: double.infinity,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );

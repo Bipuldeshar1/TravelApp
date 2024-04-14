@@ -8,7 +8,7 @@ import 'package:project_3/reusableComponent/simmer/s.dart';
 class SearchDisplay extends StatefulWidget {
   String query;
 
-  SearchDisplay({
+  SearchDisplay({super.key, 
     required this.query,
   });
 
@@ -19,13 +19,13 @@ class SearchDisplay extends StatefulWidget {
 class _SearchDisplayState extends State<SearchDisplay> {
   @override
   Widget build(BuildContext context) {
-    List<PackageModel> _p = [];
+    List<PackageModel> p = [];
 
     Future<List<PackageModel>> fetchproducts() async {
       final snapshot = await FirebaseFirestore.instance
           .collection('Allposts')
           .where('title', isGreaterThanOrEqualTo: widget.query)
-          .where('title', isLessThanOrEqualTo: widget.query + '\uf8ff')
+          .where('title', isLessThanOrEqualTo: '${widget.query}\uf8ff')
           .get();
 
       final userData = snapshot.docs
@@ -68,12 +68,12 @@ class _SearchDisplayState extends State<SearchDisplay> {
               } else if (snapshot.hasError) {
                 return const Text("Error fetching data!");
               } else {
-                return Container(
+                return SizedBox(
                   height: MediaQuery.of(context).size.height * 1,
                   child: ListView.builder(
                     itemCount: 5,
                     itemBuilder: (BuildContext context, int index) {
-                      return s();
+                      return const s();
                     },
                   ),
                 );

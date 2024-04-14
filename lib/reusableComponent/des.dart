@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
-import 'package:project_3/chat/chatRoomPage.dart';
-import 'package:project_3/const/style.dart';
 import 'package:project_3/fxn/book.dart';
 
 import 'package:project_3/model/packagemodel.dart';
@@ -16,15 +13,13 @@ import 'package:project_3/model/reviewmodel.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/reusableComponent/map/desmap.dart';
 import 'package:project_3/reusableComponent/simmer/s.dart';
-import 'package:project_3/screens/Home/home.dart';
-import 'package:project_3/screens/Home/nav.dart';
 
 import 'package:project_3/widgets/rating.dart';
 
 class Des extends StatefulWidget {
   final PackageModel package;
 
-  Des({required this.package});
+  const Des({super.key, required this.package});
 
   @override
   State<Des> createState() => _DesState();
@@ -129,9 +124,10 @@ class _DesState extends State<Des> {
 
           if (ratingValue is int) {
             sumRatings += ratingValue.toDouble();
-          } else if (ratingValue is double) {
+          } else {
             sumRatings += ratingValue;
           }
+        
 
           totalRatings++;
         }
@@ -222,7 +218,7 @@ class _DesState extends State<Des> {
                         backgroundColor:
                             Colors.lightGreenAccent.withOpacity(0.5),
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,
                           ),
                           color: Colors.black,
@@ -239,7 +235,7 @@ class _DesState extends State<Des> {
                         backgroundColor:
                             Colors.lightGreenAccent.withOpacity(0.5),
                         child: IconButton(
-                          icon: Icon(Icons.favorite_border),
+                          icon: const Icon(Icons.favorite_border),
                           color: Colors.black,
                           onPressed: () {
                             addFav(
@@ -308,7 +304,7 @@ class _DesState extends State<Des> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('Already provided ratings'),
+                                        title: const Text('Already provided ratings'),
                                         content: CustomButton(
                                           text: 'ok',
                                           onPress: () {
@@ -351,7 +347,7 @@ class _DesState extends State<Des> {
                                                   },
                                                 ),
                                                 ElevatedButton(
-                                                  child: Text('ok'),
+                                                  child: const Text('ok'),
                                                   onPressed: () {
                                                     if (_formKey.currentState!
                                                         .validate()) {
@@ -404,7 +400,7 @@ class _DesState extends State<Des> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text('Add a review'),
+                                  title: const Text('Add a review'),
                                   content: Container(
                                     child: Form(
                                       key: _formKey,
@@ -425,7 +421,7 @@ class _DesState extends State<Des> {
                                                 return null;
                                               }
                                             },
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                               contentPadding:
                                                   EdgeInsets.symmetric(
                                                 vertical: 50,
@@ -502,7 +498,7 @@ class _DesState extends State<Des> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         RatingBar(
@@ -522,7 +518,7 @@ class _DesState extends State<Des> {
                     padding: const EdgeInsets.all(8.0),
                     height: 300,
                     child: ContainedTabBarView(
-                      tabs: [
+                      tabs: const [
                         Text(
                           'Descripiton',
                           style: TextStyle(color: Colors.black),
@@ -539,14 +535,14 @@ class _DesState extends State<Des> {
                       views: [
                         Container(
                           child: Text(
-                            '${widget.package.description}',
+                            widget.package.description,
                             style: const TextStyle(
                               fontSize: 16.0,
                             ),
                           ),
                         ),
                         Container(
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             height: 250,
                             child: DesMap(
@@ -560,7 +556,7 @@ class _DesState extends State<Des> {
                             future: fetchReview(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return Container(
+                                return SizedBox(
                                   width: 200,
                                   height: 200,
                                   child: ListView.builder(
@@ -586,7 +582,7 @@ class _DesState extends State<Des> {
                                                       2, // Shadow spread radius
                                                   blurRadius:
                                                       5, // Shadow blur radius
-                                                  offset: Offset(
+                                                  offset: const Offset(
                                                       0, 3), // Shadow offset
                                                 )
                                               ],
@@ -603,11 +599,11 @@ class _DesState extends State<Des> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Container(
+                                                    SizedBox(
                                                       width: 300,
                                                       child: Text(
                                                         package.review,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 16.0,
                                                         ),
                                                       ),
@@ -621,7 +617,7 @@ class _DesState extends State<Des> {
                                                     ),
                                                     Text(
                                                       package.uemail,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 15),
                                                     ),
                                                   ],
@@ -633,15 +629,15 @@ class _DesState extends State<Des> {
                                       }),
                                 );
                               } else if (snapshot.hasError) {
-                                return Text("Error fetching data!");
+                                return const Text("Error fetching data!");
                               } else {
-                                return Container(
+                                return SizedBox(
                                   height: double.infinity,
                                   child: ListView.builder(
                                     itemCount: 5,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return s();
+                                      return const s();
                                     },
                                   ),
                                 );
@@ -663,7 +659,7 @@ class _DesState extends State<Des> {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -703,7 +699,7 @@ class _DesState extends State<Des> {
                     ),
                   ),
                   Text(
-                    '${widget.package.n}',
+                    widget.package.n,
                     style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.black,
@@ -750,10 +746,10 @@ class _DesState extends State<Des> {
                             pnum,
                           );
                         },
-                        child: Text('Book')),
+                        child: const Text('Book')),
                   ),
                 )
-              : SliverToBoxAdapter(),
+              : const SliverToBoxAdapter(),
         ],
       ),
     );
@@ -787,7 +783,7 @@ class _DesState extends State<Des> {
         showDialog(
           context: context,
           builder: (context) {
-            Books b = new Books();
+            Books b = Books();
             b.book(uid, uname, uemail, date, pId, title, description, img,
                 price, sid, sEmail, pnum);
             return AlertDialog(
@@ -815,8 +811,8 @@ class _DesState extends State<Des> {
   }
 
   void onCancel() async {
-    final snackbar = SnackBar(content: Text('cancelled'));
-    await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    const snackbar = SnackBar(content: Text('cancelled'));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   void addFav(
@@ -830,8 +826,8 @@ class _DesState extends State<Des> {
         'pId': pId,
         'uid': FirebaseAuth.instance.currentUser!.uid,
       }).then((value) async {
-        var snackbar = SnackBar(content: Text('addeed to favourite'));
-        await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        var snackbar = const SnackBar(content: Text('addeed to favourite'));
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       });
     } catch (e) {
       print(e.toString());

@@ -30,7 +30,7 @@ class _BottomSectionState extends State<BottomSection> {
         stream: fetch(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Container(
+            return SizedBox(
               height: 430,
               child: ListView.builder(
                   itemCount: snapshot.data!.length,
@@ -56,12 +56,12 @@ class _BottomSectionState extends State<BottomSection> {
           } else if (snapshot.hasError) {
             return const Text("Error fetching data!");
           } else {
-            return Container(
+            return SizedBox(
               height: 500,
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );

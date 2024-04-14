@@ -10,7 +10,7 @@ class BottomNav extends StatefulWidget {
   UserModel userModel;
   User firebaseUser;
 
-  BottomNav({
+  BottomNav({super.key, 
     required this.firebaseUser,
     required this.userModel,
   });
@@ -27,9 +27,9 @@ class _BottomNavState extends State<BottomNav> {
   void initState() {
     super.initState();
     _pages = [
-      {'page': HomeScreen()},
-      {'page': FavouriteScreen()},
-      {'page': ProfileScreen()},
+      {'page': const HomeScreen()},
+      {'page': const FavouriteScreen()},
+      {'page': const ProfileScreen()},
       {
         'page': HomePageChat(
           userModel: widget.userModel,
@@ -55,7 +55,7 @@ class _BottomNavState extends State<BottomNav> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(255, 250, 225, 0),
+        selectedItemColor: const Color.fromARGB(255, 250, 225, 0),
         onTap: _selectedPage,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),

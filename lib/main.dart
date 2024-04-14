@@ -1,21 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
-import 'package:project_3/fxn/route.dart';
 import 'package:project_3/model/firebasehelper.dart';
 import 'package:project_3/model/userModel.dart';
 
-import 'package:project_3/screens/Admin/adminHOme.dart';
-import 'package:project_3/screens/Home/home.dart';
 import 'package:project_3/screens/Home/nav.dart';
 import 'package:project_3/screens/auth/login.dart';
-import 'package:project_3/screens/splashscreen/splashScreen.dart';
 import 'package:uuid/uuid.dart';
 
-var uuid = Uuid();
+var uuid = const Uuid();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,11 +24,11 @@ void main() async {
       runApp(
           MyAppLoggedIn(userModel: thisUserModel, firebaseUser: currentUser));
     } else {
-      runApp(MyApp());
+      runApp(const MyApp());
     }
   } else {
     // Not logged in
-    runApp(MyApp());
+    runApp(const MyApp());
   }
 }
 
@@ -56,7 +51,7 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: const [
                 KhaltiLocalizations.delegate,
               ],
-              home: Login());
+              home: const Login());
         });
   }
 }

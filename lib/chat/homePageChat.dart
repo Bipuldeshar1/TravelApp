@@ -6,12 +6,11 @@ import 'package:project_3/chat/searchPAge.dart';
 import 'package:project_3/model/chatRoomModel.dart';
 import 'package:project_3/model/firebasehelper.dart';
 import 'package:project_3/model/userModel.dart';
-import 'package:project_3/screens/auth/login.dart';
 
 class HomePageChat extends StatefulWidget {
   UserModel userModel;
   User firebaseUser;
-  HomePageChat({
+  HomePageChat({super.key, 
     required this.userModel,
     required this.firebaseUser,
   });
@@ -25,7 +24,7 @@ class _HomePageChatState extends State<HomePageChat> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('chat'),
+        title: const Text('chat'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -71,7 +70,7 @@ class _HomePageChatState extends State<HomePageChat> {
                                   return Column(
                                     children: [
                                       Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             border: Border.symmetric()),
                                         child: ListTile(
                                           onTap: () {
@@ -101,7 +100,7 @@ class _HomePageChatState extends State<HomePageChat> {
                                               .toString()),
                                         ),
                                       ),
-                                      Divider(
+                                      const Divider(
                                         color: Colors.black,
                                       )
                                     ],
@@ -121,7 +120,7 @@ class _HomePageChatState extends State<HomePageChat> {
                         child: Text(snapshot.error.toString()),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: Text('no chats'),
                       );
                     }
@@ -144,7 +143,7 @@ class _HomePageChatState extends State<HomePageChat> {
                         firebaseUser: widget.firebaseUser,
                       )));
         },
-        child: Icon(Icons.search),
+        child: const Icon(Icons.search),
       ),
     );
   }

@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/model/bookingModel.dart';
-import 'package:project_3/reusableComponent/CustomcardHOme.dart';
-import 'package:project_3/reusableComponent/customCard.dart';
 import 'package:project_3/reusableComponent/customCardfav.dart';
-import 'package:project_3/reusableComponent/des.dart';
 import 'package:project_3/reusableComponent/simmer/s.dart';
 
 class PendingBooking extends StatefulWidget {
@@ -41,7 +37,7 @@ class _PendingBookingState extends State<PendingBooking> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bookings'),
+        title: const Text('Bookings'),
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<List<Booking>>(
@@ -49,7 +45,7 @@ class _PendingBookingState extends State<PendingBooking> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final packages = snapshot.data!;
-              return Container(
+              return SizedBox(
                 height: 500,
                 child: ListView.builder(
                   itemCount: packages.length,
@@ -69,14 +65,14 @@ class _PendingBookingState extends State<PendingBooking> {
                 ),
               );
             } else if (snapshot.hasError) {
-              return Text("Error fetching data!");
+              return const Text("Error fetching data!");
             } else {
-              return Container(
+              return SizedBox(
                 height: 500,
                 child: ListView.builder(
                   itemCount: 5,
                   itemBuilder: (BuildContext context, int index) {
-                    return s();
+                    return const s();
                   },
                 ),
               );

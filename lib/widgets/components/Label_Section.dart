@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_3/const/style.dart';
 import 'package:project_3/screens/Home/seeAll.dart';
 
 class LabelSection extends StatelessWidget {
@@ -7,7 +6,7 @@ class LabelSection extends StatelessWidget {
 
   final TextStyle style;
 
-  const LabelSection({
+  const LabelSection({super.key, 
     required this.text,
     required this.style,
   });
@@ -26,9 +25,9 @@ class LabelSection extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => SeeAllScreen())));
+                  MaterialPageRoute(builder: ((context) => const SeeAllScreen())));
             },
-            child: Text(
+            child: const Text(
               'see All',
             ),
           ),

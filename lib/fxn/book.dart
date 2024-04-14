@@ -32,7 +32,7 @@ class Books {
   ) {
     final date = DateTime.now();
     String text = 'pending';
-    var id = Uuid().v1();
+    var id = const Uuid().v1();
     try {
       FirebaseFirestore.instance.collection('orders').doc(id.toString()).set({
         'id': id,

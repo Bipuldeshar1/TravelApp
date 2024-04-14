@@ -29,24 +29,24 @@ class _NewMapState extends State<NewMap> {
       zoom: 19.151926040649414);
 
   static final Marker _kLakeMarker = Marker(
-    markerId: MarkerId('1'),
-    infoWindow: InfoWindow(title: 'lake'),
+    markerId: const MarkerId('1'),
+    infoWindow: const InfoWindow(title: 'lake'),
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    position: LatLng(27.687967, 85.320479),
+    position: const LatLng(27.687967, 85.320479),
   );
-  static final Marker _kGooglePlexMarker = Marker(
+  static const Marker _kGooglePlexMarker = Marker(
     markerId: MarkerId('2'),
     infoWindow: InfoWindow(title: 'google'),
     icon: BitmapDescriptor.defaultMarker,
     position: LatLng(27.712021, 85.312950),
   );
 
-  static final Polyline _kPolyLine =
+  static const Polyline _kPolyLine =
       Polyline(polylineId: PolylineId('_polyline'), points: [
     LatLng(27.687967, 85.320479),
     LatLng(27.712021, 85.312950),
   ]);
-  static final Polygon _kpolygon = Polygon(
+  static const Polygon _kpolygon = Polygon(
     polygonId: PolygonId('_kpolygon'),
     points: [
       LatLng(27.687967, 85.320479),
@@ -59,7 +59,7 @@ class _NewMapState extends State<NewMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'google map',
         ),
       ),
@@ -71,7 +71,7 @@ class _NewMapState extends State<NewMap> {
                 child: TextFormField(
                   controller: _searchController,
                   textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(hintText: 'search by city'),
+                  decoration: const InputDecoration(hintText: 'search by city'),
                   onChanged: (value) {
                     print(value);
                   },
@@ -83,11 +83,11 @@ class _NewMapState extends State<NewMap> {
                       await LocationService().getPlace(_searchController.text);
                   _goToplace(place);
                 },
-                icon: Icon(Icons.search),
+                icon: const Icon(Icons.search),
               ),
             ],
           ),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width * 1,
             height: MediaQuery.of(context).size.height * 0.75,
             child: GoogleMap(

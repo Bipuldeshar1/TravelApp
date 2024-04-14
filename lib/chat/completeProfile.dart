@@ -11,7 +11,7 @@ import 'package:project_3/model/userModel.dart';
 class CompleteProfile extends StatefulWidget {
   final UserModel userModel;
   final User firebaseUser;
-  CompleteProfile({
+  const CompleteProfile({super.key, 
     required this.userModel,
     required this.firebaseUser,
   });
@@ -38,7 +38,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('upload pp'),
+            title: const Text('upload pp'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -46,9 +46,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
                   onTap: () {
                     selectImage(ImageSource.gallery);
                   },
-                  title: Text('select a photo'),
+                  title: const Text('select a photo'),
                 ),
-                ListTile(
+                const ListTile(
                   title: Text('take a photo'),
                 )
               ],
@@ -135,7 +135,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             ),
             TextField(
               controller: fullNameController,
-              decoration: InputDecoration(labelText: 'name'),
+              decoration: const InputDecoration(labelText: 'name'),
             ),
             const SizedBox(
               height: 20,
@@ -144,7 +144,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               onPressed: () {
                 checkValues();
               },
-              child: Text('submit'),
+              child: const Text('submit'),
             )
           ],
         ),

@@ -9,7 +9,7 @@ import 'package:project_3/model/userModel.dart';
 class SearchPage extends StatefulWidget {
   UserModel userModel;
   User firebaseUser;
-  SearchPage({
+  SearchPage({super.key, 
     required this.userModel,
     required this.firebaseUser,
   });
@@ -29,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
         .where('participants.${targetUser.uid}', isEqualTo: true)
         .get();
 
-    if (snapshot.docs.length > 0) {
+    if (snapshot.docs.isNotEmpty) {
       //fetch the existing one
       print('already created chatroom');
       var docData = snapshot.docs[0].data();
@@ -65,11 +65,11 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('search'),
+          title: const Text('search'),
         ),
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 10,
             ),
@@ -77,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 TextField(
                   controller: searchController,
-                  decoration: InputDecoration(labelText: "Email Address"),
+                  decoration: const InputDecoration(labelText: "Email Address"),
                 ),
                 const SizedBox(
                   height: 20,
@@ -86,7 +86,7 @@ class _SearchPageState extends State<SearchPage> {
                   onPressed: () {
                     setState(() {});
                   },
-                  child: Text("Search"),
+                  child: const Text("Search"),
                 ),
                 const SizedBox(
                   height: 20,
@@ -103,7 +103,7 @@ class _SearchPageState extends State<SearchPage> {
                           QuerySnapshot dataSnapshot =
                               snapshot.data as QuerySnapshot;
 
-                          if (dataSnapshot.docs.length > 0) {
+                          if (dataSnapshot.docs.isNotEmpty) {
                             Map<String, dynamic> userMap = dataSnapshot.docs[0]
                                 .data() as Map<String, dynamic>;
                             UserModel searchedUser = UserModel.fromMap(userMap);
@@ -131,18 +131,18 @@ class _SearchPageState extends State<SearchPage> {
                                       NetworkImage(searchedUser.profilepic!)),
                               title: Text(searchedUser.fullname.toString()),
                               subtitle: Text(searchedUser.email.toString()),
-                              trailing: Icon(Icons.arrow_right),
+                              trailing: const Icon(Icons.arrow_right),
                             );
                           } else {
-                            return Text('no result found');
+                            return const Text('no result found');
                           }
                         } else if (snapshot.hasError) {
-                          return Text('errroe');
+                          return const Text('errroe');
                         } else {
-                          return Text('no result found');
+                          return const Text('no result found');
                         }
                       } else {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                     })
               ],
