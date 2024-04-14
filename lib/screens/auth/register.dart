@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_input/dropdown_input.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:project_3/fxn/route.dart';
@@ -21,6 +19,8 @@ import 'package:project_3/screens/auth/login.dart';
 // }
 
 class Register extends StatefulWidget {
+  const Register({super.key});
+
   @override
   State<Register> createState() => _RegisterState();
 }
@@ -102,8 +102,8 @@ class _RegisterState extends State<Register> {
                     value: _selectedVal,
                     items: _list
                         .map((e) => DropdownMenuItem(
-                              child: Text(e),
                               value: e,
+                              child: Text(e),
                             ))
                         .toList(),
                     onChanged: (value) {
@@ -111,7 +111,7 @@ class _RegisterState extends State<Register> {
                         _selectedVal = value as String;
                       });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_drop_down,
                       color: Colors.black,
                     ),
@@ -170,7 +170,7 @@ class _RegisterState extends State<Register> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Login(),
+                                builder: (context) => const Login(),
                               ),
                             );
                           },
@@ -219,29 +219,29 @@ class _RegisterState extends State<Register> {
         name == '' ||
         role == '' ||
         number == '') {
-      final snackbar = SnackBar(
+      const snackbar = SnackBar(
         content: Text('Field cannot be empty'),
         duration: Duration(seconds: 3),
       );
-      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else if (containsSpecialCharactersOrNumbers(name)) {
-      final snackbar = SnackBar(
+      const snackbar = SnackBar(
         content: Text('Name should not contain special characters or numbers'),
         duration: Duration(seconds: 3),
       );
-      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else if (name.length < 4) {
-      final snackbar = SnackBar(
+      const snackbar = SnackBar(
         content: Text('name should greater than 4 char'),
         duration: Duration(seconds: 3),
       );
-      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else if (password.length < 8) {
-      final snackbar = SnackBar(
+      const snackbar = SnackBar(
         content: Text('Password should be at least 8 characters long'),
         duration: Duration(seconds: 3),
       );
-      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
       try {
         await FirebaseAuth.instance
@@ -254,9 +254,9 @@ class _RegisterState extends State<Register> {
       } on FirebaseAuthException catch (e) {
         final snackbar = SnackBar(
           content: Text(e.code.toString()),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         );
-        await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       }
     }
   }
@@ -264,7 +264,7 @@ class _RegisterState extends State<Register> {
   PostDetailUser(
       String email, String name, String role, String password, pnum) {
     try {
-      Fxn f = new Fxn();
+      Fxn f = Fxn();
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       var user = FirebaseAuth.instance.currentUser;
       CollectionReference ref = firebaseFirestore.collection('users');
@@ -277,7 +277,7 @@ class _RegisterState extends State<Register> {
         'uid': FirebaseAuth.instance.currentUser!.uid,
       });
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Login()));
+          context, MaterialPageRoute(builder: (context) => const Login()));
     } catch (e) {
       print(e);
     }

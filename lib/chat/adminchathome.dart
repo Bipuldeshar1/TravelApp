@@ -7,12 +7,11 @@ import 'package:project_3/model/chatRoomModel.dart';
 import 'package:project_3/model/firebasehelper.dart';
 import 'package:project_3/model/userModel.dart';
 import 'package:project_3/screens/Admin/navdrawer.dart';
-import 'package:project_3/screens/auth/login.dart';
 
 class HomePageChatAdmin extends StatefulWidget {
   UserModel userModel;
   User firebaseUser;
-  HomePageChatAdmin({
+  HomePageChatAdmin({super.key, 
     required this.userModel,
     required this.firebaseUser,
   });
@@ -24,9 +23,9 @@ class _HomePageChatAdminState extends State<HomePageChatAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('chat'),
+        title: const Text('chat'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -72,7 +71,7 @@ class _HomePageChatAdminState extends State<HomePageChatAdmin> {
                                   return Column(
                                     children: [
                                       Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             border: Border.symmetric()),
                                         child: ListTile(
                                           onTap: () {
@@ -102,7 +101,7 @@ class _HomePageChatAdminState extends State<HomePageChatAdmin> {
                                               .toString()),
                                         ),
                                       ),
-                                      Divider(
+                                      const Divider(
                                         color: Colors.black,
                                       )
                                     ],
@@ -122,7 +121,7 @@ class _HomePageChatAdminState extends State<HomePageChatAdmin> {
                         child: Text(snapshot.error.toString()),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: Text('no chats'),
                       );
                     }
@@ -145,7 +144,7 @@ class _HomePageChatAdminState extends State<HomePageChatAdmin> {
                         firebaseUser: widget.firebaseUser,
                       )));
         },
-        child: Icon(Icons.search),
+        child: const Icon(Icons.search),
       ),
     );
   }

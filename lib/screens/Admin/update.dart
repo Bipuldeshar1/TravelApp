@@ -9,7 +9,7 @@ import 'package:project_3/screens/Admin/product.dart';
 
 class Update extends StatefulWidget {
   PackageModel package;
-  Update({
+  Update({super.key, 
     required this.package,
   });
   @override
@@ -33,7 +33,7 @@ class _UpdateState extends State<Update> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update'),
+        title: const Text('Update'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -44,11 +44,11 @@ class _UpdateState extends State<Update> {
             children: [
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 300,
                     height: 200,
                     child: images != null
-                        ? Container(
+                        ? SizedBox(
                             width: 300,
                             child: Image.file(
                               images!,
@@ -73,7 +73,7 @@ class _UpdateState extends State<Update> {
                       pickImage();
                       setState(() {});
                     },
-                    icon: Icon(Icons.update),
+                    icon: const Icon(Icons.update),
                   ),
                 ],
               ),
@@ -135,7 +135,7 @@ class _UpdateState extends State<Update> {
                     }).then((value) => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => DashboardProducts())));
+                                builder: (context) => const DashboardProducts())));
                   });
                 },
                 child: const Text('update'),

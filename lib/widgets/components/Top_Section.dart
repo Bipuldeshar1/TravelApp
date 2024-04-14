@@ -40,7 +40,7 @@ class _TopSectionState extends State<TopSection> {
         stream: recom(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Container(
+            return SizedBox(
               height: 250,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -67,12 +67,12 @@ class _TopSectionState extends State<TopSection> {
           } else if (snapshot.hasError) {
             return const Text("Error fetching data!");
           } else {
-            return Container(
+            return SizedBox(
               height: 500,
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );

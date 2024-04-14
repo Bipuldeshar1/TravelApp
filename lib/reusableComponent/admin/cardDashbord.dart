@@ -4,7 +4,7 @@ class CardDashboard extends StatelessWidget {
   String title;
   String content;
   Icon icon;
-  CardDashboard({
+  CardDashboard({super.key, 
     required this.title,
     required this.content,
     required this.icon,
@@ -23,7 +23,7 @@ class CardDashboard extends StatelessWidget {
             color: Colors.grey.withOpacity(0.3), // Shadow color
             spreadRadius: 2, // Shadow spread radius
             blurRadius: 5, // Shadow blur radius
-            offset: Offset(0, 3), // Shadow offset
+            offset: const Offset(0, 3), // Shadow offset
           )
         ],
       ),

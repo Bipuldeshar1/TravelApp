@@ -16,6 +16,8 @@ import 'package:project_3/screens/Admin/navdrawer.dart';
 import 'package:project_3/screens/Admin/update.dart';
 
 class DashboardProducts extends StatefulWidget {
+  const DashboardProducts({super.key});
+
   @override
   State<DashboardProducts> createState() => _DashboardProductsState();
 }
@@ -46,9 +48,9 @@ class _DashboardProductsState extends State<DashboardProducts> {
     }
 
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('Posts'),
+        title: const Text('Posts'),
       ),
       body: FutureBuilder<List<PackageModel>>(
         future: fetch(),
@@ -77,7 +79,7 @@ class _DashboardProductsState extends State<DashboardProducts> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text('update or delete'),
+                              title: const Text('update or delete'),
                               content: Container(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -182,14 +184,14 @@ class _DashboardProductsState extends State<DashboardProducts> {
                   );
                 });
           } else if (snapshot.hasError) {
-            return Text("Error fetching data!");
+            return const Text("Error fetching data!");
           } else {
-            return Container(
+            return SizedBox(
               height: double.infinity,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );
@@ -214,13 +216,13 @@ class _DashboardProductsState extends State<DashboardProducts> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('update'),
+            title: const Text('update'),
             content: SingleChildScrollView(
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Container(
+                      SizedBox(
                           width: 200,
                           height: 200,
                           child: Image(image: NetworkImage(image))),
@@ -229,25 +231,25 @@ class _DashboardProductsState extends State<DashboardProducts> {
                           pickImage();
                           setState(() {});
                         },
-                        icon: Icon(Icons.update),
+                        icon: const Icon(Icons.update),
                       ),
                     ],
                   ),
                   TextField(
                     controller: titleController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'title',
                     ),
                   ),
                   TextField(
                     controller: descriptionController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'description',
                     ),
                   ),
                   TextField(
                     controller: priceController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'price',
                     ),
                   ),

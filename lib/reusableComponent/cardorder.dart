@@ -8,7 +8,7 @@ class CustomCardOrder extends StatelessWidget {
   String bname;
   String bemail;
 
-  CustomCardOrder({
+  CustomCardOrder({super.key, 
     required this.img,
     required this.price,
     required this.title,
@@ -29,7 +29,7 @@ class CustomCardOrder extends StatelessWidget {
               color: Colors.grey.withOpacity(0.3), // Shadow color
               spreadRadius: 2, // Shadow spread radius
               blurRadius: 6, // Shadow blur radius
-              offset: Offset(0, 3), // Shadow offset
+              offset: const Offset(0, 3), // Shadow offset
             )
           ],
           color: Colors.white,
@@ -44,12 +44,12 @@ class CustomCardOrder extends StatelessWidget {
             Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     bottomLeft: Radius.circular(20),
                   ),
                   child: Hero(
-                    tag: Text('aaa'),
+                    tag: const Text('aaa'),
                     child: Image(
                       height: 180,
                       width: 150,
@@ -63,20 +63,20 @@ class CustomCardOrder extends StatelessWidget {
                 ),
                 Container(
                   width: 150,
-                  margin: EdgeInsets.all(12),
+                  margin: const EdgeInsets.all(12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             width: 100,
                             child: Text(
                               title,
 
                               //title
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -90,22 +90,22 @@ class CustomCardOrder extends StatelessWidget {
                       ),
                       Text(
                         des,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        'RS ${price}',
-                        style: TextStyle(
+                        'RS $price',
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       const Text(
@@ -115,22 +115,22 @@ class CustomCardOrder extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                         bname,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                         bemail,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                         overflow: TextOverflow.ellipsis,

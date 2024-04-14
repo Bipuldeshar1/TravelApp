@@ -55,8 +55,8 @@ class Fxn {
       if (a.exists) {
         if (a.get('role') == 'admin') {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AdminHomescreen()));
-          final snackbar = SnackBar(
+              MaterialPageRoute(builder: (context) => const AdminHomescreen()));
+          const snackbar = SnackBar(
             content: Text('successful  loggedin'),
             duration: Duration(seconds: 3),
           );
@@ -67,7 +67,7 @@ class Fxn {
               MaterialPageRoute(
                   builder: (context) =>
                       BottomNav(firebaseUser: user, userModel: userModel)));
-          final snackbar = SnackBar(
+          const snackbar = SnackBar(
             content: Text('successful  loggedin'),
             duration: Duration(seconds: 3),
           );

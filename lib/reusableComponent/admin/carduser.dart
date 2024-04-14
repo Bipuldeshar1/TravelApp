@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CardUser extends StatelessWidget {
   String name;
-  CardUser({
+  CardUser({super.key, 
     required this.name,
   });
   @override
@@ -18,7 +18,7 @@ class CardUser extends StatelessWidget {
             color: Colors.grey.withOpacity(0.3), // Shadow color
             spreadRadius: 2, // Shadow spread radius
             blurRadius: 5, // Shadow blur radius
-            offset: Offset(0, 3), // Shadow offset
+            offset: const Offset(0, 3), // Shadow offset
           )
         ],
       ),

@@ -30,9 +30,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
     }
 
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('reviews'),
+        title: const Text('reviews'),
       ),
       body: FutureBuilder(
         future: fetch(),
@@ -56,7 +56,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                             color: Colors.grey.withOpacity(0.3), // Shadow color
                             spreadRadius: 2, // Shadow spread radius
                             blurRadius: 5, // Shadow blur radius
-                            offset: Offset(0, 3), // Shadow offset
+                            offset: const Offset(0, 3), // Shadow offset
                           )
                         ],
                       ),
@@ -79,7 +79,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
-                              Container(
+                              SizedBox(
                                 width: 300,
                                 child: Text(
                                   package.review,
@@ -100,14 +100,14 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   );
                 });
           } else if (snapshot.hasError) {
-            return Text("Error fetching data!");
+            return const Text("Error fetching data!");
           } else {
-            return Container(
+            return SizedBox(
               height: double.infinity,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );

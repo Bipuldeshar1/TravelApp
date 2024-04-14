@@ -1,17 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_3/fxn/route.dart';
-import 'package:project_3/screens/Admin/adminHOme.dart';
 
-import 'package:project_3/screens/Home/home.dart';
-import 'package:project_3/screens/Home/nav.dart';
 
 import '../../reusableComponent/CustomButton.dart';
 import 'package:project_3/screens/auth/register.dart';
 
 class Login extends StatefulWidget {
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -22,7 +18,7 @@ class _LoginState extends State<Login> {
 
   TextEditingController passwordController = TextEditingController();
   TextEditingController EmailController = TextEditingController();
-  Fxn f = new Fxn();
+  Fxn f = Fxn();
   bool obsecureText = true;
 
   final _formKey = GlobalKey<FormState>();
@@ -31,7 +27,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: Container(
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
           image: AssetImage(
             'lib/assets/login.png',
@@ -116,7 +112,7 @@ class _LoginState extends State<Login> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Register()),
+                                      builder: (context) => const Register()),
                                 );
                               },
                               child: const Text(
@@ -155,11 +151,11 @@ class _LoginState extends State<Login> {
 
   void login(String email, String password) async {
     if (email == '' || password == '') {
-      final snackbar = SnackBar(
+      const snackbar = SnackBar(
         content: Text('field cannot be empty'),
         duration: Duration(seconds: 3),
       );
-      await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
       try {
         UserCredential u = await FirebaseAuth.instance
@@ -175,9 +171,9 @@ class _LoginState extends State<Login> {
       } on FirebaseAuthException catch (e) {
         final snackbar = SnackBar(
           content: Text(e.code.toString()),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         );
-        await ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       } catch (e) {
         print(e);
       }

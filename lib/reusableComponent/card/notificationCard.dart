@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:project_3/model/packagemodel.dart';
 
 class NotificationCard extends StatefulWidget {
   String msg;
   String title;
   String name;
-  NotificationCard({
+  NotificationCard({super.key, 
     required this.msg,
     required this.title,
     required this.name,
@@ -29,7 +28,7 @@ class _NotificationCardState extends State<NotificationCard> {
               color: Colors.grey.withOpacity(0.3), // Shadow color
               spreadRadius: 2, // Shadow spread radius
               blurRadius: 5, // Shadow blur radius
-              offset: Offset(0, 3), // Shadow offset
+              offset: const Offset(0, 3), // Shadow offset
             )
           ],
           color: Colors.white,
@@ -65,7 +64,7 @@ class _NotificationCardState extends State<NotificationCard> {
                   Wrap(
                     spacing: 4,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 250,
                         child: Text(
                           '${widget.title} ${widget.msg} for ${widget.name}',

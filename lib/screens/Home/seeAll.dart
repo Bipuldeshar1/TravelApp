@@ -27,7 +27,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Allposts'),
+        title: const Text('Allposts'),
       ),
       body: FutureBuilder(
         future: fetch(),
@@ -53,12 +53,12 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
           } else if (snapshot.hasError) {
             return const Text("Error fetching data!");
           } else {
-            return Container(
+            return SizedBox(
               height: MediaQuery.of(context).size.height * 1,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );

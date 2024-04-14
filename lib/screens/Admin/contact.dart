@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:project_3/screens/Admin/contactpage.dart';
 
 class Contact extends StatefulWidget {
+  const Contact({super.key});
+
   @override
   State<Contact> createState() => _ContactState();
 }
@@ -12,7 +12,7 @@ class Contact extends StatefulWidget {
 class _ContactState extends State<Contact> {
   @override
   Widget build(BuildContext context) {
-    Future<PermissionStatus> _getPermission() async {
+    Future<PermissionStatus> getPermission() async {
       final PermissionStatus permission = await Permission.contacts.status;
       if (permission != PermissionStatus.granted &&
           permission != PermissionStatus.denied) {
@@ -24,19 +24,19 @@ class _ContactState extends State<Contact> {
       }
     }
 
-    void _showPermissionDeniedDialog(BuildContext context) {
+    void showPermissionDeniedDialog(BuildContext context) {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('Permissions error'),
-          content: Text('Please enable access permission in system settings'),
+          title: const Text('Permissions error'),
+          content: const Text('Please enable access permission in system settings'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('Open Settings'),
+              child: const Text('Open Settings'),
               onPressed: () {
                 Navigator.of(context).pop();
                 openAppSettings();
@@ -50,15 +50,15 @@ class _ContactState extends State<Contact> {
     return Scaffold(
       body: ElevatedButton(
         onPressed: () async {
-          final PermissionStatus permissionStatus = await _getPermission();
+          final PermissionStatus permissionStatus = await getPermission();
           if (permissionStatus == PermissionStatus.granted) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ContactsPage()));
+                MaterialPageRoute(builder: (context) => const ContactsPage()));
           } else if (permissionStatus == PermissionStatus.denied) {
-            _showPermissionDeniedDialog(context);
+            showPermissionDeniedDialog(context);
           }
         },
-        child: Container(child: Text('See')),
+        child: Container(child: const Text('See')),
       ),
     );
   }

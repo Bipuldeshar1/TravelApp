@@ -204,22 +204,16 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:project_3/reusableComponent/CustomButton.dart';
 import 'package:project_3/screens/Home/pendingbooking.dart';
 import 'package:project_3/screens/auth/login.dart';
-import 'package:project_3/widgets/rating.dart';
 import 'package:project_3/widgets/updateprofileform.dart';
 
 import '../../model/userModel.dart';
-import '../../reusableComponent/map/newmap.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -244,15 +238,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('profile'),
+        title: const Text('profile'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut().then((value) => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Login())));
+                  context, MaterialPageRoute(builder: (context) => const Login())));
             },
-            icon: Icon(Icons.logout_outlined),
+            icon: const Icon(Icons.logout_outlined),
           )
         ],
       ),
@@ -351,10 +345,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PendingBooking()));
+                                    builder: (context) => const PendingBooking()));
                           },
-                          child: Row(
-                            children: const [
+                          child: const Row(
+                            children: [
                               Icon(
                                 Icons.book,
                                 size: 25,
@@ -379,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => UpdateProfile()));
+                                      builder: (context) => const UpdateProfile()));
                             },
                             color: Colors.blue,
                             height: 40,
@@ -391,7 +385,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             );
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

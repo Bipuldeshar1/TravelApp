@@ -5,6 +5,8 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 
 class SearchSection extends StatefulWidget {
+  const SearchSection({super.key});
+
   @override
   _SearchSectionState createState() => _SearchSectionState();
 }
@@ -63,7 +65,7 @@ class _SearchSectionState extends State<SearchSection> {
               color: Colors.grey.withOpacity(0.3), // Shadow color
               spreadRadius: 2, // Shadow spread radius
               blurRadius: 5, // Shadow blur radius
-              offset: Offset(0, 3), // Shadow offset
+              offset: const Offset(0, 3), // Shadow offset
             )
           ],
         ),

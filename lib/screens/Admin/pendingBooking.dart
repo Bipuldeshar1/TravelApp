@@ -14,6 +14,7 @@ class PendingBooking extends StatefulWidget {
 }
 
 class _PendingBookingState extends State<PendingBooking> {
+  @override
   Widget build(BuildContext context) {
     final id = FirebaseAuth.instance.currentUser!.email;
 
@@ -28,9 +29,9 @@ class _PendingBookingState extends State<PendingBooking> {
     }
 
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('Bookings'),
+        title: const Text('Bookings'),
       ),
       body: StreamBuilder<List<Booking>>(
         stream: fetchOrder(),
@@ -61,18 +62,18 @@ class _PendingBookingState extends State<PendingBooking> {
                   );
                 });
           } else if (snapshot.hasError) {
-            return Text("Error fetching data!");
+            return const Text("Error fetching data!");
           } else if (snapshot.data == null) {
             return const Center(
               child: Text('no posts available'),
             );
           } else {
-            return Container(
+            return SizedBox(
               height: double.infinity,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return s();
+                  return const s();
                 },
               ),
             );
@@ -114,8 +115,8 @@ class _PendingBookingState extends State<PendingBooking> {
                           .then((value) => storenotification(package))
                           .then((value) => del(package));
                     },
-                    icon: Icon(Icons.confirmation_num_rounded),
-                    label: Text('confirm'),
+                    icon: const Icon(Icons.confirmation_num_rounded),
+                    label: const Text('confirm'),
                   ),
                   TextButton.icon(
                     onPressed: () {
@@ -147,8 +148,8 @@ class _PendingBookingState extends State<PendingBooking> {
                       }
                       del(package);
                     },
-                    icon: Icon(Icons.delete),
-                    label: Text('reject booking'),
+                    icon: const Icon(Icons.delete),
+                    label: const Text('reject booking'),
                   )
                 ],
               ),
@@ -193,7 +194,7 @@ class _PendingBookingState extends State<PendingBooking> {
           .doc(package.id)
           .delete()
           .then((value) => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PendingBooking())));
+              MaterialPageRoute(builder: (context) => const PendingBooking())));
     } catch (e) {
       print(e);
     }
